@@ -62,13 +62,9 @@ use common\models\Organization;
 
     <?= $form->field($model, 'join_date')->input('date', ['class' => 'form-control']) ?>
 
-    <?= $form->field($model, 'display_status')->dropDownList(
-    [1 => '显示', 0 => '隐藏'], 
-    ['prompt' => '请选择状态...']
-    ) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('保存', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

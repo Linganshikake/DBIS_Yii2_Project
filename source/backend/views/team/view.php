@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'supervisor',
             'company',
             'description:ntext',
-            'display_status',
+            //'display_status',
         ],
     ]) ?>
 

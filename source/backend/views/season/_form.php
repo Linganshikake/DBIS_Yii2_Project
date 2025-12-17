@@ -16,16 +16,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'start_date')->input('date', ['class' => 'form-control']) ?>
     <?= $form->field($model, 'end_date')->input('date', ['class' => 'form-control']) ?>
-    
+
     <?= $form->field($model, 'is_current')->textInput() ?>
 
-    <?= $form->field($model, 'display_status')->dropDownList(
-    [1 => '显示', 0 => '隐藏'], 
-    ['prompt' => '请选择状态...']
-    ) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('保存', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

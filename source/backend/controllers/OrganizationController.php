@@ -96,15 +96,22 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Deletes an existing Organization model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * Delete (Soft Delete): 将 display_status 设为 0，而不是物理删除
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        // 1. 找到该条数据
+        $model = $this->findModel($id);
+
+        // 2. 修改状态为隐藏
+        $model->display_status = 0;
+
+        // 3. 保存 (使用 save(false) 跳过验证，确保删除操作一定成功)
+        if ($model->save(false)) {
+            Yii::$app->session->setFlash('success', '该数据已成功删除。');
+        } else {
+            Yii::$app->session->setFlash('error', '删除失败，请重试。');
+        }
 
         return $this->redirect(['index']);
     }

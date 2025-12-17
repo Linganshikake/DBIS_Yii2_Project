@@ -56,6 +56,8 @@ class SeasonSearch extends Season
             return $dataProvider;
         }
 
+        $query->andWhere(['display_status' => 1]);
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,

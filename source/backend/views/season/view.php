@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'start_date',
             'end_date',
             'is_current',
-            'display_status',
+            //'display_status',
         ],
     ]) ?>
 

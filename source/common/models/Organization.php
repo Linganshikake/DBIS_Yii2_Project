@@ -44,8 +44,8 @@ class Organization extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'top_title_name' => 'Top Title Name',
+            'name' => '团体名称',
+            'top_title_name' => '最高头衔名称',
             'display_status' => 'Display Status',
         ];
     }

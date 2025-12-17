@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\OrganizationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Organizations';
+$this->title = '职业团体';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="organization-index">
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             'name',
             'top_title_name',
-            'display_status',
+            //'display_status',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

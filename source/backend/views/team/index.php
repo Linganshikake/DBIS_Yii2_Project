@@ -12,7 +12,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\TeamSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Teams';
+$this->title = '队伍';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="team-index">
@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Team', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('创建新队伍', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'org_id',
             'org_rank',
             'join_date',
-            'display_status',
+            //'display_status',
         ],
     ]) ?>
 

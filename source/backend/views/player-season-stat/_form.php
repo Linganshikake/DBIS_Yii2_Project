@@ -46,10 +46,9 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'last_avoid_rate')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'display_status')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('保存', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

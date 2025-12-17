@@ -56,10 +56,10 @@ class Season extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'start_date' => 'Start Date',
-            'end_date' => 'End Date',
-            'is_current' => 'Is Current',
+            'name' => '赛季名称',
+            'start_date' => '开始日期',
+            'end_date' => '结束日期',
+            'is_current' => '是否当前赛季',
             'display_status' => 'Display Status',
         ];
     }

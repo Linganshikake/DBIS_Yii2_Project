@@ -74,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'avg_rank',
             'top_rate',
             'last_avoid_rate',
-            'display_status',
+            //'display_status',
         ],
     ]) ?>
 

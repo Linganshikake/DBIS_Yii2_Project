@@ -64,14 +64,14 @@ class Player extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'register_name' => 'Register Name',
-            'gender' => 'Gender',
-            'nickname' => 'Nickname',
-            'team_id' => 'Team ID',
-            'org_id' => 'Org ID',
-            'org_rank' => 'Org Rank',
-            'join_date' => 'Join Date',
+            'name' => '姓名',
+            'register_name' => '注册名',
+            'gender' => '性别',
+            'nickname' => '绰号',
+            'team_id' => '所属队伍',
+            'org_id' => '所属团队',
+            'org_rank' => '团体段位',
+            'join_date' => '加入M League时间',
             'display_status' => 'Display Status',
         ];
     }
@@ -83,7 +83,7 @@ class Player extends \yii\db\ActiveRecord
      */
     public function getPlayerSeasonStats()
     {
-        return $this->hasMany(PlayerSeasonStats::className(), ['player_id' => 'id']);
+        return $this->hasMany(PlayerSeasonStat::className(), ['player_id' => 'id']);
     }
 
     /**
@@ -93,7 +93,7 @@ class Player extends \yii\db\ActiveRecord
      */
     public function getSeasons()
     {
-        return $this->hasMany(Seasons::className(), ['id' => 'season_id'])->viaTable('player_season_stats', ['player_id' => 'id']);
+        return $this->hasMany(Season::className(), ['id' => 'season_id'])->viaTable('player_season_stats', ['player_id' => 'id']);
     }
 
     /**
@@ -103,7 +103,7 @@ class Player extends \yii\db\ActiveRecord
      */
     public function getOrg()
     {
-        return $this->hasOne(Organizations::className(), ['id' => 'org_id']);
+        return $this->hasOne(Organization::className(), ['id' => 'org_id']);
     }
 
     /**
@@ -113,7 +113,7 @@ class Player extends \yii\db\ActiveRecord
      */
     public function getTeam()
     {
-        return $this->hasOne(Teams::className(), ['id' => 'team_id']);
+        return $this->hasOne(Team::className(), ['id' => 'team_id']);
     }
 
     /**
@@ -123,6 +123,6 @@ class Player extends \yii\db\ActiveRecord
      */
     public function getSeasonTitles()
     {
-        return $this->hasMany(SeasonTitles::className(), ['player_id' => 'id']);
+        return $this->hasMany(SeasonTitle::className(), ['player_id' => 'id']);
     }
 }

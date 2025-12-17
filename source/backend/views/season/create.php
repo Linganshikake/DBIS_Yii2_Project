@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Season */
 
-$this->title = 'Create Season';
+$this->title = '增加新赛季';
 $this->params['breadcrumbs'][] = ['label' => 'Seasons', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

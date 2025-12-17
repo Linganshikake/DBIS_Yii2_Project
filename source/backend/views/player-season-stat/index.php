@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\PlayerSeasonStatSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Player Season Stats';
+$this->title = '选手赛季成绩';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="player-season-stat-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Player Season Stat', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('增加新的选手赛季成绩记录', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
