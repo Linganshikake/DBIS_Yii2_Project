@@ -52,9 +52,9 @@ class PlayerSeasonStat extends \yii\db\ActiveRecord
             [['player_id', 'season_id', 'team_id', 'games_count', 'rank_1_count', 'rank_2_count', 'rank_3_count', 'rank_4_count', 'max_score', 'display_status'], 'integer'],
             [['total_score', 'avg_rank', 'top_rate', 'last_avoid_rate'], 'number'],
             [['player_id', 'season_id'], 'unique', 'targetAttribute' => ['player_id', 'season_id']],
-            [['player_id'], 'exist', 'skipOnError' => true, 'targetClass' => Players::className(), 'targetAttribute' => ['player_id' => 'id']],
-            [['season_id'], 'exist', 'skipOnError' => true, 'targetClass' => Seasons::className(), 'targetAttribute' => ['season_id' => 'id']],
-            [['team_id'], 'exist', 'skipOnError' => true, 'targetClass' => Teams::className(), 'targetAttribute' => ['team_id' => 'id']],
+            [['player_id'], 'exist', 'skipOnError' => true, 'targetClass' => Player::className(), 'targetAttribute' => ['player_id' => 'id']],
+            [['season_id'], 'exist', 'skipOnError' => true, 'targetClass' => Season::className(), 'targetAttribute' => ['season_id' => 'id']],
+            [['team_id'], 'exist', 'skipOnError' => true, 'targetClass' => Team::className(), 'targetAttribute' => ['team_id' => 'id']],
         ];
     }
 
@@ -89,7 +89,7 @@ class PlayerSeasonStat extends \yii\db\ActiveRecord
      */
     public function getPlayer()
     {
-        return $this->hasOne(Players::className(), ['id' => 'player_id']);
+        return $this->hasOne(Player::className(), ['id' => 'player_id']);
     }
 
     /**
@@ -99,7 +99,7 @@ class PlayerSeasonStat extends \yii\db\ActiveRecord
      */
     public function getSeason()
     {
-        return $this->hasOne(Seasons::className(), ['id' => 'season_id']);
+        return $this->hasOne(Season::className(), ['id' => 'season_id']);
     }
 
     /**
@@ -109,6 +109,6 @@ class PlayerSeasonStat extends \yii\db\ActiveRecord
      */
     public function getTeam()
     {
-        return $this->hasOne(Teams::className(), ['id' => 'team_id']);
+        return $this->hasOne(Team::className(), ['id' => 'team_id']);
     }
 }
