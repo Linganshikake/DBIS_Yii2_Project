@@ -14,6 +14,9 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use common\models\TeamSeasonStat;
+use common\models\Season;
+use yii\db\Expression;
 
 /**
  * Site controller
@@ -74,7 +77,27 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $currentSeason = Season::findOne(['is_current' => 1]);
+        if (!$currentSeason) {
+            $currentSeason = Season::find()->orderBy(['id' => SORT_DESC])->one();
+        }
+
+        $rankings = [];
+        if ($currentSeason) {
+            $rankings = TeamSeasonStat::find()
+                ->where(['season_id' => $currentSeason->id, 'display_status' => 1])
+                // 意思：优先按 final_score 排，没有就按 semi，再没有按 regular。全部降序（分高的在前）
+                //->orderBy(new Expression('COALESCE(final_score, semifinal_score, regular_score) DESC'))
+                
+                // 如果您坚持要用 total_rank 字段排序，请注释上一行，用下面这一行：
+                ->orderBy(['total_rank' => SORT_ASC]) // 排名 1 在最上面
+                ->all();
+        }
+
+        return $this->render('index', [
+            'rankings' => $rankings,
+            'seasonName' => $currentSeason ? $currentSeason->name : '未定义赛季',
+        ]);
     }
 
     /**

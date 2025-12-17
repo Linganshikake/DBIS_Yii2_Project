@@ -29,17 +29,22 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => 'M.LEAGUE DATA', // 网站标题
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            // ★★★ 核心修改：使用黑色主题，固定在顶部 ★★★
+            'class' => 'navbar navbar-expand-md navbar-dark bg-dark fixed-top',
+            'style' => 'background-color: #000 !important; border-bottom: 2px solid #d4af37;',
         ],
     ]);
+    
     $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
+        ['label' => '首页', 'url' => ['/site/index']],
+        ['label' => '队伍一览', 'url' => ['/team/index']], // 还没做，先预留
+        ['label' => '选手数据', 'url' => ['/player/index']], // 还没做，先预留
+        ['label' => '赛季榜单', 'url' => ['/ranking/index']], // 还没做，先预留
     ];
+    
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];

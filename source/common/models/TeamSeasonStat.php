@@ -73,7 +73,7 @@ class TeamSeasonStat extends \yii\db\ActiveRecord
      */
     public function getSeason()
     {
-        return $this->hasOne(Seasons::className(), ['id' => 'season_id']);
+        return $this->hasOne(Season::className(), ['id' => 'season_id']);
     }
 
     /**
@@ -83,6 +83,23 @@ class TeamSeasonStat extends \yii\db\ActiveRecord
      */
     public function getTeam()
     {
-        return $this->hasOne(Teams::className(), ['id' => 'team_id']);
+        return $this->hasOne(Team::className(), ['id' => 'team_id']);
+    }
+
+        /**
+     * 获取当前展示分数
+     * 逻辑：决赛分 > 半决赛分 > 常规赛分
+     */
+    public function getDisplayScore()
+    {
+        if ($this->final_score !== null) {
+            return $this->final_score;
+        } elseif ($this->semifinal_score !== null) {
+            return $this->semifinal_score;
+        } else {
+            return $this->regular_score;
+        }
     }
 }
+
+
