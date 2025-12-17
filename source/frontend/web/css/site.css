@@ -84,3 +84,24 @@ a:hover {
     border-top: 1px solid #333;
     color: #888;
 }
+
+
+/* 队伍列表页专用样式 */
+.team-card-link .team-card {
+    border: 1px solid #333;
+    background-color: #1a1a1a;
+    transition: all 0.3s ease;
+}
+
+/* 鼠标悬停时：卡片上浮 + 边框变金 + 阴影 */
+.team-card-link:hover .team-card {
+    transform: translateY(-8px);
+    border-color: #d4af37;
+    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15); /* 金色微光阴影 */
+}
+
+/* 鼠标悬停时：按钮变实心 */
+.team-card-link:hover .btn-outline-warning {
+    background-color: #d4af37;
+    color: #000;
+}
