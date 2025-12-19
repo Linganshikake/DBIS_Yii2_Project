@@ -44,8 +44,9 @@ class TeamSeasonStat extends \yii\db\ActiveRecord
             [['team_id', 'season_id', 'total_rank', 'display_status'], 'integer'],
             [['regular_score', 'semifinal_score', 'final_score'], 'number'],
             [['team_id', 'season_id'], 'unique', 'targetAttribute' => ['team_id', 'season_id']],
-            [['season_id'], 'exist', 'skipOnError' => true, 'targetClass' => Seasons::className(), 'targetAttribute' => ['season_id' => 'id']],
-            [['team_id'], 'exist', 'skipOnError' => true, 'targetClass' => Teams::className(), 'targetAttribute' => ['team_id' => 'id']],
+            [['season_id'], 'exist', 'skipOnError' => true, 'targetClass' => Season::className(), 'targetAttribute' => ['season_id' => 'id']],
+            [['team_id'], 'exist', 'skipOnError' => true, 'targetClass' => Team::className(), 'targetAttribute' => ['team_id' => 'id']],
+            [['total_score'], 'number'],
         ];
     }
 
@@ -88,17 +89,45 @@ class TeamSeasonStat extends \yii\db\ActiveRecord
 
         /**
      * 获取当前展示分数
-     * 逻辑：决赛分 > 半决赛分 > 常规赛分
      */
     public function getDisplayScore()
     {
-        if ($this->final_score !== null) {
-            return $this->final_score;
-        } elseif ($this->semifinal_score !== null) {
-            return $this->semifinal_score;
-        } else {
-            return $this->regular_score;
+        return $this->total_score;
+    }
+
+
+    /**
+     * ★★★ 核心逻辑：在保存进数据库之前，自动计算总分 ★★★
+     * M联赛规则：晋级下一轮时，当前总分折半，再加上新阶段的分数
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            
+            // 1. 基础分：常规赛成绩
+            // 如果常规赛没填，默认为0
+            $score = $this->regular_score ?: 0;
+
+            // 2. 判断是否有半决赛成绩 (不为 null 说明进入了半决赛)
+            if ($this->semifinal_score !== null && $this->semifinal_score !== '') {
+                // 逻辑：常规赛 × 0.5 + 半决赛
+                $score = ($score * 0.5) + $this->semifinal_score;
+            }
+
+            // 3. 判断是否有决赛成绩 (不为 null 说明进入了决赛)
+            if ($this->final_score !== null && $this->final_score !== '') {
+                // 逻辑：(常规赛×0.5 + 半决赛) × 0.5 + 决赛
+                // 此时 $score 已经是(常规赛×0.5 + 半决赛)了，所以直接 * 0.5 + 决赛即可
+                $score = ($score * 0.5) + $this->final_score;
+            }
+
+            // 4. 将计算结果赋值给 total_score 字段
+            // round($val, 1) 用于保留一位小数，防止浮点数精度问题
+            $this->total_score = round($score, 1);
+
+            return true;
         }
+        return false;
     }
 }
 

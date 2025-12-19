@@ -57,6 +57,6 @@ class Organization extends \yii\db\ActiveRecord
      */
     public function getPlayers()
     {
-        return $this->hasMany(Players::className(), ['org_id' => 'id']);
+        return $this->hasMany(Player::className(), ['org_id' => 'id']);
     }
 }

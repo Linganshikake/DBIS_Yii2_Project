@@ -71,7 +71,7 @@ class Season extends \yii\db\ActiveRecord
      */
     public function getPlayerSeasonStats()
     {
-        return $this->hasMany(PlayerSeasonStats::className(), ['season_id' => 'id']);
+        return $this->hasMany(PlayerSeasonStat::className(), ['season_id' => 'id']);
     }
 
     /**
@@ -81,7 +81,7 @@ class Season extends \yii\db\ActiveRecord
      */
     public function getPlayers()
     {
-        return $this->hasMany(Players::className(), ['id' => 'player_id'])->viaTable('player_season_stats', ['season_id' => 'id']);
+        return $this->hasMany(Player::className(), ['id' => 'player_id'])->viaTable('player_season_stats', ['season_id' => 'id']);
     }
 
     /**
@@ -91,7 +91,7 @@ class Season extends \yii\db\ActiveRecord
      */
     public function getSeasonTitles()
     {
-        return $this->hasMany(SeasonTitles::className(), ['season_id' => 'id']);
+        return $this->hasMany(SeasonTitle::className(), ['season_id' => 'id']);
     }
 
     /**
@@ -101,7 +101,7 @@ class Season extends \yii\db\ActiveRecord
      */
     public function getTeamSeasonStats()
     {
-        return $this->hasMany(TeamSeasonStats::className(), ['season_id' => 'id']);
+        return $this->hasMany(TeamSeasonStat::className(), ['season_id' => 'id']);
     }
 
     /**
@@ -111,6 +111,6 @@ class Season extends \yii\db\ActiveRecord
      */
     public function getTeams()
     {
-        return $this->hasMany(Teams::className(), ['id' => 'team_id'])->viaTable('team_season_stats', ['season_id' => 'id']);
+        return $this->hasMany(Team::className(), ['id' => 'team_id'])->viaTable('team_season_stats', ['season_id' => 'id']);
     }
 }

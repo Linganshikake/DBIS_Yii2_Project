@@ -6,6 +6,7 @@
  */
 
 namespace common\models;
+use yii\web\UploadedFile;
 
 use Yii;
 
@@ -35,6 +36,11 @@ class Team extends \yii\db\ActiveRecord
     }
 
     /**
+     * @var UploadedFile
+     */
+    public $imageFile; // ★ 定义虚拟属性，用于接收表单文件
+
+    /**
      * {@inheritdoc}
      */
     public function rules()
@@ -46,6 +52,9 @@ class Team extends \yii\db\ActiveRecord
             ['display_status', 'default', 'value' => 1],
             [['name', 'supervisor', 'company'], 'string', 'max' => 100],
             [['name'], 'unique'],
+
+            // ★ 新增：图片验证规则
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg', 'maxSize' => 1024 * 1024 * 10], // 限制10MB
         ];
     }
 
@@ -103,4 +112,38 @@ class Team extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Season::className(), ['id' => 'season_id'])->viaTable('team_season_stats', ['team_id' => 'id']);
     }
+
+
+    /**
+     * ★ 核心功能：上传图片
+     * 返回 true 表示成功，false 表示失败
+     */
+    public function upload()
+    {
+        if ($this->validate()) {
+            if ($this->imageFile) {
+                // 1. 确定存储路径：存到 frontend/web/uploads/teams/ 目录下
+                // 这样前台页面才能直接用 http://.../uploads/... 访问到
+                $path = Yii::getAlias('@frontend/web/uploads/teams/');
+                
+                // 如果目录不存在，创建它
+                if (!file_exists($path)) {
+                    mkdir($path, 0777, true);
+                }
+
+                // 2. 生成随机文件名 (防止重名)
+                $fileName = 'team_' . time() . '_' . rand(100, 999) . '.' . $this->imageFile->extension;
+
+                // 3. 保存文件
+                $this->imageFile->saveAs($path . $fileName);
+
+                // 4. 把文件名赋值给数据库字段
+                $this->logo = $fileName;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

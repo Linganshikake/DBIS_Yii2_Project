@@ -69,7 +69,7 @@ class SeasonTitle extends \yii\db\ActiveRecord
      */
     public function getPlayer()
     {
-        return $this->hasOne(Players::className(), ['id' => 'player_id']);
+        return $this->hasOne(Player::className(), ['id' => 'player_id']);
     }
 
     /**
@@ -79,6 +79,6 @@ class SeasonTitle extends \yii\db\ActiveRecord
      */
     public function getSeason()
     {
-        return $this->hasOne(Seasons::className(), ['id' => 'season_id']);
+        return $this->hasOne(Season::className(), ['id' => 'season_id']);
     }
 }

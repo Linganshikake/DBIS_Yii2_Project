@@ -8,6 +8,7 @@ use backend\models\PlayerSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * PlayerController implements the CRUD actions for Player model.
@@ -66,8 +67,18 @@ class PlayerController extends Controller
     {
         $model = new Player();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            
+            // 1. 获取上传实例
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            $model->videoFile = UploadedFile::getInstance($model, 'videoFile');
+            $model->coverFile = UploadedFile::getInstance($model, 'coverFile'); // ★★★ 获取封面实例 ★★★
+            
+            // 2. 上传并保存 (save(false) 避免二次验证报错)
+            // upload() 方法现在处理 imageFile, videoFile, 和 coverFile
+            if ($model->upload() && $model->save(false)) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
@@ -85,9 +96,43 @@ class PlayerController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
+        $oldAvatar = $model->avatar; // 记录旧头像
+        $oldVideo = $model->intro_video; // 记录旧视频
+        $oldCover = $model->cover; // ★★★ 记录旧封面 ★★★
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            
+            // 获取上传文件实例
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            $model->videoFile = UploadedFile::getInstance($model, 'videoFile');
+            $model->coverFile = UploadedFile::getInstance($model, 'coverFile'); // ★★★ 获取封面实例 ★★★
+            
+            // 逻辑处理：如果没上传新文件，保持旧文件
+            
+            // A. 处理图片
+            if (!$model->imageFile) {
+                $model->avatar = $oldAvatar;
+            }
+
+            // B. 处理视频
+            if (!$model->videoFile) {
+                $model->intro_video = $oldVideo;
+            }
+
+            // C. 处理封面 ★★★
+            if (!$model->coverFile) {
+                $model->cover = $oldCover;
+            }
+            
+            // 执行上传 (upload() 会检查 imageFile, videoFile, coverFile 是否存在并保存)
+            // 即使没有新文件上传，upload() 也会返回 true (只要验证通过)
+            $model->upload();
+
+            // save(false) 关键！
+            if ($model->save(false)) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
@@ -115,7 +160,7 @@ class PlayerController extends Controller
 
         return $this->redirect(['index']);
     }
-    
+
     /**
      * Finds the Player model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

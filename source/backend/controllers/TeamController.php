@@ -13,6 +13,7 @@ use backend\models\TeamSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * TeamController implements the CRUD actions for Team model.
@@ -71,8 +72,22 @@ class TeamController extends Controller
     {
         $model = new Team();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            
+            // 1. 获取图片实例
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            
+            // 2. 先处理上传 (upload 方法里包含了 validate)
+            // 如果上传成功（或者没上传图片但数据验证通过），再保存
+            if ($model->upload()) {
+                
+                // ★★★ 关键点：使用 save(false) ★★★
+                // 因为 upload() 已经验证过了，而且可能移动了文件
+                // 如果这里不加 false，它会再次验证，导致找不到文件报错
+                if ($model->save(false)) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
         }
 
         return $this->render('create', [
@@ -90,9 +105,27 @@ class TeamController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
+        // 记录旧logo，防止没传新图时把旧图覆盖没了
+        $oldLogo = $model->logo;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            
+            if ($model->imageFile) {
+                // 如果有新图，执行上传逻辑（验证 + 移动文件）
+                $model->upload();
+            } else {
+                // 如果没传新图，把旧图名字赋回去
+                $model->logo = $oldLogo;
+            }
+
+            // ★★★ 关键点：使用 save(false) ★★★
+            // 同样，这里必须跳过二次验证
+            if ($model->save(false)) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [

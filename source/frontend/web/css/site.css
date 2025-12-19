@@ -105,3 +105,189 @@ a:hover {
     background-color: #d4af37;
     color: #000;
 }
+
+
+/* 队伍详情页 - 选手卡片 */
+.player-card {
+    border: 1px solid #333;
+    transition: transform 0.3s, border-color 0.3s;
+}
+
+.player-card:hover {
+    transform: translateY(-5px); /* 上浮 */
+    border-color: #d4af37;       /* 边框变金 */
+}
+
+/* 按钮悬停变金 */
+.player-card .btn:hover {
+    background-color: #d4af37 !important;
+    color: #000 !important;
+}
+
+
+/* 分页器黑金风格 */
+.page-link {
+    background-color: #000 !important;
+    border-color: #333 !important;
+    color: #888 !important;
+}
+.page-item.active .page-link {
+    background-color: #d4af37 !important;
+    border-color: #d4af37 !important;
+    color: #000 !important;
+    font-weight: bold;
+}
+.page-link:hover {
+    color: #d4af37 !important;
+}
+
+
+/* 黑金 Tab 样式 */
+.nav-tabs .nav-link {
+    color: #888;
+    border: none;
+    border-bottom: 3px solid transparent;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #fff;
+    border-color: transparent;
+    isolation: isolate; /* 防止背景闪烁 */
+}
+
+.nav-tabs .nav-link.active {
+    background-color: transparent !important;
+    color: #d4af37 !important;
+    border: none !important;
+    border-bottom: 3px solid #d4af37 !important;
+}
+
+
+/* ==================================
+   Ranking Page Tabs Styles (黑金风格)
+   ================================== */
+
+/* 1. 导航栏底边框 */
+.ranking-nav-tabs {
+    border-bottom: 1px solid #333;
+    margin-bottom: 30px;
+}
+
+/* 2. 默认状态下的 Tab 按钮 */
+.ranking-nav-tabs .nav-link {
+    background: transparent !important;
+    color: #666 !important;         /* 默认暗灰色 */
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px 30px;
+    border: none !important;        /* 去掉默认边框 */
+    border-bottom: 3px solid transparent !important; /* 预留底部线条位置 */
+    transition: all 0.3s ease;      /* ★关键：所有属性变化都带0.3秒动画 */
+}
+
+/* 3. 鼠标悬停状态 (Hover) */
+.ranking-nav-tabs .nav-link:hover {
+    color: #fff !important;         /* 悬停变白 */
+    border-color: transparent !important;
+}
+
+/* 4. 选中状态 (Active) - ★这解决了不显示高亮的问题 */
+.ranking-nav-tabs .nav-link.active {
+    background-color: transparent !important;
+    color: #d4af37 !important;       /* 选中变金 */
+    border-bottom: 3px solid #d4af37 !important; /* 底部出现金线 */
+}
+
+/* 5. 内容切换动画微调 (Fade duration) */
+.tab-content .tab-pane {
+    transition: opacity 0.3s linear; /* 确保内容淡入淡出也是平滑的 */
+}
+
+/* =========================================
+   强制修复 Tab 切换问题的 CSS
+   ========================================= */
+
+/* 1. 默认隐藏所有 Tab 内容 */
+.tab-content > .tab-pane {
+    display: none !important; /* 强制隐藏 */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out; /* 准备好淡入动画 */
+}
+
+/* 2. 只有带 active 类的才显示 */
+.tab-content > .tab-pane.active {
+    display: block !important; /* 强制显示 */
+}
+
+/* 3. 只有带 show 类的才不透明 (配合 fade 实现动画) */
+.tab-content > .tab-pane.active.show {
+    opacity: 1;
+}
+
+/* 4. 修复点击链接后的高亮样式 */
+.ranking-nav-tabs .nav-link.active {
+    color: #d4af37 !important;
+    border-bottom: 3px solid #d4af37 !important;
+}
+
+
+/* =========================================
+   Season Title Cards (荣誉榜)
+   ========================================= */
+
+   .title-card {
+    background: linear-gradient(145deg, #1a1a1a, #000); /* 渐变黑背景 */
+    border: 1px solid #333;
+    border-top: 3px solid #d4af37; /* 顶部金线 */
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+}
+
+.title-card:hover {
+    transform: translateY(-5px); /* 悬浮上浮 */
+    border-color: #555;
+    border-top-color: #ffd700;   /* 悬浮时金线变亮 */
+}
+
+.title-label {
+    color: #888;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.title-value {
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* 强调数字字体 */
+}
+
+/* 专门给 MVP 的分数加金色光晕 */
+.text-warning {
+    color: #d4af37 !important;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.title-player a {
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.title-player a:hover {
+    color: #d4af37;
+}
+
+.title-team {
+    color: #666;
+    font-size: 12px;
+    margin-top: 5px;
+}
