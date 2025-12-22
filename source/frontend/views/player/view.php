@@ -32,14 +32,14 @@ $this->title = $model->name;
                 </h5>
                 <a href="<?= Url::to(['team/view', 'id' => $model->team_id]) ?>" style="text-decoration: none;">
                     <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 4px; padding: 20px; text-align: center; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-                        <?php if($model->team->logo): ?>
+                        <?php if($model->team && $model->team->logo): ?>
                             <div style="width: 80px; height: 80px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; margin: 0 auto 15px; box-shadow: 0 0 10px rgba(255,255,255,0.1);">
                                 <img src="/uploads/teams/<?= $model->team->logo ?>" style="width: 60%; height: 60%; object-fit: contain;">
                             </div>
                         <?php endif; ?>
                         
                         <div style="color: #fff; font-weight: bold; font-size: 18px; text-transform: uppercase;">
-                            <?= Html::encode($model->team->name) ?>
+                            <?= Html::encode($model->team->name ?? '') ?>
                         </div>
                         
                         <div style="margin-top: 15px;">
@@ -67,7 +67,7 @@ $this->title = $model->name;
                 <table class="table" style="margin-top: 20px; background: transparent; border: none;">
                     <tr style="border-bottom: 1px solid #333;">
                         <td style="width: 150px; color: #888;">NICKNAME</td>
-                        <td style="color: #fff; font-size: 18px;">“<?= Html::encode($model->nickname) ?>”</td>
+                        <td style="color: #fff; font-size: 18px;">"<?= Html::encode($model->nickname) ?>"</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #333;">
                         <td style="color: #888;">ORGANIZATION</td>
@@ -119,37 +119,41 @@ $this->title = $model->name;
                         <tr style="background: #000; color: #d4af37;">
                             <th>SEASON</th>
                             <th>TEAM</th>
-                            <th class="text-center">GAMES COUNT</th>
-                            <th class="text-center">SCORE</th>
-                            <th class="text-center">1st Rate</th>
-                            <th class="text-center">4th Avoid Rate</th> 
-                            <th class="text-center">AVG Rank</th>
-                            <th class="text-center">Max Score</th>
+                            <th class="text-center">GAMES</th>
+                            <th class="text-center">TOTAL SCORE</th>
+                            <th class="text-center">AVG RANK</th>
+                            <th class="text-center">1st RATE</th>
+                            <th class="text-center">4th AVOID</th>
+                            <th class="text-center">MAX SCORE</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($model->playerSeasonStats as $stat): ?>
                         <tr>
-                            <td style="font-weight: bold;"><?= Html::encode($stat->season->name) ?></td>
-                            <td><?= Html::encode($stat->team->name) ?></td>
+                            <td style="font-weight: bold;"><?= Html::encode($stat->season->name ?? '-') ?></td>
+                            <td><?= Html::encode($stat->team->name ?? '-') ?></td>
                             
-                            <td class="text-center"><?= $stat->games_count ?></td>
+                            <td class="text-center"><?= $stat->games_count ?? '-' ?></td>
                             
-                            <td class="text-center" style="font-size: 18px; font-weight: bold; color: <?= $stat->total_score >= 0 ? '#fff' : '#aaa' ?>">
-                                <?= $stat->total_score > 0 ? '+' : '' ?><?= $stat->total_score ?>
+                            <td class="text-center" style="font-size: 18px; font-weight: bold; color: <?= ($stat->total_score ?? 0) >= 0 ? '#00a550' : '#e74c3c' ?>">
+                                <?= ($stat->total_score ?? 0) > 0 ? '+' : '' ?><?= number_format($stat->total_score ?? 0, 1) ?>
+                            </td>
+                            
+                            <td class="text-center" style="color: #3498db;">
+                                <?= $stat->avg_rank ? number_format($stat->avg_rank, 2) : '-' ?>
                             </td>
                             
                             <td class="text-center" style="color: #d4af37;">
-                                <?= $stat->top_rate ? ($stat->top_rate * 100) . '%' : '-' ?>
+                                <?= $stat->top_rate !== null ? number_format($stat->top_rate * 100, 1) . '%' : '-' ?>
                             </td>
 
-                             <td class="text-center">
-                                <?= $stat->last_avoid_rate ? ($stat->last_avoid_rate * 100) . '%' : '-' ?>
+                            <td class="text-center" style="color: #00a550;">
+                                <?= $stat->last_avoid_rate !== null ? number_format($stat->last_avoid_rate * 100, 1) . '%' : '-' ?>
                             </td>
                             
-                            <td class="text-center"><?= $stat->avg_rank ?></td>
-
-                            <td class="text-center"><?= number_format($stat->max_score) ?></td>
+                            <td class="text-center" style="color: #fff;">
+                                <?= $stat->max_score ? number_format($stat->max_score) : '-' ?>
+                            </td>
                         </tr>
                         <?php endforeach; ?>
 
@@ -163,6 +167,75 @@ $this->title = $model->name;
                     </tbody>
                 </table>
             </div>
+
+            <!-- 详细数据卡片 -->
+            <?php if ($model->playerSeasonStats): ?>
+            <?php $currentStat = $model->playerSeasonStats[0] ?? null; ?>
+            <?php if ($currentStat): ?>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h4 style="color: #888; margin-bottom: 20px;">
+                        <?= Html::encode($currentStat->season->name ?? '') ?> 详细数据
+                    </h4>
+                </div>
+                
+                <!-- 数据卡片 -->
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; text-align: center;">
+                        <div style="color: #888; font-size: 12px; margin-bottom: 5px;">最高得点</div>
+                        <div style="color: #d4af37; font-size: 24px; font-weight: bold;">
+                            <?= $currentStat->max_score ? number_format($currentStat->max_score) : '-' ?>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; text-align: center;">
+                        <div style="color: #888; font-size: 12px; margin-bottom: 5px;">1位次数</div>
+                        <div style="color: #d4af37; font-size: 24px; font-weight: bold;">
+                            <?= $currentStat->rank_1_count ?? '-' ?>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; text-align: center;">
+                        <div style="color: #888; font-size: 12px; margin-bottom: 5px;">2位次数</div>
+                        <div style="color: #9b59b6; font-size: 24px; font-weight: bold;">
+                            <?= $currentStat->rank_2_count ?? '-' ?>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; text-align: center;">
+                        <div style="color: #888; font-size: 12px; margin-bottom: 5px;">3位次数</div>
+                        <div style="color: #e67e22; font-size: 24px; font-weight: bold;">
+                            <?= $currentStat->rank_3_count ?? '-' ?>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; text-align: center;">
+                        <div style="color: #888; font-size: 12px; margin-bottom: 5px;">4位次数</div>
+                        <div style="color: #e74c3c; font-size: 24px; font-weight: bold;">
+                            <?= $currentStat->rank_4_count ?? '-' ?>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; text-align: center;">
+                        <div style="color: #888; font-size: 12px; margin-bottom: 5px;">总场次</div>
+                        <div style="color: #3498db; font-size: 24px; font-weight: bold;">
+                            <?= $currentStat->games_count ?? '-' ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+            <?php endif; ?>
         </div>
     </div>
 

@@ -7,6 +7,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\web\UploadedFile;
 
 /**
  * User model
@@ -22,12 +23,24 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property string|null $avatar 用户头像
+ * @property string|null $nickname 昵称
+ * @property string|null $bio 个人简介
+ * @property int|null $favorite_team_id 最喜爱的队伍ID
+ * 
+ * @property Team $favoriteTeam
+ * @property Comment[] $comments
  */
 class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
+    
+    /**
+     * @var UploadedFile
+     */
+    public $avatarFile;
 
     /**
      * {@inheritdoc}
@@ -55,6 +68,12 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            [['nickname'], 'string', 'max' => 100],
+            [['avatar'], 'string', 'max' => 255],
+            [['bio'], 'string', 'max' => 1000],
+            [['favorite_team_id'], 'integer'],
+            [['favorite_team_id'], 'exist', 'skipOnEmpty' => true, 'targetClass' => Team::class, 'targetAttribute' => ['favorite_team_id' => 'id']],
+            [['avatarFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif', 'maxSize' => 1024 * 1024 * 5],
         ];
     }
 
@@ -208,5 +227,84 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    /**
+     * Gets query for [[FavoriteTeam]].
+     */
+    public function getFavoriteTeam()
+    {
+        return $this->hasOne(Team::class, ['id' => 'favorite_team_id']);
+    }
+
+    /**
+     * Gets query for [[Comments]].
+     */
+    public function getComments()
+    {
+        return $this->hasMany(Comment::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * 获取显示名称（优先昵称，其次用户名）
+     */
+    public function getDisplayName()
+    {
+        return $this->nickname ?: $this->username;
+    }
+
+    /**
+     * 获取头像URL
+     */
+    public function getAvatarUrl()
+    {
+        if ($this->avatar) {
+            return '/uploads/avatars/' . $this->avatar;
+        }
+        return '/images/default-avatar.png';
+    }
+
+    /**
+     * 上传头像
+     */
+    public function uploadAvatar()
+    {
+        if ($this->avatarFile) {
+            $uploadPath = Yii::getAlias('@frontend/web/uploads/avatars/');
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+            
+            $fileName = 'avatar_' . $this->id . '_' . time() . '.' . $this->avatarFile->extension;
+            if ($this->avatarFile->saveAs($uploadPath . $fileName)) {
+                // 删除旧头像
+                if ($this->avatar && file_exists($uploadPath . $this->avatar)) {
+                    unlink($uploadPath . $this->avatar);
+                }
+                $this->avatar = $fileName;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 属性标签
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => '用户名',
+            'email' => '邮箱',
+            'status' => '状态',
+            'created_at' => '创建时间',
+            'updated_at' => '更新时间',
+            'avatar' => '头像',
+            'nickname' => '昵称',
+            'bio' => '个人简介',
+            'favorite_team_id' => '最喜爱的队伍',
+            'avatarFile' => '上传头像',
+        ];
     }
 }

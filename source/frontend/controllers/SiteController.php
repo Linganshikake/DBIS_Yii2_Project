@@ -15,7 +15,9 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use common\models\TeamSeasonStat;
+use common\models\PlayerSeasonStat;
 use common\models\Season;
+use common\models\News;
 use yii\db\Expression;
 
 /**
@@ -83,6 +85,9 @@ class SiteController extends Controller
         }
 
         $rankings = [];
+        $playerRankings = [];
+        $latestNews = [];
+        
         if ($currentSeason) {
             $rankings = TeamSeasonStat::find()
                 ->where(['season_id' => $currentSeason->id, 'display_status' => 1])
@@ -92,11 +97,92 @@ class SiteController extends Controller
                 // 如果您坚持要用 total_rank 字段排序，请注释上一行，用下面这一行：
                 ->orderBy(['total_rank' => SORT_ASC]) // 排名 1 在最上面
                 ->all();
+            
+            // 获取选手排行榜 - 4个维度
+            // 1. 总得点排行 - 首先获取前5名用于预览，同时获取所有数据用于展开
+            $playerRankings['total_score'] = PlayerSeasonStat::find()
+                ->alias('pss')
+                ->joinWith(['player', 'player.team'])
+                ->where(['pss.season_id' => $currentSeason->id, 'pss.display_status' => 1])
+                ->orderBy(['pss.total_score' => SORT_DESC])
+                ->limit(5)
+                ->all();
+            
+            $playerRankings['total_score_all'] = PlayerSeasonStat::find()
+                ->alias('pss')
+                ->joinWith(['player', 'player.team'])
+                ->where(['pss.season_id' => $currentSeason->id, 'pss.display_status' => 1])
+                ->orderBy(['pss.total_score' => SORT_DESC])
+                ->all();
+            
+            // 2. 平均顺位排行 (数值越小越好)
+            $playerRankings['avg_rank'] = PlayerSeasonStat::find()
+                ->alias('pss')
+                ->joinWith(['player', 'player.team'])
+                ->where(['pss.season_id' => $currentSeason->id, 'pss.display_status' => 1])
+                ->andWhere(['>', 'pss.games_count', 0])
+                ->orderBy(['pss.avg_rank' => SORT_ASC])
+                ->limit(5)
+                ->all();
+            
+            $playerRankings['avg_rank_all'] = PlayerSeasonStat::find()
+                ->alias('pss')
+                ->joinWith(['player', 'player.team'])
+                ->where(['pss.season_id' => $currentSeason->id, 'pss.display_status' => 1])
+                ->andWhere(['>', 'pss.games_count', 0])
+                ->orderBy(['pss.avg_rank' => SORT_ASC])
+                ->all();
+            
+            // 3. 1位率排行
+            $playerRankings['first_rate'] = PlayerSeasonStat::find()
+                ->alias('pss')
+                ->joinWith(['player', 'player.team'])
+                ->where(['pss.season_id' => $currentSeason->id, 'pss.display_status' => 1])
+                ->andWhere(['>', 'pss.games_count', 0])
+                ->orderBy(['pss.top_rate' => SORT_DESC])
+                ->limit(5)
+                ->all();
+            
+            $playerRankings['first_rate_all'] = PlayerSeasonStat::find()
+                ->alias('pss')
+                ->joinWith(['player', 'player.team'])
+                ->where(['pss.season_id' => $currentSeason->id, 'pss.display_status' => 1])
+                ->andWhere(['>', 'pss.games_count', 0])
+                ->orderBy(['pss.top_rate' => SORT_DESC])
+                ->all();
+            
+            // 4. 避四率排行
+            $playerRankings['avoid_rate'] = PlayerSeasonStat::find()
+                ->alias('pss')
+                ->joinWith(['player', 'player.team'])
+                ->where(['pss.season_id' => $currentSeason->id, 'pss.display_status' => 1])
+                ->orderBy(['pss.last_avoid_rate' => SORT_DESC])
+                ->limit(5)
+                ->all();
+            
+            $playerRankings['avoid_rate_all'] = PlayerSeasonStat::find()
+                ->alias('pss')
+                ->joinWith(['player', 'player.team'])
+                ->where(['pss.season_id' => $currentSeason->id, 'pss.display_status' => 1])
+                ->orderBy(['pss.last_avoid_rate' => SORT_DESC])
+                ->all();
         }
+        
+        // 获取最新新闻
+        $latestNews = News::getLatestNews(4);
+        
+        // 获取所有队伍（用于TEAMS展示）
+        $allTeams = \common\models\Team::find()
+            ->where(['display_status' => 1])
+            ->orderBy(['id' => SORT_ASC])
+            ->all();
 
         return $this->render('index', [
             'rankings' => $rankings,
             'seasonName' => $currentSeason ? $currentSeason->name : '未定义赛季',
+            'playerRankings' => $playerRankings,
+            'latestNews' => $latestNews,
+            'allTeams' => $allTeams,
         ]);
     }
 

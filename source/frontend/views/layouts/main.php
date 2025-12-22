@@ -40,19 +40,23 @@ AppAsset::register($this);
     
     $menuItems = [
         ['label' => '首页', 'url' => ['/site/index']],
-        ['label' => '队伍一览', 'url' => ['/team/index']], // 还没做，先预留
-        ['label' => '选手数据', 'url' => ['/player/index']], // 还没做，先预留
-        ['label' => '赛季榜单', 'url' => ['/ranking/index']], // 还没做，先预留
+        ['label' => '队伍一览', 'url' => ['/team/index']],
+        ['label' => '选手数据', 'url' => ['/player/index']],
+        ['label' => '赛季成绩', 'url' => ['/ranking/index']],
+        ['label' => '赛程表', 'url' => ['/schedule/index']],
+        ['label' => '新闻动态', 'url' => ['/news/index']],
+        ['label' => '评论广场', 'url' => ['/comment/index']],
     ];
     
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => '注册', 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => '登录', 'url' => ['/site/login']];
     } else {
+        $menuItems[] = ['label' => '个人主页', 'url' => ['/profile/index']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
+                '退出 (' . Yii::$app->user->identity->username . ')',
                 ['class' => 'btn btn-link logout']
             )
             . Html::endForm()
