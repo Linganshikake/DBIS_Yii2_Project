@@ -183,8 +183,8 @@ function showScheduleDetail(scheduleId) {
                 html += '<h5 style="text-align: center; color: ' + headerColor + '; margin-bottom: 20px; font-weight: bold; border-bottom: 2px solid ' + headerColor + '; padding-bottom: 10px;">' + score.game_text + '</h5>';
                 
                 score.results.forEach(function(result, rank) {
-                    var rankColors = ['#e74c3c', '#00a550', '#00a550', '#666'];
-                    var rankBgs = ['#fff3cd', '#d4edda', '#d4edda', '#e2e3e5'];
+                    var rankColors = ['#e74c3c', '#27ae60', '#3498db', '#666'];
+                    var rankBgs = ['#fff3cd', '#d4edda', '#d6eaf8', '#e2e3e5'];
                     html += '<div style="display: flex; align-items: center; padding: 10px; margin-bottom: 8px; background: ' + rankBgs[rank] + '; border-radius: 8px;">';
                     html += '<div style="width: 30px; height: 30px; background: ' + rankColors[rank] + '; color: #fff; display: flex; align-items: center; justify-content: center; border-radius: 5px; font-weight: bold;">' + (rank + 1) + '</div>';
                     html += '<div style="width: 50px; height: 50px; margin: 0 15px; border-radius: 50%; overflow: hidden; background: #fff; border: 2px solid #ddd;">';
