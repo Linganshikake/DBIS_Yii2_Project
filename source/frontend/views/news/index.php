@@ -18,7 +18,7 @@ $this->title = 'NEWS - 联赛新闻';
         <p style="color: #888;">联赛最新动态</p>
     </div>
 
-    <!-- 热门新闻 Top 3 -->
+    <!-- 最新动态 Top 3 -->
     <?php if ($hotNews): ?>
     <div class="row mb-5">
         <?php foreach ($hotNews as $index => $news): ?>

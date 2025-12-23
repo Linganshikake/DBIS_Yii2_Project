@@ -180,40 +180,40 @@ $this->title = $model->name;
         <?php if (isset($teamSeasonStat) && $teamSeasonStat): ?>
         <div class="row mb-4">
             <div class="col-12">
-                <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 30px;">
+                <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 50px;">
                     <?php if (isset($currentSeason) && $currentSeason): ?>
-                    <div class="text-center mb-4">
+                    <div class="text-center" style="margin-bottom: 40px;">
                         <span style="color: #d4af37; font-size: 14px; letter-spacing: 2px;">SEASON <?= Html::encode($currentSeason->name) ?></span>
                     </div>
                     <?php endif; ?>
-                    <div class="row text-center">
-                        <div class="col-md-3 col-6 mb-3">
-                            <div style="background: #222; border-radius: 10px; padding: 25px;">
-                                <div style="color: #888; font-size: 12px; margin-bottom: 10px; letter-spacing: 1px;">REGULAR SCORE</div>
+                    <div style="display: flex; justify-content: space-between; gap: 25px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 160px;">
+                            <div style="background: #222; border-radius: 10px; padding: 30px 20px; text-align: center;">
+                                <div style="color: #888; font-size: 12px; margin-bottom: 15px; letter-spacing: 1px;">REGULAR SCORE</div>
                                 <div style="color: #fff; font-size: 32px; font-weight: bold;">
                                     <?= $teamSeasonStat->regular_score !== null ? ($teamSeasonStat->regular_score >= 0 ? '+' : '') . $teamSeasonStat->regular_score : '-' ?>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-6 mb-3">
-                            <div style="background: #222; border-radius: 10px; padding: 25px;">
-                                <div style="color: #888; font-size: 12px; margin-bottom: 10px; letter-spacing: 1px;">SEMIFINAL SCORE</div>
+                        <div style="flex: 1; min-width: 160px;">
+                            <div style="background: #222; border-radius: 10px; padding: 30px 20px; text-align: center;">
+                                <div style="color: #888; font-size: 12px; margin-bottom: 15px; letter-spacing: 1px;">SEMIFINAL SCORE</div>
                                 <div style="color: <?= $teamSeasonStat->semifinal_score !== null ? '#fff' : '#444' ?>; font-size: 32px; font-weight: bold;">
                                     <?= $teamSeasonStat->semifinal_score !== null ? ($teamSeasonStat->semifinal_score >= 0 ? '+' : '') . $teamSeasonStat->semifinal_score : '-' ?>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-6 mb-3">
-                            <div style="background: #222; border-radius: 10px; padding: 25px;">
-                                <div style="color: #888; font-size: 12px; margin-bottom: 10px; letter-spacing: 1px;">FINAL SCORE</div>
+                        <div style="flex: 1; min-width: 160px;">
+                            <div style="background: #222; border-radius: 10px; padding: 30px 20px; text-align: center;">
+                                <div style="color: #888; font-size: 12px; margin-bottom: 15px; letter-spacing: 1px;">FINAL SCORE</div>
                                 <div style="color: <?= $teamSeasonStat->final_score !== null ? '#fff' : '#444' ?>; font-size: 32px; font-weight: bold;">
                                     <?= $teamSeasonStat->final_score !== null ? ($teamSeasonStat->final_score >= 0 ? '+' : '') . $teamSeasonStat->final_score : '-' ?>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-6 mb-3">
-                            <div style="background: linear-gradient(135deg, #d4af37, #b8860b); border-radius: 10px; padding: 25px;">
-                                <div style="color: #000; font-size: 12px; margin-bottom: 10px; letter-spacing: 1px;">TOTAL SCORE</div>
+                        <div style="flex: 1; min-width: 160px;">
+                            <div style="background: linear-gradient(135deg, #d4af37, #b8860b); border-radius: 10px; padding: 30px 20px; text-align: center;">
+                                <div style="color: #000; font-size: 12px; margin-bottom: 15px; letter-spacing: 1px;">TOTAL SCORE</div>
                                 <div style="color: #000; font-size: 32px; font-weight: bold;">
                                     <?= $teamSeasonStat->total_score !== null ? ($teamSeasonStat->total_score >= 0 ? '+' : '') . $teamSeasonStat->total_score : '-' ?>
                                 </div>
@@ -221,13 +221,13 @@ $this->title = $model->name;
                         </div>
                     </div>
                     <?php if ($teamSeasonStat->total_rank): ?>
-                    <div class="text-center mt-4">
+                    <div class="text-center" style="margin-top: 40px;">
                         <span style="background: #333; color: #d4af37; padding: 12px 40px; border-radius: 25px; font-size: 18px; font-weight: bold; letter-spacing: 2px;">
                             CURRENT RANK: #<?= $teamSeasonStat->total_rank ?>
                         </span>
                     </div>
                     <?php endif; ?>
-                    <div class="text-center mt-4">
+                    <div class="text-center" style="margin-top: 20px;">
                         <span style="color: #666; font-size: 12px;">
                             <?php 
                             if ($teamSeasonStat->final_score !== null) {

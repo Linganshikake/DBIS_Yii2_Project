@@ -5,18 +5,24 @@
  * 支持的语法：
  * 1. 换行符 /n 会被转换为 <br> 标签
  * 2. 图片引用 [img:文件名] 会被转换为图片标签，图片存放在 /uploads/news/images/ 目录
- * 3. 段落标记 ■ 会加粗显示
+ * 3. 封面图片引用 [img:cover] 或 [img:cover|说明] 会引用新闻的封面图片
+ * 4. 段落标记 ■ 会加粗显示
  * 
  * 使用示例（在数据库content字段中）：
  * - 换行：这是第一行/n这是第二行
  * - 插入图片：[img:example.jpg]
  * - 带说明的图片：[img:example.jpg|这是图片说明]
+ * - 引用封面图片：[img:cover] 或 [img:cover|图片说明]
  * - 段落标题：■关于比赛信息
  * 
  * @var string $content 新闻正文内容
+ * @var string|null $cover 封面图片文件名（可选）
  */
 
 use yii\helpers\Html;
+
+// 获取封面图片（如果传入）
+$coverImage = isset($cover) ? $cover : null;
 
 // 处理内容
 $processedContent = $content;
@@ -36,7 +42,7 @@ $imageReplacements = [];
 $imageIndex = 0;
 $processedContent = preg_replace_callback(
     '/\[img:([^\]]+)\]/',
-    function ($matches) use (&$imageReplacements, &$imageIndex) {
+    function ($matches) use (&$imageReplacements, &$imageIndex, $coverImage) {
         $content = trim($matches[1]);
         // 检查是否有说明文字（用|分隔）
         if (strpos($content, '|') !== false) {
@@ -48,8 +54,15 @@ $processedContent = preg_replace_callback(
             $caption = '';
         }
         
+        // 检查是否引用封面图片
+        if (strtolower($filename) === 'cover' && $coverImage) {
+            $imgSrc = '/uploads/news/cover/' . htmlspecialchars($coverImage);
+        } else {
+            $imgSrc = '/uploads/news/images/' . htmlspecialchars($filename);
+        }
+        
         $imgHtml = '<div class="news-inline-image" style="text-align: center; margin: 20px 0;">';
-        $imgHtml .= '<img src="/uploads/news/images/' . htmlspecialchars($filename) . '" style="width: 100%; border-radius: 10px;">';
+        $imgHtml .= '<img src="' . $imgSrc . '" style="width: 100%; border-radius: 10px;">';
         if ($caption) {
             $imgHtml .= '<div style="color: #888; font-size: 13px; margin-top: 8px; font-style: italic;">' . htmlspecialchars($caption) . '</div>';
         }

@@ -17,8 +17,8 @@ class NewsController extends Controller
      */
     public function actionIndex()
     {
-        // 获取热门新闻（前3条）
-        $hotNews = News::getHotNews(3);
+        // 获取最新新闻（前3条）作为置顶展示
+        $hotNews = News::getLatestNews(3);
         
         // 获取所有新闻
         $dataProvider = new ActiveDataProvider([

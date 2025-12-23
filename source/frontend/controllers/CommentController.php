@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use common\models\Comment;
 use common\models\CommentLike;
+use common\models\CommentReply;
 
 /**
  * CommentController 处理评论广场
@@ -24,10 +25,10 @@ class CommentController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['create', 'like', 'delete'],
+                'only' => ['create', 'like', 'delete', 'reply', 'delete-reply'],
                 'rules' => [
                     [
-                        'actions' => ['create', 'like', 'delete'],
+                        'actions' => ['create', 'like', 'delete', 'reply', 'delete-reply'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -39,6 +40,8 @@ class CommentController extends Controller
                     'create' => ['post'],
                     'like' => ['post'],
                     'delete' => ['post'],
+                    'reply' => ['post'],
+                    'delete-reply' => ['post'],
                 ],
             ],
         ];
@@ -53,7 +56,7 @@ class CommentController extends Controller
     {
         $query = Comment::find()
             ->where(['display_status' => 1])
-            ->with(['user', 'likes']);
+            ->with(['user', 'commentLikes']);
         
         if ($sort === 'hot') {
             $query->orderBy(['like_count' => SORT_DESC, 'created_at' => SORT_DESC]);
@@ -95,11 +98,11 @@ class CommentController extends Controller
         $comment = new Comment();
         $comment->user_id = Yii::$app->user->id;
         $comment->content = $content;
-        $comment->created_at = time();
+        // created_at 有默认值，不需要手动设置
         $comment->like_count = 0;
         $comment->display_status = 1;
         
-        if ($comment->save()) {
+        if ($comment->save(false)) {
             // 返回新评论的HTML
             $user = Yii::$app->user->identity;
             return [
@@ -108,7 +111,7 @@ class CommentController extends Controller
                 'comment' => [
                     'id' => $comment->id,
                     'content' => $comment->content,
-                    'created_at' => date('Y-m-d H:i', $comment->created_at),
+                    'created_at' => date('Y-m-d H:i', strtotime($comment->created_at)),
                     'user' => [
                         'nickname' => $user->nickname ?: $user->username,
                         'avatar' => $user->avatar ? '/uploads/avatars/' . $user->avatar : null,
@@ -119,7 +122,8 @@ class CommentController extends Controller
             ];
         }
         
-        return ['success' => false, 'message' => '评论发表失败'];
+        // 返回具体的错误信息
+        return ['success' => false, 'message' => '评论发表失败: ' . implode(', ', $comment->getFirstErrors())];
     }
 
     /**
@@ -204,6 +208,84 @@ class CommentController extends Controller
         $comment->display_status = 0;
         if ($comment->save(false)) {
             return ['success' => true, 'message' => '评论已删除'];
+        }
+        
+        return ['success' => false, 'message' => '删除失败'];
+    }
+
+    /**
+     * 回复评论 (AJAX)
+     * @return array
+     */
+    public function actionReply()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        
+        $commentId = Yii::$app->request->post('comment_id');
+        $content = trim(Yii::$app->request->post('content', ''));
+        
+        if (empty($content)) {
+            return ['success' => false, 'message' => '回复内容不能为空'];
+        }
+        
+        if (mb_strlen($content) > 500) {
+            return ['success' => false, 'message' => '回复内容不能超过500字'];
+        }
+        
+        $comment = Comment::findOne(['id' => $commentId, 'display_status' => 1]);
+        if (!$comment) {
+            return ['success' => false, 'message' => '评论不存在'];
+        }
+        
+        $reply = new CommentReply();
+        $reply->comment_id = $commentId;
+        $reply->user_id = Yii::$app->user->id;
+        $reply->content = $content;
+        $reply->display_status = 1;
+        
+        if ($reply->save(false)) {
+            $user = Yii::$app->user->identity;
+            return [
+                'success' => true,
+                'message' => '回复成功',
+                'reply' => [
+                    'id' => $reply->id,
+                    'content' => $reply->content,
+                    'created_at' => date('Y-m-d H:i', strtotime($reply->created_at)),
+                    'user' => [
+                        'nickname' => $user->nickname ?: $user->username,
+                    ],
+                ],
+            ];
+        }
+        
+        return ['success' => false, 'message' => '回复失败'];
+    }
+
+    /**
+     * 删除自己的回复 (AJAX)
+     * @return array
+     */
+    public function actionDeleteReply()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        
+        $replyId = Yii::$app->request->post('reply_id');
+        $userId = Yii::$app->user->id;
+        
+        $reply = CommentReply::findOne([
+            'id' => $replyId,
+            'user_id' => $userId,
+            'display_status' => 1,
+        ]);
+        
+        if (!$reply) {
+            return ['success' => false, 'message' => '回复不存在或无权删除'];
+        }
+        
+        $reply->display_status = 0;
+        if ($reply->save(false)) {
+            return ['success' => true, 'message' => '回复已删除'];
         }
         
         return ['success' => false, 'message' => '删除失败'];

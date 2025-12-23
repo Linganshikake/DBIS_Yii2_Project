@@ -50,13 +50,20 @@ $this->title = '个人主页';
         
         <!-- 注册时间 -->
         <div style="color: #666; font-size: 12px; margin-top: 15px;">
-            <i class="fa fa-clock-o"></i> 注册于 <?= date('Y-m-d', $user->created_at) ?>
+            <i class="fa fa-clock-o"></i> 注册于 <?= is_numeric($user->created_at) ? date('Y-m-d', $user->created_at) : (is_string($user->created_at) ? substr($user->created_at, 0, 10) : $user->created_at) ?>
         </div>
         
-        <!-- 编辑按钮 -->
-        <a href="<?= Url::to(['profile/update']) ?>" class="btn btn-outline-warning btn-sm" style="position: absolute; top: 20px; right: 20px;">
-            <i class="fa fa-edit"></i> 编辑资料
-        </a>
+        <!-- 编辑和退出按钮 -->
+        <div style="position: absolute; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px;">
+            <a href="<?= Url::to(['profile/update']) ?>" class="btn btn-outline-warning" style="font-size: 15px; padding: 8px 16px;">
+                <i class="fa fa-edit"></i> 编辑资料
+            </a>
+            <?= Html::a('<i class="fa fa-sign-out"></i> 退出登录', ['/site/logout'], [
+                'data-method' => 'post',
+                'class' => 'btn btn-outline-danger',
+                'style' => 'font-size: 15px; padding: 8px 16px;'
+            ]) ?>
+        </div>
     </div>
 
     <div class="row">
@@ -137,7 +144,7 @@ $this->title = '个人主页';
                                         <?= Html::encode($comment->content) ?>
                                     </p>
                                     <div style="font-size: 12px; color: #666;">
-                                        <i class="fa fa-clock-o"></i> <?= date('Y-m-d H:i', $comment->created_at) ?>
+                                        <i class="fa fa-clock-o"></i> <?= is_numeric($comment->created_at) ? date('Y-m-d H:i', $comment->created_at) : $comment->created_at ?>
                                         <span style="margin-left: 15px;"><i class="fa fa-heart"></i> <?= $comment->like_count ?> 赞</span>
                                     </div>
                                 </div>
@@ -222,35 +229,35 @@ $this->title = '个人主页';
                     <i class="fa fa-trophy"></i> <?= Html::encode($user->favoriteTeam->name) ?> - SEASON STATISTICS
                 </h5>
             </div>
-            <div class="card-body" style="padding: 20px;">
-                <div class="row text-center">
-                    <div class="col-md-3 col-6 mb-3">
-                        <div style="background: #222; border-radius: 10px; padding: 20px;">
-                            <div style="color: #888; font-size: 12px; margin-bottom: 5px;">REGULAR SCORE</div>
+            <div class="card-body" style="padding: 25px;">
+                <div style="display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 140px;">
+                        <div style="background: #222; border-radius: 10px; padding: 25px 15px; text-align: center;">
+                            <div style="color: #888; font-size: 12px; margin-bottom: 12px;">REGULAR SCORE</div>
                             <div style="color: #fff; font-size: 28px; font-weight: bold;">
                                 <?= $favoriteTeamSeasonStat->regular_score !== null ? ($favoriteTeamSeasonStat->regular_score >= 0 ? '+' : '') . $favoriteTeamSeasonStat->regular_score : '-' ?>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 col-6 mb-3">
-                        <div style="background: #222; border-radius: 10px; padding: 20px;">
-                            <div style="color: #888; font-size: 12px; margin-bottom: 5px;">SEMIFINAL SCORE</div>
+                    <div style="flex: 1; min-width: 140px;">
+                        <div style="background: #222; border-radius: 10px; padding: 25px 15px; text-align: center;">
+                            <div style="color: #888; font-size: 12px; margin-bottom: 12px;">SEMIFINAL SCORE</div>
                             <div style="color: #fff; font-size: 28px; font-weight: bold;">
                                 <?= $favoriteTeamSeasonStat->semifinal_score !== null ? ($favoriteTeamSeasonStat->semifinal_score >= 0 ? '+' : '') . $favoriteTeamSeasonStat->semifinal_score : '-' ?>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 col-6 mb-3">
-                        <div style="background: #222; border-radius: 10px; padding: 20px;">
-                            <div style="color: #888; font-size: 12px; margin-bottom: 5px;">FINAL SCORE</div>
+                    <div style="flex: 1; min-width: 140px;">
+                        <div style="background: #222; border-radius: 10px; padding: 25px 15px; text-align: center;">
+                            <div style="color: #888; font-size: 12px; margin-bottom: 12px;">FINAL SCORE</div>
                             <div style="color: #fff; font-size: 28px; font-weight: bold;">
                                 <?= $favoriteTeamSeasonStat->final_score !== null ? ($favoriteTeamSeasonStat->final_score >= 0 ? '+' : '') . $favoriteTeamSeasonStat->final_score : '-' ?>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 col-6 mb-3">
-                        <div style="background: linear-gradient(135deg, #d4af37, #b8860b); border-radius: 10px; padding: 20px;">
-                            <div style="color: #000; font-size: 12px; margin-bottom: 5px;">TOTAL SCORE</div>
+                    <div style="flex: 1; min-width: 140px;">
+                        <div style="background: linear-gradient(135deg, #d4af37, #b8860b); border-radius: 10px; padding: 25px 15px; text-align: center;">
+                            <div style="color: #000; font-size: 12px; margin-bottom: 12px;">TOTAL SCORE</div>
                             <div style="color: #000; font-size: 28px; font-weight: bold;">
                                 <?= $favoriteTeamSeasonStat->total_score !== null ? ($favoriteTeamSeasonStat->total_score >= 0 ? '+' : '') . $favoriteTeamSeasonStat->total_score : '-' ?>
                             </div>
@@ -258,7 +265,7 @@ $this->title = '个人主页';
                     </div>
                 </div>
                 <?php if ($favoriteTeamSeasonStat->total_rank): ?>
-                <div class="text-center mt-3">
+                <div class="text-center" style="margin-top: 25px;">
                     <span style="background: #333; color: #d4af37; padding: 10px 30px; border-radius: 20px; font-size: 16px; font-weight: bold;">
                         CURRENT RANK: #<?= $favoriteTeamSeasonStat->total_rank ?>
                     </span>

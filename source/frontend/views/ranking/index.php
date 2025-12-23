@@ -217,9 +217,9 @@ $avatarStyle = "width: 100px; height: 100px; border-radius: 50%; border: 3px sol
                                         </div>
                                     </td>
                                     <td style="vertical-align: middle;">
-                                        <span style="color: #aaa; font-size: 14px;">
+                                        <a href="<?= Url::to(['team/view', 'id' => $stat->team_id]) ?>" style="color: #aaa; font-size: 14px; text-decoration: none;">
                                             <?= Html::encode($stat->team->name) ?>
-                                        </span>
+                                        </a>
                                     </td>
                                     <td class="text-center" style="font-size: 18px; font-weight: bold; vertical-align: middle; color: <?= $stat->total_score >= 0 ? '#fff' : '#aaa' ?>">
                                         <?= $stat->total_score > 0 ? '+' : '' ?><?= $stat->total_score ?>

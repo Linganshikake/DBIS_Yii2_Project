@@ -48,8 +48,8 @@ $this->title = 'M-League Data System';
                             </p>
                         </div>
                         <div class="col-lg-4 text-center" style="display: flex; align-items: center; justify-content: center;">
-                            <div style="background: #fff; border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(212,175,55,0.3);">
-                                <img src="/uploads/mleague_icon.png" alt="M.LEAGUE" style="max-width: 120px; display: block;">
+                            <div style="background: #fff; border-radius: 50%; padding: 0; box-shadow: 0 4px 20px rgba(212,175,55,0.4); width: 160px; height: 160px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                <img src="/uploads/mleague_logo_circle.png" alt="M.LEAGUE" style="width: 100%; height: 100%; object-fit: contain; display: block;">
                             </div>
                         </div>
                     </div>
@@ -352,7 +352,7 @@ $this->title = 'M-League Data System';
                     <div class="news-card" style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px; overflow: hidden; height: 100%;">
                         <div style="height: 150px; background: #333; overflow: hidden;">
                             <?php if ($news->cover): ?>
-                                <img src="/uploads/news/<?= $news->cover ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                <img src="/uploads/news/cover/<?= $news->cover ?>" style="width: 100%; height: 100%; object-fit: cover;">
                             <?php else: ?>
                                 <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #666;">
                                     <i class="fa fa-newspaper-o" style="font-size: 40px;"></i>
@@ -414,9 +414,9 @@ $this->title = 'M-League Data System';
                                             <?php endif; ?>
                                         </div>
                                         <div>
-                                            <div style="font-size: 18px; font-weight: bold; color: #fff;">
+                                            <a href="<?= Url::to(['team/view', 'id' => $stat->team_id]) ?>" style="font-size: 18px; font-weight: bold; color: #fff; text-decoration: none;">
                                                 <?= Html::encode($stat->team->name) ?>
-                                            </div>
+                                            </a>
                                             <div style="font-size: 12px; color: #888;">
                                                 <?= Html::encode($stat->team->company) ?>
                                             </div>

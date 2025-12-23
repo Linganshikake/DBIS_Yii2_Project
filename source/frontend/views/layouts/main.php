@@ -46,6 +46,13 @@ AppAsset::register($this);
         ['label' => '赛程表', 'url' => ['/schedule/index']],
         ['label' => '新闻动态', 'url' => ['/news/index']],
         ['label' => '评论广场', 'url' => ['/comment/index']],
+        [
+            'label' => '关于',
+            'items' => [
+                ['label' => 'M League是什么？', 'url' => ['/site/about']],
+                ['label' => '联系我们', 'url' => ['/site/contact']],
+            ],
+        ],
     ];
     
     if (Yii::$app->user->isGuest) {
@@ -53,14 +60,6 @@ AppAsset::register($this);
         $menuItems[] = ['label' => '登录', 'url' => ['/site/login']];
     } else {
         $menuItems[] = ['label' => '个人主页', 'url' => ['/profile/index']];
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                '退出 (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],

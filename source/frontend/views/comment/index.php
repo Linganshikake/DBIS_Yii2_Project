@@ -25,7 +25,7 @@ $currentUserId = $isLoggedIn ? Yii::$app->user->id : null;
 
     <!-- 发表评论区域 -->
     <?php if ($isLoggedIn): ?>
-    <div class="post-comment mb-4" style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 20px;">
+    <div class="post-comment" style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 20px; margin-bottom: 30px;">
         <div style="display: flex; gap: 15px;">
             <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; background: #333; flex-shrink: 0;">
                 <?php $user = Yii::$app->user->identity; ?>
@@ -51,7 +51,7 @@ $currentUserId = $isLoggedIn ? Yii::$app->user->id : null;
         </div>
     </div>
     <?php else: ?>
-    <div class="login-prompt mb-4 text-center" style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 30px;">
+    <div class="login-prompt text-center" style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 30px; margin-bottom: 30px;">
         <p style="color: #888; margin-bottom: 15px;">登录后即可发表评论</p>
         <a href="<?= Url::to(['site/login']) ?>" class="btn btn-warning">
             <i class="fa fa-sign-in"></i> 立即登录
@@ -63,7 +63,7 @@ $currentUserId = $isLoggedIn ? Yii::$app->user->id : null;
     <?php endif; ?>
 
     <!-- 排序选择 -->
-    <div class="sort-tabs mb-4" style="border-bottom: 1px solid #333; padding-bottom: 15px;">
+    <div class="sort-tabs" style="border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 25px;">
         <a href="<?= Url::to(['comment/index', 'sort' => 'latest']) ?>" 
            class="sort-tab <?= $sort === 'latest' ? 'active' : '' ?>"
            style="color: <?= $sort === 'latest' ? '#d4af37' : '#888' ?>; text-decoration: none; margin-right: 30px; font-weight: bold; padding-bottom: 15px; border-bottom: 2px solid <?= $sort === 'latest' ? '#d4af37' : 'transparent' ?>;">
@@ -88,7 +88,7 @@ $currentUserId = $isLoggedIn ? Yii::$app->user->id : null;
                     ->exists();
             }
             ?>
-        <div class="comment-item" id="comment-<?= $comment->id ?>" style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 20px; margin-bottom: 15px;">
+        <div class="comment-item" id="comment-<?= $comment->id ?>" style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
             <div style="display: flex; gap: 15px;">
                 <!-- 用户头像 -->
                 <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; background: #333; flex-shrink: 0;">
@@ -109,7 +109,7 @@ $currentUserId = $isLoggedIn ? Yii::$app->user->id : null;
                                 <?= Html::encode($commentUser ? ($commentUser->nickname ?: $commentUser->username) : '未知用户') ?>
                             </span>
                             <span style="color: #666; font-size: 12px; margin-left: 10px;">
-                                <?= date('Y-m-d H:i', $comment->created_at) ?>
+                                <?= date('Y-m-d H:i', strtotime($comment->created_at)) ?>
                             </span>
                         </div>
                         
@@ -125,15 +125,70 @@ $currentUserId = $isLoggedIn ? Yii::$app->user->id : null;
                         <?= nl2br(Html::encode($comment->content)) ?>
                     </p>
                     
-                    <!-- 点赞按钮 -->
-                    <div class="comment-actions">
-                        <button class="btn btn-sm like-btn <?= $isLiked ? 'liked' : '' ?>" 
+                    <!-- 操作按钮：点赞 + 回复 -->
+                    <div class="comment-actions" style="display: flex; gap: 25px; align-items: center;">
+                        <button class="like-btn <?= $isLiked ? 'liked' : '' ?>" 
                                 data-id="<?= $comment->id ?>"
-                                style="color: <?= $isLiked ? '#e74c3c' : '#666' ?>; background: transparent; border: none;">
-                            <i class="fa <?= $isLiked ? 'fa-heart' : 'fa-heart-o' ?>"></i>
-                            <span class="like-count"><?= $comment->like_count ?></span>
+                                style="background: transparent; border: none; padding: 0; display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; outline: none; box-shadow: none;">
+                            <svg class="like-icon" width="20" height="20" viewBox="0 0 768 768" fill="<?= $isLiked ? '#f8615a' : '#888' ?>">
+                                <path d="M96 480h96V224H96v256zm672-224c0-26.4-21.6-48-48-48H496l36-129.6c2.4-9.6 0-19.2-4.8-28.8l-24-24L307.2 224c-9.6 9.6-19.2 28.8-19.2 48v256c0 52.8 43.2 96 96 96h192c38.4 0 67.2-19.2 81.6-48l76.8-177.6c2.4-9.6 4.8-19.2 4.8-28.8V256h-4.8l4.8-4.8z"/>
+                            </svg>
+                            <span class="like-count" style="color: <?= $isLiked ? '#f8615a' : '#888' ?>;"><?= $comment->like_count ?></span>
+                        </button>
+                        <button class="btn btn-sm reply-btn" 
+                                data-id="<?= $comment->id ?>"
+                                data-username="<?= Html::encode($commentUser ? ($commentUser->nickname ?: $commentUser->username) : '未知用户') ?>"
+                                style="color: #888; background: transparent; border: none; padding: 0; display: flex; align-items: center; gap: 5px; font-size: 14px;">
+                            <i class="fa fa-comment-o"></i>
+                            <span>回复</span>
                         </button>
                     </div>
+                    
+                    <!-- 回复输入框（默认隐藏） -->
+                    <div class="reply-box" id="reply-box-<?= $comment->id ?>" style="display: none; margin-top: 15px; padding: 15px; background: #222; border-radius: 8px;">
+                        <textarea class="form-control reply-content" rows="2" 
+                                  style="background: #333; border: 1px solid #444; color: #fff; resize: none; font-size: 14px;"
+                                  placeholder="回复 <?= Html::encode($commentUser ? ($commentUser->nickname ?: $commentUser->username) : '未知用户') ?>..."></textarea>
+                        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+                            <button class="btn btn-sm cancel-reply" style="background: #444; color: #aaa; border: none;">取消</button>
+                            <button class="btn btn-sm submit-reply" data-id="<?= $comment->id ?>" style="background: #d4af37; color: #000; border: none; font-weight: bold;">发送</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 回复列表 -->
+                    <?php 
+                    $replies = \common\models\CommentReply::find()
+                        ->where(['comment_id' => $comment->id, 'display_status' => 1])
+                        ->orderBy(['created_at' => SORT_ASC])
+                        ->all();
+                    ?>
+                    <?php if (!empty($replies)): ?>
+                    <div class="reply-list" style="margin-top: 15px; padding-left: 10px; border-left: 2px solid #333;">
+                        <?php foreach ($replies as $reply): ?>
+                        <?php $replyUser = $reply->user; ?>
+                        <div class="reply-item" id="reply-<?= $reply->id ?>" style="padding: 10px 0; border-bottom: 1px solid #2a2a2a;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <span style="color: #d4af37; font-weight: bold; font-size: 13px;">
+                                        <?= Html::encode($replyUser ? ($replyUser->nickname ?: $replyUser->username) : '未知用户') ?>
+                                    </span>
+                                    <span style="color: #666; font-size: 11px; margin-left: 8px;">
+                                        <?= date('Y-m-d H:i', strtotime($reply->created_at)) ?>
+                                    </span>
+                                    <p style="color: #ccc; font-size: 13px; margin: 5px 0 0 0; line-height: 1.6;">
+                                        <?= nl2br(Html::encode($reply->content)) ?>
+                                    </p>
+                                </div>
+                                <?php if ($isLoggedIn && $reply->user_id == $currentUserId): ?>
+                                <button class="btn btn-sm btn-link delete-reply" data-id="<?= $reply->id ?>" style="color: #666; padding: 0;">
+                                    <i class="fa fa-times" style="font-size: 12px;"></i>
+                                </button>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -160,8 +215,8 @@ $currentUserId = $isLoggedIn ? Yii::$app->user->id : null;
 
 </div>
 
-<script>
-$(document).ready(function() {
+<?php
+$js = <<<JS
     // 字数统计
     $('#comment-content').on('input', function() {
         var len = $(this).val().length;
@@ -176,6 +231,7 @@ $(document).ready(function() {
     // 发表评论
     $('#submit-comment').click(function() {
         var content = $('#comment-content').val().trim();
+        
         if (!content) {
             alert('请输入评论内容');
             return;
@@ -188,48 +244,60 @@ $(document).ready(function() {
         var btn = $(this);
         btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> 发送中...');
         
-        $.post('<?= Url::to(['comment/create']) ?>', {
-            content: content,
-            '<?= Yii::$app->request->csrfParam ?>': '<?= Yii::$app->request->csrfToken ?>'
-        }, function(data) {
-            btn.prop('disabled', false).html('<i class="fa fa-paper-plane"></i> 发表评论');
-            
-            if (data.success) {
-                $('#comment-content').val('');
-                $('#char-count').text('0/500');
-                // 刷新页面显示新评论
-                location.reload();
-            } else {
-                alert(data.message);
+        $.ajax({
+            url: '/index.php?r=comment/create',
+            type: 'POST',
+            data: {
+                content: content,
+                _csrf: $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: 'json',
+            success: function(data) {
+                btn.prop('disabled', false).html('<i class="fa fa-paper-plane"></i> 发表评论');
+                
+                if (data.success) {
+                    $('#comment-content').val('');
+                    $('#char-count').text('0/500');
+                    location.reload();
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                btn.prop('disabled', false).html('<i class="fa fa-paper-plane"></i> 发表评论');
+                alert('请求失败，请检查是否已登录');
             }
         });
     });
     
     // 点赞
     $(document).on('click', '.like-btn', function() {
-        <?php if (!$isLoggedIn): ?>
-        alert('请先登录');
-        return;
-        <?php endif; ?>
-        
         var btn = $(this);
         var commentId = btn.data('id');
         
-        $.post('<?= Url::to(['comment/like']) ?>', {
-            comment_id: commentId,
-            '<?= Yii::$app->request->csrfParam ?>': '<?= Yii::$app->request->csrfToken ?>'
-        }, function(data) {
-            if (data.success) {
-                btn.find('.like-count').text(data.like_count);
-                if (data.action === 'liked') {
-                    btn.addClass('liked').css('color', '#e74c3c');
-                    btn.find('i').removeClass('fa-heart-o').addClass('fa-heart');
+        $.ajax({
+            url: '/index.php?r=comment/like',
+            type: 'POST',
+            data: {
+                comment_id: commentId,
+                _csrf: $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: 'json',
+            success: function(data) {
+                if (data.success) {
+                    btn.find('.like-count').text(data.like_count);
+                    if (data.action === 'liked') {
+                        btn.addClass('liked');
+                        btn.find('.like-icon').attr('fill', '#f8615a');
+                        btn.find('.like-count').css('color', '#f8615a');
+                    } else {
+                        btn.removeClass('liked');
+                        btn.find('.like-icon').attr('fill', '#888');
+                        btn.find('.like-count').css('color', '#888');
+                    }
                 } else {
-                    btn.removeClass('liked').css('color', '#666');
-                    btn.find('i').removeClass('fa-heart').addClass('fa-heart-o');
+                    alert(data.message);
                 }
-            } else {
-                alert(data.message);
             }
         });
     });
@@ -240,30 +308,135 @@ $(document).ready(function() {
         
         var commentId = $(this).data('id');
         
-        $.post('<?= Url::to(['comment/delete']) ?>', {
-            comment_id: commentId,
-            '<?= Yii::$app->request->csrfParam ?>': '<?= Yii::$app->request->csrfToken ?>'
-        }, function(data) {
-            if (data.success) {
-                $('#comment-' + commentId).fadeOut(function() {
-                    $(this).remove();
-                });
-            } else {
-                alert(data.message);
+        $.ajax({
+            url: '/index.php?r=comment/delete',
+            type: 'POST',
+            data: {
+                comment_id: commentId,
+                _csrf: $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: 'json',
+            success: function(data) {
+                if (data.success) {
+                    $('#comment-' + commentId).fadeOut(function() {
+                        $(this).remove();
+                    });
+                } else {
+                    alert(data.message);
+                }
             }
         });
     });
-});
-</script>
+    
+    // 点击回复按钮显示回复框
+    $(document).on('click', '.reply-btn', function() {
+        var commentId = $(this).data('id');
+        var replyBox = $('#reply-box-' + commentId);
+        
+        // 隐藏其他回复框
+        $('.reply-box').not(replyBox).slideUp();
+        
+        // 切换当前回复框
+        replyBox.slideToggle();
+        replyBox.find('textarea').focus();
+    });
+    
+    // 取消回复
+    $(document).on('click', '.cancel-reply', function() {
+        $(this).closest('.reply-box').slideUp();
+    });
+    
+    // 提交回复
+    $(document).on('click', '.submit-reply', function() {
+        var btn = $(this);
+        var commentId = btn.data('id');
+        var replyBox = $('#reply-box-' + commentId);
+        var content = replyBox.find('.reply-content').val().trim();
+        
+        if (!content) {
+            alert('请输入回复内容');
+            return;
+        }
+        
+        btn.prop('disabled', true).text('发送中...');
+        
+        $.ajax({
+            url: '/index.php?r=comment/reply',
+            type: 'POST',
+            data: {
+                comment_id: commentId,
+                content: content,
+                _csrf: $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: 'json',
+            success: function(data) {
+                btn.prop('disabled', false).text('发送');
+                
+                if (data.success) {
+                    replyBox.find('.reply-content').val('');
+                    replyBox.slideUp();
+                    location.reload();
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function() {
+                btn.prop('disabled', false).text('发送');
+                alert('请求失败，请检查是否已登录');
+            }
+        });
+    });
+    
+    // 删除回复
+    $(document).on('click', '.delete-reply', function() {
+        if (!confirm('确定要删除这条回复吗？')) return;
+        
+        var replyId = $(this).data('id');
+        
+        $.ajax({
+            url: '/index.php?r=comment/delete-reply',
+            type: 'POST',
+            data: {
+                reply_id: replyId,
+                _csrf: $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: 'json',
+            success: function(data) {
+                if (data.success) {
+                    $('#reply-' + replyId).fadeOut(function() {
+                        $(this).remove();
+                    });
+                } else {
+                    alert(data.message);
+                }
+            }
+        });
+    });
+JS;
+
+$this->registerJs($js);
+?>
 
 <style>
-.like-btn:hover {
-    color: #e74c3c !important;
+.like-btn:hover .like-icon {
+    fill: #f8615a !important;
 }
-.like-btn.liked:hover {
-    color: #666 !important;
+.like-btn:hover .like-count {
+    color: #f8615a !important;
+}
+.reply-btn:hover {
+    color: #d4af37 !important;
 }
 .comment-item:hover {
     border-color: #444;
+}
+.reply-item:last-child {
+    border-bottom: none;
+}
+.like-btn {
+    transition: all 0.2s ease;
+}
+.like-icon {
+    transition: fill 0.2s ease;
 }
 </style>
