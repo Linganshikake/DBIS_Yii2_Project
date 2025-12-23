@@ -62,11 +62,6 @@ $months = [9, 10, 11, 12, 1, 2, 3, 4, 5];
                 </div>
                 <?php endforeach; ?>
             </div>
-            <div style="width: 150px; text-align: right;">
-                <button class="btn btn-sm view-detail-btn" data-id="<?= $schedule->id ?>" style="background: #d4af37; color: #000; font-weight: bold; border: none;">
-                    查看详情
-                </button>
-            </div>
         </div>
         <div style="color: #888; font-size: 12px; padding: 10px 0 20px 120px;">
             <?= Html::encode($schedule->team1->name ?? '') ?> / 
@@ -219,10 +214,4 @@ function showScheduleDetail(scheduleId) {
         $('#scheduleModal').modal('show');
     });
 }
-
-$(document).ready(function() {
-    $('.view-detail-btn').click(function() {
-        showScheduleDetail($(this).data('id'));
-    });
-});
 </script>
