@@ -27,7 +27,7 @@ $this->title = 'NEWS - 联赛新闻';
                 <div class="news-card-hot" style="background: #1a1a1a; border-radius: 10px; overflow: hidden; transition: transform 0.3s; height: 100%;">
                     <div style="height: 200px; background: #333; overflow: hidden;">
                         <?php if ($news->cover): ?>
-                            <img src="/uploads/news/<?= $news->cover ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="/uploads/news/cover/<?= $news->cover ?>" style="width: 100%; height: 100%; object-fit: cover;">
                         <?php else: ?>
                             <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #666;">
                                 <span style="font-size: 50px;">📰</span>
@@ -56,7 +56,7 @@ $this->title = 'NEWS - 联赛新闻';
             <div class="news-item" style="display: flex; background: #1a1a1a; margin-bottom: 20px; border-radius: 10px; overflow: hidden; transition: transform 0.3s;">
                 <div style="width: 300px; height: 180px; flex-shrink: 0; background: #333;">
                     <?php if ($news->cover): ?>
-                        <img src="/uploads/news/<?= $news->cover ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                        <img src="/uploads/news/cover/<?= $news->cover ?>" style="width: 100%; height: 100%; object-fit: cover;">
                     <?php else: ?>
                         <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #666;">
                             <span style="font-size: 50px;">📰</span>

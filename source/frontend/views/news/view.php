@@ -29,15 +29,15 @@ $this->title = $model->title;
 
     <!-- 封面图 -->
     <?php if ($model->cover): ?>
-    <div class="news-cover" style="margin-bottom: 40px;">
-        <img src="/uploads/news/<?= $model->cover ?>" style="width: 100%; max-height: 500px; object-fit: cover; border-radius: 10px;">
+    <div class="news-cover" style="margin-bottom: 40px; text-align: center;">
+        <img src="/uploads/news/cover/<?= $model->cover ?>" style="max-width: 100%; max-height: 400px; object-fit: contain; border-radius: 10px;">
     </div>
     <?php endif; ?>
 
     <!-- 新闻正文 -->
     <div class="news-content" style="background: #1a1a1a; padding: 40px; border-radius: 10px; margin-bottom: 40px;">
-        <div style="color: #ddd; font-size: 16px; line-height: 2;">
-            <?= nl2br(Html::encode($model->content)) ?>
+        <div class="news-body" style="color: #ddd; font-size: 16px; line-height: 2; max-width: 700px; margin: 0 auto;">
+            <?= $this->render('_content', ['content' => $model->content]) ?>
         </div>
     </div>
 

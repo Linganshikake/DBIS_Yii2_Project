@@ -10,6 +10,9 @@ use yii\filters\VerbFilter;
 use common\models\User;
 use common\models\Team;
 use common\models\Comment;
+use common\models\Schedule;
+use common\models\Season;
+use common\models\TeamSeasonStat;
 
 /**
  * ProfileController 处理用户个人主页
@@ -58,10 +61,37 @@ class ProfileController extends Controller
             ->limit(10)
             ->all();
 
+        // 喜欢战队的相关信息
+        $favoriteTeamPlayers = [];
+        $favoriteTeamSeasonStat = null;
+        $favoriteTeamSchedules = [];
+        
+        if ($user->favoriteTeam) {
+            // 获取喜欢战队的选手
+            $favoriteTeamPlayers = $user->favoriteTeam->getPlayers()
+                ->where(['display_status' => 1])
+                ->all();
+            
+            // 获取喜欢战队本赛季的成绩
+            $currentSeason = Season::findOne(['is_current' => 1]);
+            if ($currentSeason) {
+                $favoriteTeamSeasonStat = TeamSeasonStat::findOne([
+                    'team_id' => $user->favoriteTeam->id,
+                    'season_id' => $currentSeason->id,
+                ]);
+            }
+            
+            // 获取涉及该队伍的最近三个比赛日的日程
+            $favoriteTeamSchedules = Schedule::getUpcomingSchedulesByTeam($user->favoriteTeam->id, 3);
+        }
+
         return $this->render('index', [
             'user' => $user,
             'teams' => $teams,
             'userComments' => $userComments,
+            'favoriteTeamPlayers' => $favoriteTeamPlayers,
+            'favoriteTeamSeasonStat' => $favoriteTeamSeasonStat,
+            'favoriteTeamSchedules' => $favoriteTeamSchedules,
         ]);
     }
 

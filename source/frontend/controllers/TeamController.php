@@ -3,6 +3,8 @@
 namespace frontend\controllers;
 
 use common\models\Team;
+use common\models\Season;
+use common\models\TeamSeasonStat;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -43,8 +45,20 @@ class TeamController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
+        // 获取当前赛季的队伍成绩
+        $currentSeason = Season::findOne(['is_current' => 1]);
+        $teamSeasonStat = null;
+        if ($currentSeason) {
+            $teamSeasonStat = TeamSeasonStat::findOne([
+                'team_id' => $model->id,
+                'season_id' => $currentSeason->id,
+            ]);
+        }
+
         return $this->render('view', [
             'model' => $model,
+            'teamSeasonStat' => $teamSeasonStat,
+            'currentSeason' => $currentSeason,
         ]);
     }
 }

@@ -7,6 +7,9 @@ use yii\helpers\Url;
 /* @var $user common\models\User */
 /* @var $teams common\models\Team[] */
 /* @var $userComments common\models\Comment[] */
+/* @var $favoriteTeamPlayers common\models\Player[] */
+/* @var $favoriteTeamSeasonStat common\models\TeamSeasonStat|null */
+/* @var $favoriteTeamSchedules common\models\Schedule[] */
 
 $this->title = '个人主页';
 ?>
@@ -80,7 +83,7 @@ $this->title = '个人主页';
                             <div style="color: #888; font-size: 12px;"><?= Html::encode($user->favoriteTeam->company) ?></div>
                         </div>
                     </div>
-                    <button class="btn btn-outline-danger btn-sm mt-3" onclick="clearFavoriteTeam()">
+                    <button class="btn btn-sm mt-3" style="background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; border: none; font-weight: bold;" onclick="clearFavoriteTeam()">
                         <i class="fa fa-times"></i> 取消喜欢
                     </button>
                     <?php else: ?>
@@ -151,6 +154,178 @@ $this->title = '个人主页';
             </div>
         </div>
     </div>
+
+    <!-- 喜欢战队的详细信息 -->
+    <?php if ($user->favoriteTeam): ?>
+    <div class="favorite-team-details" style="margin-top: 40px;">
+        
+        <!-- 战队选手卡片 -->
+        <?php if ($favoriteTeamPlayers): ?>
+        <div class="card mb-4" style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px;">
+            <div class="card-header" style="background: #222; border-bottom: 1px solid #333; padding: 15px 20px;">
+                <h5 style="color: #d4af37; margin: 0; font-weight: bold;">
+                    <i class="fa fa-users"></i> <?= Html::encode($user->favoriteTeam->name) ?> - TEAM MEMBERS
+                </h5>
+            </div>
+            <div class="card-body" style="padding: 20px;">
+                <div class="row">
+                    <?php foreach ($favoriteTeamPlayers as $player): ?>
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <div class="player-card" style="background: #111; border: 1px solid #333; text-align: center; transition: 0.3s;">
+                            <div style="height: 200px; background: #222; position: relative; overflow: hidden;">
+                                <?php if ($player->avatar): ?>
+                                    <img src="/uploads/players/<?= $player->avatar ?>" style="width: 100%; height: 100%; object-fit: cover; object-position: top;">
+                                <?php else: ?>
+                                    <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: #333;">
+                                        <span style="font-size: 50px;">NO IMG</span>
+                                    </div>
+                                <?php endif; ?>
+                                <div style="position: absolute; bottom: 0; width: 100%; padding: 10px; background: linear-gradient(to top, #000, transparent);">
+                                    <h3 style="margin: 0; color: #fff; font-size: 20px; font-weight: bold;">
+                                        <?= Html::encode($player->name) ?>
+                                    </h3>
+                                    <div style="color: #d4af37; font-size: 12px; text-transform: uppercase;">
+                                        <?= Html::encode($player->register_name) ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding: 15px;">
+                                <div class="row text-center">
+                                    <div class="col-6" style="border-right: 1px solid #333;">
+                                        <div style="color: #888; font-size: 10px;">GENDER</div>
+                                        <div style="color: #fff;"><?= $player->gender ?></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div style="color: #888; font-size: 10px;">JOINED</div>
+                                        <div style="color: #fff;"><?= date('Y', strtotime($player->join_date)) ?></div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 15px;">
+                                    <a href="<?= Url::to(['player/view', 'id' => $player->id]) ?>" class="btn btn-sm btn-block" style="background: #333; color: #fff; width: 100%;">
+                                        VIEW PROFILE
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <!-- 战队本赛季成绩 -->
+        <?php if ($favoriteTeamSeasonStat): ?>
+        <div class="card mb-4" style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px;">
+            <div class="card-header" style="background: #222; border-bottom: 1px solid #333; padding: 15px 20px;">
+                <h5 style="color: #d4af37; margin: 0; font-weight: bold;">
+                    <i class="fa fa-trophy"></i> <?= Html::encode($user->favoriteTeam->name) ?> - SEASON STATISTICS
+                </h5>
+            </div>
+            <div class="card-body" style="padding: 20px;">
+                <div class="row text-center">
+                    <div class="col-md-3 col-6 mb-3">
+                        <div style="background: #222; border-radius: 10px; padding: 20px;">
+                            <div style="color: #888; font-size: 12px; margin-bottom: 5px;">REGULAR SCORE</div>
+                            <div style="color: #fff; font-size: 28px; font-weight: bold;">
+                                <?= $favoriteTeamSeasonStat->regular_score !== null ? ($favoriteTeamSeasonStat->regular_score >= 0 ? '+' : '') . $favoriteTeamSeasonStat->regular_score : '-' ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6 mb-3">
+                        <div style="background: #222; border-radius: 10px; padding: 20px;">
+                            <div style="color: #888; font-size: 12px; margin-bottom: 5px;">SEMIFINAL SCORE</div>
+                            <div style="color: #fff; font-size: 28px; font-weight: bold;">
+                                <?= $favoriteTeamSeasonStat->semifinal_score !== null ? ($favoriteTeamSeasonStat->semifinal_score >= 0 ? '+' : '') . $favoriteTeamSeasonStat->semifinal_score : '-' ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6 mb-3">
+                        <div style="background: #222; border-radius: 10px; padding: 20px;">
+                            <div style="color: #888; font-size: 12px; margin-bottom: 5px;">FINAL SCORE</div>
+                            <div style="color: #fff; font-size: 28px; font-weight: bold;">
+                                <?= $favoriteTeamSeasonStat->final_score !== null ? ($favoriteTeamSeasonStat->final_score >= 0 ? '+' : '') . $favoriteTeamSeasonStat->final_score : '-' ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6 mb-3">
+                        <div style="background: linear-gradient(135deg, #d4af37, #b8860b); border-radius: 10px; padding: 20px;">
+                            <div style="color: #000; font-size: 12px; margin-bottom: 5px;">TOTAL SCORE</div>
+                            <div style="color: #000; font-size: 28px; font-weight: bold;">
+                                <?= $favoriteTeamSeasonStat->total_score !== null ? ($favoriteTeamSeasonStat->total_score >= 0 ? '+' : '') . $favoriteTeamSeasonStat->total_score : '-' ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php if ($favoriteTeamSeasonStat->total_rank): ?>
+                <div class="text-center mt-3">
+                    <span style="background: #333; color: #d4af37; padding: 10px 30px; border-radius: 20px; font-size: 16px; font-weight: bold;">
+                        CURRENT RANK: #<?= $favoriteTeamSeasonStat->total_rank ?>
+                    </span>
+                </div>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <!-- 战队近期日程 -->
+        <?php if ($favoriteTeamSchedules): ?>
+        <div class="card mb-4" style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px;">
+            <div class="card-header" style="background: #222; border-bottom: 1px solid #333; padding: 15px 20px;">
+                <h5 style="color: #d4af37; margin: 0; font-weight: bold;">
+                    <i class="fa fa-calendar"></i> <?= Html::encode($user->favoriteTeam->name) ?> - UPCOMING MATCHES
+                </h5>
+            </div>
+            <div class="card-body" style="padding: 20px;">
+                <?php foreach ($favoriteTeamSchedules as $schedule): ?>
+                <div class="schedule-item" style="display: flex; align-items: center; padding: 15px; margin-bottom: 10px; background: #222; border-radius: 10px; border-left: 4px solid #d4af37;">
+                    <div style="width: 100px; text-align: center;">
+                        <div style="font-size: 28px; font-weight: bold; color: #00a550;">
+                            <?= date('n/j', strtotime($schedule->match_date)) ?>
+                        </div>
+                        <div style="color: #888; font-size: 12px;">（<?= $schedule->day_of_week ?>）</div>
+                    </div>
+                    <div style="flex: 1; display: flex; justify-content: center; gap: 20px;">
+                        <?php 
+                        $teams = [$schedule->team1, $schedule->team2, $schedule->team3, $schedule->team4];
+                        foreach ($teams as $team): 
+                            if (!$team) continue;
+                            $isFavorite = $team->id == $user->favoriteTeam->id;
+                        ?>
+                        <div style="text-align: center; opacity: <?= $isFavorite ? '1' : '0.6' ?>;">
+                            <?php if ($team->logo): ?>
+                                <img src="/uploads/teams/<?= $team->logo ?>" style="width: 50px; height: 40px; object-fit: contain; <?= $isFavorite ? 'border: 2px solid #d4af37; border-radius: 5px; padding: 2px;' : '' ?>">
+                            <?php else: ?>
+                                <div style="width: 50px; height: 40px; background: #333; display: flex; align-items: center; justify-content: center; color: #666; font-size: 10px;">LOGO</div>
+                            <?php endif; ?>
+                            <div style="font-size: 10px; color: <?= $isFavorite ? '#d4af37' : '#888' ?>; margin-top: 5px; font-weight: <?= $isFavorite ? 'bold' : 'normal' ?>;">
+                                <?= Html::encode($team->name) ?>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div style="width: 100px; text-align: center;">
+                        <?php if ($schedule->match_status == 2): ?>
+                            <span style="color: #666; font-size: 12px;">已结束</span>
+                        <?php elseif ($schedule->match_status == 1): ?>
+                            <span style="color: #00a550; font-weight: bold;">进行中</span>
+                        <?php else: ?>
+                            <span style="color: #d4af37; font-size: 12px;">即将开始</span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+                <div class="text-center mt-3">
+                    <a href="<?= Url::to(['schedule/index']) ?>" style="color: #d4af37; text-decoration: none;">
+                        查看完整赛程 →
+                    </a>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
+    </div>
+    <?php endif; ?>
 
 </div>
 
