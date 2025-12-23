@@ -6,6 +6,9 @@ echo ============================================
 echo   M联赛信息管理系统 - 一键部署工具
 echo ============================================
 echo.
+echo   注意: 本项目已包含 vendor 目录
+echo         无需运行 composer install！
+echo.
 
 :: 检查是否在正确目录
 if not exist "source\composer.json" (
@@ -15,28 +18,16 @@ if not exist "source\composer.json" (
     exit /b 1
 )
 
-:: 步骤1: 安装 Composer 依赖
-echo [1/5] 正在安装 PHP 依赖...
-cd source
-call composer install --no-interaction
-if %errorlevel% neq 0 (
-    echo [警告] Composer 安装可能有问题，尝试忽略平台要求...
-    call composer install --no-interaction --ignore-platform-reqs
-)
-cd ..
-echo [1/5] 依赖安装完成！
-echo.
-
-:: 步骤2: 初始化项目
-echo [2/5] 正在初始化项目环境...
+:: 步骤1: 初始化项目
+echo [1/4] 正在初始化项目环境...
 cd source
 echo 0 | php init --env=Development --overwrite=All
 cd ..
-echo [2/5] 项目初始化完成！
+echo [1/4] 项目初始化完成！
 echo.
 
-:: 步骤3: 配置数据库
-echo [3/5] 配置数据库连接...
+:: 步骤2: 配置数据库
+echo [2/4] 配置数据库连接...
 echo.
 set /p DB_NAME=请输入数据库名称 (默认: mleague_db): 
 if "%DB_NAME%"=="" set DB_NAME=mleague_db
@@ -65,25 +56,25 @@ echo         ], >> source\common\config\main-local.php
 echo     ], >> source\common\config\main-local.php
 echo ]; >> source\common\config\main-local.php
 
-echo [3/5] 数据库配置完成！
+echo [2/4] 数据库配置完成！
 echo.
 
-:: 步骤4: 导入数据库
-echo [4/5] 准备导入数据库...
+:: 步骤3: 导入数据库
+echo [3/4] 准备导入数据库...
 echo.
 echo 请手动执行以下步骤：
 echo   1. 打开 Navicat 或 phpMyAdmin
 echo   2. 创建数据库: %DB_NAME%
-echo   3. 导入 SQL 文件: data\install.sql\yii2advanced_23_23_24.sql
+echo   3. 导入 SQL 文件: data\install.sql\yii2_final_version.sql
 echo.
 echo 或使用命令行：
 echo   mysql -u %DB_USER% -p -e "CREATE DATABASE IF NOT EXISTS %DB_NAME% CHARACTER SET utf8mb4"
-echo   mysql -u %DB_USER% -p %DB_NAME% ^< data\install.sql\yii2advanced_23_23_24.sql
+echo   mysql -u %DB_USER% -p %DB_NAME% ^< data\install.sql\yii2_final_version.sql
 echo.
 pause
 
-:: 步骤5: 启动服务器
-echo [5/5] 部署完成！是否启动开发服务器？
+:: 步骤4: 启动服务器
+echo [4/4] 部署完成！是否启动开发服务器？
 echo.
 set /p START_SERVER=启动服务器? (Y/N, 默认Y): 
 if /i "%START_SERVER%"=="N" goto :end

@@ -4,8 +4,9 @@
 
 - **PHP** >= 7.2
 - **MySQL** >= 5.7 / MariaDB >= 10.2
-- **Composer** (PHP 依赖管理工具)
 - **Web 服务器**: Apache / Nginx / XAMPP / WAMP
+
+> ⚡ **注意**: 本项目已包含 vendor 目录，**无需运行 composer install**！
 
 ---
 
@@ -15,7 +16,11 @@
 
 #### 步骤 1：下载/克隆项目
 
-#### 步骤 2：
+```bash
+git clone -b dev https://github.com/Linganshikake/DBIS_Yii2_Project.git
+```
+
+#### 步骤 2：运行部署脚本
 
 **Windows 用户：**
 ```bash
@@ -33,14 +38,7 @@ deploy.bat
 
 ### 方法二：手动部署
 
-#### 步骤 1：安装 PHP 依赖
-
-```bash
-cd source
-composer install
-```
-
-#### 步骤 2：初始化项目环境
+#### 步骤 1：初始化项目环境
 
 ```bash
 # Windows
