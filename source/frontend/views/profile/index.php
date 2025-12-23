@@ -80,7 +80,7 @@ $this->title = '个人主页';
                             <div style="color: #888; font-size: 12px;"><?= Html::encode($user->favoriteTeam->company) ?></div>
                         </div>
                     </div>
-                    <button class="btn btn-outline-danger btn-sm mt-3" onclick="clearFavoriteTeam()">
+                    <button class="btn btn-sm mt-3" style="background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; border: none; font-weight: bold;" onclick="clearFavoriteTeam()">
                         <i class="fa fa-times"></i> 取消喜欢
                     </button>
                     <?php else: ?>
