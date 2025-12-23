@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Company */
 
-$this->title = $model->name;
+$this->title = $model->team->name ?? '企业 #' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => '企业管理', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

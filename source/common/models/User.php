@@ -20,6 +20,7 @@ use yii\web\UploadedFile;
  * @property string $email
  * @property string $auth_key
  * @property integer $status
+ * @property integer $is_admin 是否为管理员 0:否 1:是
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
@@ -36,6 +37,10 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
+    
+    // 管理员角色常量
+    const ROLE_USER = 0;
+    const ROLE_ADMIN = 1;
     
     /**
      * @var UploadedFile
@@ -68,6 +73,8 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['is_admin', 'default', 'value' => self::ROLE_USER],
+            ['is_admin', 'in', 'range' => [self::ROLE_USER, self::ROLE_ADMIN]],
             [['nickname'], 'string', 'max' => 100],
             [['avatar'], 'string', 'max' => 255],
             [['bio'], 'string', 'max' => 1000],
@@ -75,6 +82,15 @@ class User extends ActiveRecord implements IdentityInterface
             [['favorite_team_id'], 'exist', 'skipOnEmpty' => true, 'targetClass' => Team::class, 'targetAttribute' => ['favorite_team_id' => 'id']],
             [['avatarFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif', 'maxSize' => 1024 * 1024 * 5],
         ];
+    }
+
+    /**
+     * 检查用户是否为管理员
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->is_admin == self::ROLE_ADMIN;
     }
 
     /**

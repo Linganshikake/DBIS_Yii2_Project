@@ -25,7 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'name',
+            [
+                'attribute' => 'team_id',
+                'label' => '关联队伍',
+                'value' => function ($model) {
+                    return $model->team->name ?? '-';
+                },
+            ],
+            'e_mail:email',
             [
                 'attribute' => 'logo',
                 'format' => 'raw',
@@ -35,7 +42,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         : '-';
                 },
             ],
-            'description:ntext',
             [
                 'attribute' => 'display_status',
                 'value' => function ($model) {

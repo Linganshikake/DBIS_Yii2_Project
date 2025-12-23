@@ -6,9 +6,11 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use yii\web\ForbiddenHttpException;
 
 /**
  * Site controller
+ * 注意：SiteController 不继承 BaseController，因为登录页面需要对所有人开放
  */
 class SiteController extends Controller
 {
@@ -19,7 +21,7 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => ['login', 'error'],
@@ -33,12 +35,35 @@ class SiteController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
             ],
         ];
+    }
+
+    /**
+     * 在动作执行前检查管理员权限（除了登录、退出和错误页面）
+     */
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+        
+        // 登录、退出和错误页面不需要管理员权限
+        if (in_array($action->id, ['login', 'logout', 'error'])) {
+            return true;
+        }
+        
+        // 其他页面需要管理员权限
+        $user = Yii::$app->user->identity;
+        if ($user && !$user->isAdmin()) {
+            throw new ForbiddenHttpException('您没有权限访问后台管理系统。只有管理员才能访问。');
+        }
+        
+        return true;
     }
 
     /**

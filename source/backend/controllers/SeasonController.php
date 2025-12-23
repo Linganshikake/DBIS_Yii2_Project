@@ -5,29 +5,13 @@ namespace backend\controllers;
 use Yii;
 use common\models\Season;
 use backend\models\SeasonSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * SeasonController implements the CRUD actions for Season model.
  */
-class SeasonController extends Controller
+class SeasonController extends BaseController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * Lists all Season models.

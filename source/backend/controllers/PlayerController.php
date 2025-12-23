@@ -5,30 +5,14 @@ namespace backend\controllers;
 use Yii;
 use common\models\Player;
 use backend\models\PlayerSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 
 /**
  * PlayerController implements the CRUD actions for Player model.
  */
-class PlayerController extends Controller
+class PlayerController extends BaseController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * Lists all Player models.

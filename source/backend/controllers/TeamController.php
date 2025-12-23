@@ -10,30 +10,14 @@ namespace backend\controllers;
 use Yii;
 use common\models\Team;
 use backend\models\TeamSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 
 /**
  * TeamController implements the CRUD actions for Team model.
  */
-class TeamController extends Controller
+class TeamController extends BaseController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * Lists all Team models.

@@ -5,29 +5,13 @@ namespace backend\controllers;
 use Yii;
 use common\models\PlayerSeasonStat;
 use backend\models\PlayerSeasonStatSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * PlayerSeasonStatController implements the CRUD actions for PlayerSeasonStat model.
  */
-class PlayerSeasonStatController extends Controller
+class PlayerSeasonStatController extends BaseController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * Lists all PlayerSeasonStat models.

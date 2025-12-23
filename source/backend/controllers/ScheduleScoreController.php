@@ -7,30 +7,14 @@ use common\models\ScheduleScore;
 use common\models\Schedule;
 use common\models\Player;
 use backend\models\ScheduleScoreSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 
 /**
  * ScheduleScoreController implements the CRUD actions for ScheduleScore model.
  */
-class ScheduleScoreController extends Controller
+class ScheduleScoreController extends BaseController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * Lists all ScheduleScore models.

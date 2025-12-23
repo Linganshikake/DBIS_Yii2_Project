@@ -5,9 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Company */
 
-$this->title = '编辑: ' . $model->name;
+$teamName = $model->team->name ?? '企业 #' . $model->id;
+$this->title = '编辑: ' . $teamName;
 $this->params['breadcrumbs'][] = ['label' => '企业管理', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $teamName, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = '编辑';
 ?>
 <div class="company-update">
