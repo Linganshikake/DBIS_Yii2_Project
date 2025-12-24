@@ -1,35 +1,32 @@
 <?php
+use yii\bootstrap5\ActiveForm;
+use yii\bootstrap5\Html;
 
 /** @var yii\web\View $this */
-/** @var yii\bootstrap5\ActiveForm $form */
-/** @var \frontend\models\SignupForm $model */
+/** @var frontend\models\SignupForm $model */
 
-use yii\bootstrap5\Html;
-use yii\bootstrap5\ActiveForm;
-
-$this->title = 'Signup';
+$this->title = '注册';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-signup">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to signup:</p>
+<div class="container my-4" style="max-width:520px;">
+  <div class="panel white-card p-4">
+    <h3 class="mb-3" style="font-weight:900;"><?= Html::encode($this->title) ?></h3>
+    <div class="text-muted mb-3">填写信息后将自动登录。</div>
 
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+    <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+      <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+      <?= $form->field($model, 'password')->passwordInput() ?>
 
-                <?= $form->field($model, 'email') ?>
+      <div class="d-grid">
+        <?= Html::submitButton('注册并登录', ['class' => 'btn btn-brand btn-lg']) ?>
+      </div>
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
+      <div class="mt-3 text-muted">
+        已有账号？<?= Html::a('去登录', ['/site/login'], ['class' => 'text-decoration-none']) ?>
+      </div>
 
-                <div class="form-group">
-                    <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
-                </div>
-
-            <?php ActiveForm::end(); ?>
-        </div>
-    </div>
+    <?php ActiveForm::end(); ?>
+  </div>
 </div>

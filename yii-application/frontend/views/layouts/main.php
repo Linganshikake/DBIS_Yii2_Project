@@ -1,5 +1,4 @@
 <?php
-
 /** @var \yii\web\View $this */
 /** @var string $content */
 
@@ -11,6 +10,10 @@ use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 
 AppAsset::register($this);
+
+if (empty($this->title)) {
+    $this->title = '抗战80周年文献库';
+}
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -26,59 +29,59 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <header>
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar navbar-expand-md navbar-dark bg-dark fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-    }
+<?php
+NavBar::begin([
+    'brandLabel' => '抗战80周年文献库',
+    'brandUrl' => Yii::$app->homeUrl,
+    'options' => ['class' => 'navbar navbar-expand-md navbar-dark fixed-top'],
+]);
 
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],
-        'items' => $menuItems,
-    ]);
-    if (Yii::$app->user->isGuest) {
-        echo Html::tag('div',Html::a('Login',['/site/login'],['class' => ['btn btn-link login text-decoration-none']]),['class' => ['d-flex']]);
-    } else {
-        echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout text-decoration-none']
-            )
-            . Html::endForm();
-    }
-    NavBar::end();
-    ?>
+$menuItems = [
+    ['label' => '首页', 'url' => ['/site/index']],
+    ['label' => '文献检索', 'url' => ['/work/index']],
+    ['label' => '项目说明', 'url' => ['/site/about']],
+    ['label' => '反馈/征集', 'url' => ['/site/contact']],
+];
+
+echo Nav::widget([
+    'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],
+    'items' => $menuItems,
+]);
+
+echo '<div class="d-flex align-items-center gap-2">';
+
+if (Yii::$app->user->isGuest) {
+    echo Html::a('登录/注册', ['/site/login'], ['class' => 'btn btn-auth']);
+} else {
+    echo Html::beginForm(['/site/logout'], 'post', ['class' => 'm-0'])
+        . Html::submitButton('退出（' . Html::encode(Yii::$app->user->identity->username) . '）', ['class' => 'btn btn-auth'])
+        . Html::endForm();
+}
+
+echo '</div>';
+
+NavBar::end();
+?>
 </header>
 
-<main role="main" class="flex-shrink-0">
+<main role="main" class="flex-shrink-0 site-main">
     <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
+        <div class="content-wrap">
+            <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs'] ?? []]) ?>
+            <?= Alert::widget() ?>
+            <?= $content ?>
+        </div>
     </div>
 </main>
 
-<footer class="footer mt-auto py-3 text-muted">
-    <div class="container">
-        <p class="float-start">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-        <p class="float-end"><?= Yii::powered() ?></p>
+<footer class="footer mt-auto py-3">
+    <div class="container footer-inner">
+        <div>&copy; 抗战80周年文献库 <?= date('Y') ?></div>
+        <div>Powered by Yii2</div>
     </div>
 </footer>
 
 <?php $this->endBody() ?>
 </body>
 </html>
-<?php $this->endPage();
+<?php $this->endPage(); ?>

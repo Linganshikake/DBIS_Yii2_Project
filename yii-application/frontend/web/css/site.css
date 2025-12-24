@@ -1,52 +1,100 @@
-/* documents.css - 抗日文献资料主题风格 */
-
+/* ===== 更高级的背景：柔和渐变 + 轻微纹理感 ===== */
 body {
-    background-color: #f9f5f0;
-    font-family: "Noto Serif SC", "宋体", serif;
-    color: #333;
+  background: radial-gradient(1200px 600px at 20% 10%, rgba(140, 170, 255, .18), transparent 60%),
+              radial-gradient(1000px 500px at 80% 0%, rgba(255, 190, 120, .14), transparent 55%),
+              radial-gradient(900px 600px at 50% 100%, rgba(120, 220, 200, .10), transparent 55%),
+              linear-gradient(180deg, #0b1020 0%, #0f172a 40%, #0b1224 100%);
+  min-height: 100vh;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: "SimSun", serif;
-    color: #7b2e1c;
+/* 主内容区域“玻璃卡片” */
+.page-shell {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 18px;
 }
 
-.documents-list .card {
-    border: 1px solid #d2b48c;
-    background-color: #fff8f0;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(123, 46, 28, 0.2);
-    transition: transform 0.2s;
+/* 标题/小字在深色背景下更舒服 */
+.page-title {
+  color: rgba(255,255,255,.92);
+  letter-spacing: .5px;
 }
 
-.documents-list .card:hover {
-    transform: translateY(-5px);
+.page-subtle {
+  color: rgba(255,255,255,.70);
 }
 
-.card-title a {
-    color: #7b2e1c;
-    font-weight: bold;
+/* GridView 表格更精致 */
+.table {
+  border-radius: 14px;
+  overflow: hidden;
 }
 
-.card-title a:hover {
-    text-decoration: underline;
+.table thead th {
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.80);
+  border-bottom: 1px solid rgba(255,255,255,.10);
 }
 
-.card-subtitle {
-    font-size: 0.9rem;
-    color: #a0522d;
+.table tbody td {
+  color: rgba(255,255,255,.85);
+  border-color: rgba(255,255,255,.08);
 }
 
-.card-text {
-    font-size: 0.95rem;
-    line-height: 1.5;
+.table-hover tbody tr:hover {
+  background: rgba(255,255,255,.04);
+}
+
+/* 按钮：更精致一点 */
+.btn {
+  border-radius: 12px;
 }
 
 .btn-primary {
-    background-color: #7b2e1c;
-    border-color: #7b2e1c;
+  box-shadow: 0 10px 20px rgba(59,130,246,.22);
 }
 
-.btn-primary:hover {
-    background-color: #a0522d;
-    border-color:
+.btn-success {
+  box-shadow: 0 10px 20px rgba(34,197,94,.18);
+}
+
+.btn-outline-light {
+  border-color: rgba(255,255,255,.22);
+  color: rgba(255,255,255,.85);
+}
+
+.btn-outline-light:hover {
+  background: rgba(255,255,255,.10);
+}
+
+/* 分页居中 + 间距 */
+.pagination {
+  justify-content: center;
+  gap: 8px;             /* “有空格” */
+}
+
+.page-link {
+  border-radius: 10px !important;
+  background: rgba(255,255,255,.06);
+  border-color: rgba(255,255,255,.10);
+  color: rgba(255,255,255,.85);
+}
+
+.page-item.active .page-link {
+  background: rgba(59,130,246,.85);
+  border-color: rgba(59,130,246,.90);
+}
+
+/* 搜索区块 */
+.search-card {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+    

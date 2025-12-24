@@ -11,7 +11,6 @@ use common\models\User;
  */
 class PasswordResetRequestForm extends Model
 {
-    public $email;
 
 
     /**

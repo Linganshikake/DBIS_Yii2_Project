@@ -1,0 +1,543 @@
+:root{
+  --brand: #7a0f1b;        /* 酒红 */
+  --brand-2: #9b1c2c;
+  --cream: #f6f1e7;        /* 米白纸张底 */
+  --paper: #efe6d5;
+  --ink: #111827;          /* 正文黑 */
+  --muted: #6b7280;
+  --radius: 18px;
+}
+
+/* 全局：更大气的排版（行距加宽） */
+html, body { height: 100%; }
+body{
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "Microsoft YaHei","PingFang SC",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  line-height: 1.85;              /* ✅ 行间距更宽 */
+  letter-spacing: .2px;
+}
+
+/* 顶部导航：酒红条 + 白字 */
+.navbar{
+  background: rgba(122, 15, 27, .96) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,.18);
+}
+.navbar .navbar-brand{
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+.navbar .nav-link{
+  color: rgba(255,255,255,.88) !important;
+  margin: 0 .25rem;
+}
+.navbar .nav-link:hover{
+  color: #fff !important;
+}
+.btn-auth{
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.25);
+  color: #fff;
+  border-radius: 999px;
+  padding: .45rem .9rem;
+}
+.btn-auth:hover{
+  background: rgba(255,255,255,.18);
+  color: #fff;
+}
+
+/* 首页大横幅（类似图二：背景图 + 遮罩） */
+.hero{
+  position: relative;
+  padding: 56px 0 36px;
+  margin-top: 56px; /* 给固定导航留空间 */
+  background: #2b0c10;
+  color: #fff;
+  overflow: hidden;
+}
+.hero::before{
+  content:"";
+  position:absolute; inset:0;
+  background-image: url("../img/hero-bg.jpg"); /* ✅ 放一张背景图更像图二 */
+  background-size: cover;
+  background-position: center;
+  opacity: .36;
+  filter: saturate(.9) contrast(1.05);
+}
+.hero::after{
+  content:"";
+  position:absolute; inset:0;
+  background: linear-gradient(90deg, rgba(43,12,16,.92), rgba(43,12,16,.55));
+}
+.hero .hero-inner{ position: relative; z-index: 1; }
+
+.hero-kicker{
+  font-size: .95rem;
+  opacity: .85;
+  margin-bottom: .6rem;
+}
+.hero-title{
+  font-weight: 900;
+  letter-spacing: 1px;
+  line-height: 1.25;
+  margin-bottom: .8rem;
+}
+.hero-title span{
+  font-weight: 800;
+  opacity: .95;
+}
+.hero-desc{
+  color: rgba(255,255,255,.88);
+  max-width: 860px;
+  margin-bottom: 1.25rem;
+}
+
+/* 搜索卡片（米白纸张） */
+.hero-search{
+  background: rgba(246,241,231,.96);
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: 0 20px 50px rgba(0,0,0,.25);
+}
+.hero-search .form-control,
+.hero-search .form-select{
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.12);
+}
+.btn-brand{
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 24px rgba(122,15,27,.22);
+}
+.btn-brand:hover{
+  background: var(--brand-2);
+  border-color: var(--brand-2);
+  color: #fff;
+}
+
+.hero-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 10px;
+}
+.tag-pill{
+  display:inline-flex;
+  align-items:center;
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  background: rgba(122,15,27,.10);
+  border: 1px solid rgba(122,15,27,.18);
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 700;
+}
+.tag-pill:hover{
+  background: rgba(122,15,27,.16);
+  color: var(--brand);
+}
+
+/* 内容区块（卡片更稳重） */
+.section-title{
+  font-weight: 900;
+  letter-spacing: .6px;
+  margin: 26px 0 12px;
+}
+.feature-card{
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.08);
+  height: 100%;
+}
+.feature-card h5{
+  font-weight: 900;
+  margin-bottom: .45rem;
+}
+.feature-card p{
+  color: var(--muted);
+  margin: 0;
+}
+
+/* 页脚：简洁居中 */
+.footer{
+  border-top: 1px solid rgba(0,0,0,.08);
+  background: rgba(239,230,213,.65);
+}
+.footer .container{
+  display:flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+
+/* ===== 文献检索页：强制黑色文字（只作用于 work 页面） ===== */
+.work-scope,
+.work-scope *{
+  color: var(--ink) !important;
+}
+
+/* 链接不要亮蓝，改为酒红/黑 */
+.work-scope a{
+  color: var(--brand) !important;
+}
+.work-scope a:hover{
+  color: var(--brand-2) !important;
+}
+
+/* GridView 表头、summary、分页 */
+.work-scope .summary,
+.work-scope .pagination,
+.work-scope .page-link,
+.work-scope th a{
+  color: var(--ink) !important;
+}
+
+/* 输入框文字/placeholder */
+.work-scope .form-control,
+.work-scope .form-select{
+  color: var(--ink) !important;
+}
+.work-scope .form-control::placeholder{
+  color: rgba(17,24,39,.55) !important;
+}
+
+/* ========= Work Detail（文献详情页） ========= */
+.work-page{
+  padding: 26px 0 40px;
+}
+
+.work-hero{
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: var(--radius);
+  padding: 22px 22px 18px;
+  box-shadow: 0 14px 34px rgba(0,0,0,.08);
+}
+
+.work-title{
+  font-weight: 900;
+  color: var(--ink);
+  letter-spacing: .3px;
+  line-height: 1.28;
+  margin: 0 0 10px;
+  font-size: clamp(24px, 2.4vw, 42px);
+}
+
+.work-title.clamp-3{
+  overflow: hidden;
+  line-clamp: 3;
+  display: -webkit-box;        
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.work-meta{
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.8;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.work-meta .dot{ opacity:.45; }
+
+.work-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top: 8px;
+}
+
+/* 表格（DetailView）统一成“纸张”风格 */
+.kv-wrap{
+  margin-top: 14px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0,0,0,.06);
+}
+
+.kv-table{
+  margin: 0;
+  color: var(--ink);
+}
+.kv-table th{
+  width: 160px;
+  background: rgba(122,15,27,.06);
+  color: #2f1b1d;
+  font-weight: 800;
+  border-color: rgba(0,0,0,.06) !important;
+  vertical-align: top;
+}
+.kv-table td{
+  color: var(--ink);
+  border-color: rgba(0,0,0,.06) !important;
+}
+
+/* 段落区域（作者/关键词/附件） */
+.work-block{
+  background:#fff;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.06);
+  margin-top: 14px;
+}
+.work-block h3{
+  font-weight: 900;
+  margin: 0 0 10px;
+  letter-spacing: .3px;
+}
+.work-block p, .work-block li{
+  color: var(--ink);
+}
+.work-block a{
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 700;
+}
+.work-block a:hover{
+  text-decoration: underline;
+}
+
+/* 按钮：与当前风格一致 */
+.btn-outline-brand{
+  border: 1px solid rgba(122,15,27,.35);
+  color: var(--brand);
+  border-radius: 12px;
+  padding: .45rem .9rem;
+  background: rgba(122,15,27,.06);
+}
+.btn-outline-brand:hover{
+  background: rgba(122,15,27,.10);
+  color: var(--brand);
+}
+
+.btn-brand{
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+  border-radius: 12px;
+  padding: .45rem .9rem;
+  box-shadow: 0 10px 24px rgba(122,15,27,.18);
+}
+.btn-brand:hover{
+  background: var(--brand-2);
+  border-color: var(--brand-2);
+  color:#fff;
+}
+
+/* DOI 显示更像“短标签” */
+.doi-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:.25rem .6rem;
+  border-radius:999px;
+  background: rgba(122,15,27,.08);
+  border:1px solid rgba(122,15,27,.16);
+  color: var(--brand);
+  font-weight:800;
+  font-size: 13px;
+  text-decoration:none;
+}
+.doi-pill:hover{ background: rgba(122,15,27,.12); }
+
+/* ✅ 强制站内“正文黑字” */
+body, .panel, .work-page, .work-index, .table, .table td, .table th, .form-label, .page-subtle {
+  color: var(--ink) !important;
+}
+
+/* 列表标题：最多两行，超出省略（解决“题名超长”） */
+.title-clamp{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  line-height: 1.45;
+  max-width: 52ch;
+}
+.title-link{ color: var(--ink); text-decoration: none; font-weight: 800; }
+.title-link:hover{ text-decoration: underline; }
+
+/* 表格里某些列省略 */
+.cell-ellipsis{
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* DOI 链接更像“文献系统风格” */
+.doi-link{
+  color: var(--brand);
+  text-decoration: underline;
+}
+.doi-link:hover{ color: var(--brand-2); }
+
+/* ✅ 详情页卡片 */
+.work-hero-card{
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.08);
+  margin-bottom: 18px;
+}
+.work-title{
+  font-weight: 900;
+  font-size: 34px;
+  line-height: 1.18;
+  margin-bottom: 10px;
+  color: var(--ink);
+}
+
+/* 详情页标题 clamp 3 行（你已有这个类，补一个 fallback） */
+.work-title.clamp-3{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+
+  /* fallback：不支持 line-clamp 的浏览器，至少不会炸 */
+  max-height: calc(1.18em * 3 * 1.18);
+}
+
+/* 元信息 chips */
+.work-meta-line{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 10px; }
+.meta-chip{
+  display:inline-flex;
+  padding: .25rem .6rem;
+  border-radius: 999px;
+  background: rgba(122,15,27,.08);
+  border: 1px solid rgba(122,15,27,.16);
+  color: var(--brand);
+  font-weight: 700;
+}
+
+/* 详情页按钮区 */
+.work-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
+
+/* section card */
+.section-card{
+  background:#fff;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.06);
+  margin-bottom: 16px;
+}
+.section-title{
+  font-weight: 900;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+/* key-value table */
+.kv-table{ display:flex; flex-direction:column; gap: 8px; }
+.kv-row{ display:grid; grid-template-columns: 140px 1fr; gap:12px; padding:10px 0; border-bottom: 1px solid rgba(0,0,0,.05); }
+.kv-row:last-child{ border-bottom:none; }
+.kv-row .k{ color: #111827; font-weight: 900; }
+.kv-row .v{ color: #111827; }
+
+/* 作者/关键词 pills */
+.pill-wrap{ display:flex; flex-wrap:wrap; gap:10px; }
+.pill{
+  display:inline-flex;
+  padding: .35rem .7rem;
+  border-radius: 999px;
+  background: rgba(122,15,27,.10);
+  border: 1px solid rgba(122,15,27,.18);
+  color: var(--brand);
+  font-weight: 800;
+}
+.pill-light{
+  background: rgba(17,24,39,.04);
+  border: 1px solid rgba(17,24,39,.08);
+  color: var(--ink);
+}
+.muted{ color: var(--muted); }
+
+.link-list{ margin: 0; padding-left: 18px; }
+.link-list a{ color: var(--brand); text-decoration: underline; }
+
+.pill-link{
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+
+.pill-link:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(0,0,0,.10);
+  text-decoration: none;
+}
+
+.pill-link:active{
+  transform: translateY(0);
+  box-shadow: none;
+}
+/* 详情页：作者/关键词/附件等区块保持纯白底 */
+.work-page .work-section,
+.work-page .work-block,
+.work-page .work-card,
+.work-page .card{
+  background: #fff !important;
+  color: var(--ink) !important;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 30px rgba(0,0,0,.08);
+}
+
+
+/* ✅ 文献检索：白框分割卡片 */
+.white-card{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.06);
+  border-radius: 18px;
+  box-shadow: 0 14px 34px rgba(0,0,0,.08);
+  padding: 18px;
+}
+
+/* 标题与副标题 */
+.page-h1{
+  font-weight: 900;
+  letter-spacing: .5px;
+  margin: 0;
+}
+.page-sub{
+  color: var(--muted);
+}
+
+/* 表格更“收口” */
+.work-table thead th{
+  background: rgba(122,15,27,.06);
+  border-bottom: 1px solid rgba(0,0,0,.06);
+  font-weight: 800;
+}
+
+/* 题名单行省略（防止撑爆） */
+.title-ellipsis{
+  display:inline-block;
+  max-width: 560px;          /* 你可按需要调大/调小 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+}
+
+/* 题名链接更稳重 */
+.title-link{
+  color: #7a0f1b;
+  font-weight: 800;
+  text-decoration: none;
+}
+.title-link:hover{
+  text-decoration: underline;
+}

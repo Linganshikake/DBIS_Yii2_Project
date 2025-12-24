@@ -1,0 +1,113 @@
+/* backend login page beautify */
+body {
+  min-height: 100vh;
+  background: radial-gradient(1200px 600px at 20% 10%, rgba(255,255,255,.08), transparent 60%),
+              radial-gradient(900px 600px at 80% 20%, rgba(255,255,255,.06), transparent 60%),
+              linear-gradient(135deg, #5b0b14 0%, #2b0a0f 45%, #0f1115 100%);
+  color: #e9edf3;
+}
+
+.login-wrap {
+  min-height: calc(100vh - 56px); /* 预留导航高度（有的话） */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 12px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 520px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: 0 18px 50px rgba(0,0,0,.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.login-card .login-head {
+  padding: 26px 26px 10px;
+}
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  opacity: .95;
+}
+
+.login-brand .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #b51f2e;
+  box-shadow: 0 0 0 4px rgba(181,31,46,.25);
+}
+
+.login-title {
+  font-size: 34px;
+  font-weight: 900;
+  margin: 0;
+  letter-spacing: .5px;
+}
+
+.login-sub {
+  margin: 8px 0 0;
+  color: rgba(233,237,243,.75);
+  font-weight: 600;
+}
+
+.login-card .login-body {
+  padding: 18px 26px 26px;
+}
+
+.login-card label {
+  font-weight: 700;
+  color: rgba(233,237,243,.85);
+}
+
+.login-card .form-control {
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.10);
+  color: #e9edf3;
+  padding: 12px 14px;
+}
+
+.login-card .form-control:focus {
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.32);
+  box-shadow: 0 0 0 4px rgba(181,31,46,.18);
+  color: #fff;
+}
+
+.login-card .help-block,
+.login-card .invalid-feedback {
+  color: rgba(255,180,180,.95);
+  font-weight: 700;
+}
+
+.login-card .btn-login {
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-weight: 900;
+  letter-spacing: .5px;
+  background: linear-gradient(135deg, #b51f2e, #7e1420);
+  border: none;
+  box-shadow: 0 10px 24px rgba(181,31,46,.22);
+}
+
+.login-card .btn-login:hover {
+  filter: brightness(1.06);
+}
+
+.login-foot {
+  margin-top: 14px;
+  color: rgba(233,237,243,.65);
+  font-weight: 600;
+  font-size: 13px;
+  text-align: center;
+}

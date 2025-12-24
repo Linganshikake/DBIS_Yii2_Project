@@ -1,0 +1,178 @@
+:root{
+  --brand:#7b1e2b;        /* 暗红主色 */
+  --brand-2:#9a2a39;
+  --ink:#1f2328;
+  --muted:#6b7280;
+
+  --bg:#f6f0e6;           /* 米白底 */
+  --card:#ffffff;
+  --line:rgba(17,24,39,.10);
+
+  --hero1: rgba(123,30,43,.85);
+  --hero2: rgba(0,0,0,.65);
+}
+
+html,body{height:100%;}
+body{
+  background:
+    radial-gradient(1200px 650px at 15% 15%, rgba(123,30,43,.18), transparent 55%),
+    radial-gradient(900px 520px at 85% 20%, rgba(0,0,0,.10), transparent 60%),
+    var(--bg);
+  color: var(--ink);
+}
+
+/* 顶部导航：和前端一致的暗红条 */
+.navbar{
+  background: var(--brand) !important;
+  box-shadow: 0 6px 18px rgba(0,0,0,.18);
+}
+.navbar .navbar-brand{
+  color:#fff !important;
+  font-weight: 900;
+  letter-spacing: .5px;
+}
+.navbar .nav-link{
+  color: rgba(255,255,255,.88) !important;
+  font-weight: 800;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link.active{
+  color:#fff !important;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+/* 内容区 wrapper */
+.admin-wrap{
+  padding: 18px 0 34px;
+}
+
+/* 白卡片 */
+.white-card{
+  background: rgba(255,255,255,.92);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 14px 34px rgba(0,0,0,.10);
+}
+
+/* Hero Banner（后台首页顶部那块） */
+.admin-hero{
+  border-radius: 20px;
+  padding: 28px;
+  color: #fff;
+  background:
+    radial-gradient(900px 520px at 15% 20%, rgba(255,255,255,.08), transparent 60%),
+    linear-gradient(120deg, var(--hero1), var(--hero2));
+  box-shadow: 0 16px 42px rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.admin-hero .kicker{
+  opacity: .9;
+  font-weight: 900;
+  letter-spacing: .8px;
+  margin-bottom: 8px;
+}
+.admin-hero .title{
+  font-size: 38px;
+  font-weight: 900;
+  margin: 0 0 10px;
+  line-height: 1.15;
+}
+.admin-hero .desc{
+  opacity:.92;
+  font-weight: 700;
+  max-width: 900px;
+  margin: 0;
+}
+
+/* 强按钮（暗红） */
+.btn-brand{
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+  font-weight: 900;
+}
+.btn-brand:hover{
+  background: var(--brand-2);
+  border-color: var(--brand-2);
+  color:#fff;
+}
+
+/* 次按钮（描边） */
+.btn-outline-brand{
+  border-color: rgba(255,255,255,.45);
+  color:#fff;
+  font-weight: 900;
+}
+.btn-outline-brand:hover{
+  border-color: #fff;
+  color:#fff;
+}
+
+/* 表格风格 */
+.table thead th{
+  background: rgba(123,30,43,.06);
+  border-bottom: 1px solid var(--line);
+  font-weight: 900;
+}
+.table td, .table th{ vertical-align: middle; }
+
+/* badge */
+.badge-type{
+  display:inline-block;
+  padding:.35rem .55rem;
+  border-radius:999px;
+  border:1px solid rgba(123,30,43,.22);
+  background: rgba(123,30,43,.08);
+  color: var(--brand);
+  font-weight: 900;
+}
+
+.subtle{ color: var(--muted); font-weight: 700; }
+.card-title-strong{ font-weight: 900; margin:0 0 8px; }
+
+.mini-stat{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.9);
+}
+.mini-stat .num{ font-size: 26px; font-weight: 900; color: var(--brand); }
+.mini-stat .label{ font-weight: 800; color: var(--muted); }
+
+.progress{
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.06);
+}
+.progress-bar{
+  border-radius: 999px;
+  background: var(--brand);
+}
+
+/* ===== 登录页：把 login-card 内所有文字强制改黑 ===== */
+.login-card,
+.login-card *{
+  color: #111 !important;
+  -webkit-text-fill-color: #111 !important;
+}
+
+/* 你图里这行就是它：label 变黑 */
+.login-card label{
+  color:#111 !important;
+  -webkit-text-fill-color:#111 !important;
+}
+
+/* 提示/帮助文字（例如 Please fill...） */
+.login-card .text-muted,
+.login-card .form-text,
+.login-card p,
+.login-card small{
+  color:#111 !important;
+  -webkit-text-fill-color:#111 !important;
+  opacity: 1 !important;
+}

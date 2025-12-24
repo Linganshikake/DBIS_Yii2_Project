@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
+use yii\base\DynamicModel;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -120,14 +121,40 @@ class SiteController extends Controller
      */
     public function actionContact()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
-            }
+        // ✅ 不落库：DynamicModel 仅用于校验
+        $model = new DynamicModel([
+            'category' => null,      // feedback / collect / feature
+            'name' => null,
+            'email' => null,
+            'related' => null,       // 文献ID/DOI/链接/标题
+            'message' => null,       // 具体描述
+            'captcha' => null,       // 可选：你不想用验证码就删掉这一项
+        ]);
 
+        $model->addRule(['category', 'message'], 'required')
+              ->addRule(['category'], 'in', ['range' => ['feedback','collect','feature']])
+              ->addRule(['email'], 'email')
+              ->addRule(['name','related'], 'string', ['max' => 200])
+              ->addRule(['message'], 'string', ['min' => 10, 'max' => 5000]);
+
+        // 如果你要用 Yii2 自带验证码（可选）
+        // $model->addRule(['captcha'], 'captcha');
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            // ✅ 这里不落库，你可以选择：发邮件 / 写日志 / 写文件
+            // 先做最简单：写 runtime/logs/app.log
+            Yii::info([
+                'category' => $model->category,
+                'name' => $model->name,
+                'email' => $model->email,
+                'related' => $model->related,
+                'message' => $model->message,
+                'ip' => Yii::$app->request->userIP,
+                'time' => date('c'),
+            ], 'feedback');
+
+            Yii::$app->session->setFlash('success', '已收到你的反馈/征集信息');
             return $this->refresh();
         }
 
@@ -153,15 +180,18 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
-        $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+        if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
+        $model = new SignupForm();
+
+        if ($model->load(Yii::$app->request->post()) && ($user = $model->signup())) {
+            Yii::$app->user->login($user);
+            return $this->redirect(['/work/index']); // ✅ 注册后直接去文献检索
+        }
+
+        return $this->render('signup', ['model' => $model]);
     }
 
     /**

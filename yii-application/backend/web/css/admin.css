@@ -1,0 +1,99 @@
+:root{
+  --brand:#7b1e2b;          /* 主色：暗红 */
+  --brand-2:#9a2a39;
+  --ink:#1f2328;
+  --muted:#6b7280;
+  --card:#ffffff;
+  --line:#e5e7eb;
+  --bg:#f6f3ee;             /* 米白底 */
+}
+
+html,body{
+  height:100%;
+}
+
+body{
+  background: radial-gradient(1200px 700px at 20% 10%, rgba(123,30,43,.20), transparent 55%),
+              radial-gradient(1000px 600px at 80% 30%, rgba(0,0,0,.12), transparent 60%),
+              var(--bg);
+  color: var(--ink);
+}
+
+.navbar{
+  background: rgba(20, 24, 28, .92) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.navbar .navbar-brand{
+  font-weight: 900;
+  letter-spacing: .5px;
+}
+
+.navbar .nav-link{
+  color: rgba(255,255,255,.78) !important;
+  font-weight: 700;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active{
+  color: #fff !important;
+}
+
+.admin-wrap{
+  padding: 18px 0 32px;
+}
+
+.white-card{
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(17,24,39,.08);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.10);
+}
+
+.card-title-strong{
+  font-weight: 900;
+  margin: 0 0 8px;
+}
+
+.subtle{
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.btn-brand{
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+  font-weight: 800;
+}
+
+.btn-brand:hover{
+  background: var(--brand-2);
+  border-color: var(--brand-2);
+  color:#fff;
+}
+
+.table thead th{
+  background: rgba(123,30,43,.06);
+  border-bottom: 1px solid var(--line);
+  font-weight: 900;
+}
+
+.table td, .table th{
+  vertical-align: middle;
+}
+
+.badge-type{
+  display:inline-block;
+  padding: .35rem .55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(123,30,43,.22);
+  background: rgba(123,30,43,.08);
+  color: var(--brand);
+  font-weight: 900;
+}
+
+.footer{
+  opacity: .9;
+}

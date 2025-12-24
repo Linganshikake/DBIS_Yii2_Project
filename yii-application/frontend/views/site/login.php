@@ -38,4 +38,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php ActiveForm::end(); ?>
         </div>
     </div>
+
+    <p class="mt-3 mb-0">
+    还没有账号？
+    <?= \yii\bootstrap5\Html::a('点击注册', ['/site/signup'], ['class' => 'link-light']) ?>
+    </p>
 </div>
