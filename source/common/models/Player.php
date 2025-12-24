@@ -1,37 +1,15 @@
 <?php
 /**
  * Team: DBIS_Yii2_Project
- * Coding by: [您的姓名] [您的学号], 2025xxxx
- * This is the model class for table "players".
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the ActiveRecord model for table "players" (选手模型)
  */
-
 namespace common\models;
 
 use Yii;
 use yii\web\UploadedFile;
 
-/**
- * This is the model class for table "players".
- *
- * @property int $id 选手ID
- * @property string $name 真实姓名
- * @property string $register_name 注册名/比赛用名
- * @property string $gender 性别
- * @property string|null $nickname 绰号
- * @property int|null $team_id 当前所属队伍ID (外键)
- * @property int|null $org_id 所属团体ID (外键)
- * @property string|null $org_rank 团体段位/等级
- * @property string|null $join_date 加入M联赛时间
- * @property int $display_status 展示状态 1:显示 0:隐藏
- * @property string|null $avatar 头像文件名
- * @property string|null $intro_video 视频文件名
- * @property string|null $cover 视频封面文件名
- * * @property PlayerSeasonStats[] $playerSeasonStats
- * @property Seasons[] $seasons
- * @property Organization $org
- * @property Team $team
- * @property SeasonTitle[] $seasonTitles
- */
+// ...existing code...
 class Player extends \yii\db\ActiveRecord
 {
     /**

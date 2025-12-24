@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Team: DBIS_Yii_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the frontend controller for News display (新闻展示前台控制器)
+ */
+
 namespace frontend\controllers;
 
 use common\models\News;

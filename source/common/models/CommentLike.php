@@ -1,7 +1,8 @@
 <?php
 /**
  * Team: DBIS_Yii2_Project
- * This is the model class for table "comment_likes".
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the ActiveRecord model for table "comment_likes" (评论点赞模型)
  */
 
 namespace common\models;

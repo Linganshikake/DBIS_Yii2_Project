@@ -1,4 +1,10 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend site controller (后台站点控制器，处理登录/登出等)
+ */
+
 namespace backend\controllers;
 
 use Yii;

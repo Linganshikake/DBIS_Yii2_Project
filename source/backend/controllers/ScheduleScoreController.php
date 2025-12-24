@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend controller for recording and managing schedule scores (比赛成绩录入与管理)
+ */
 
 namespace backend\controllers;
 

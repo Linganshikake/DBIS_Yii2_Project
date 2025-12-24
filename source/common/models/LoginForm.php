@@ -1,4 +1,10 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the model for login form handling (登录表单模型)
+ */
+
 namespace common\models;
 
 use Yii;

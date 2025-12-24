@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the frontend controller for Schedule display (赛程前台控制器)
+ */
 
 namespace frontend\controllers;
 

@@ -1,7 +1,8 @@
 <?php
 /**
  * Team: DBIS_Yii2_Project
- * 后台基础控制器 - 统一访问控制
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the base controller for backend application (后台基础控制器，统一访问控制)
  */
 
 namespace backend\controllers;

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the frontend site controller (前台站点控制器，首页/登录/注册等)
+ */
+
 namespace frontend\controllers;
 
 use frontend\models\ResendVerificationEmailForm;

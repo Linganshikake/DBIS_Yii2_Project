@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the frontend controller for Rankings (排行榜前台控制器)
+ */
 
 namespace frontend\controllers;
 

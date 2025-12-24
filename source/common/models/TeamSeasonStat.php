@@ -1,8 +1,8 @@
 <?php
 /**
- * Team: DBIS_Yii2_Project (您的团队名称)
- * Coding by: 您的姓名 (您的学号), 2025xxxx (日期)
- * This is the model class for table "此处填表名".
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the ActiveRecord model for table "team_season_stats" (队伍赛季统计)
  */
 
 namespace common\models;

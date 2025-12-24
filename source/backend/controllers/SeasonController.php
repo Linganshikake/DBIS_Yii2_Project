@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend controller for Season CRUD (赛季管理后台控制器)
+ */
 
 namespace backend\controllers;
 

@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the frontend profile controller (用户个人中心控制器)
+ */
 
 namespace frontend\controllers;
 

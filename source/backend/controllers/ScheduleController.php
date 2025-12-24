@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend controller for Schedule CRUD and management (赛程管理控制器)
+ */
 
 namespace backend\controllers;
 

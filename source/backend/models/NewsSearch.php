@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend search model for News (新闻搜索模型，用于后台列表筛选)
+ */
 
 namespace backend\models;
 

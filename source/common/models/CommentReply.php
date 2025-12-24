@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the ActiveRecord model for table "comment_replies" (评论回复模型)
+ */
 
 namespace common\models;
 

@@ -1,7 +1,8 @@
 <?php
 /**
  * Team: DBIS_Yii2_Project
- * This is the model class for table "schedule".
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the ActiveRecord model for table "schedule" (赛程模型)
  */
 
 namespace common\models;

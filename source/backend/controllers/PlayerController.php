@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend controller for managing Player CRUD (后台选手管理控制器)
+ */
 
 namespace backend\controllers;
 

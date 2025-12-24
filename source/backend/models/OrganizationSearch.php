@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend search model for Organization (团体搜索模型)
+ */
 
 namespace backend\models;
 

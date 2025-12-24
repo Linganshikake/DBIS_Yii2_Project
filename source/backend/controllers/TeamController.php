@@ -1,8 +1,8 @@
 <?php
 /**
  * Team: DBIS_Yii2_Project
- * Coding by: 您的姓名 (学号), 2025xxxx
- * This is the controller class for table "teams".
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend controller for Team CRUD (队伍管理后台控制器)
  */
 
 namespace backend\controllers;

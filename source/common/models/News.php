@@ -1,7 +1,9 @@
 <?php
 /**
+/**
  * Team: DBIS_Yii2_Project
- * This is the model class for table "news".
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the ActiveRecord model for table "news" (新闻模型)
  */
 
 namespace common\models;
