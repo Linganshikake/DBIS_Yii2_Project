@@ -1,6 +1,10 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use frontend\assets\EChartsAsset;
+
+// 注册 ECharts 资源
+EChartsAsset::register($this);
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Player */
@@ -234,6 +238,30 @@ $this->title = $model->name;
                     </div>
                 </div>
             </div>
+            
+            <!-- ECharts 可视化图表 -->
+            <div class="row mt-4">
+                <!-- 选手顺位分布饼图 -->
+                <div class="col-lg-6 mb-4">
+                    <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 20px;">
+                        <h5 style="color: #d4af37; margin-bottom: 15px; text-align: center; font-weight: bold;">
+                            <i class="fa fa-pie-chart" style="margin-right: 8px;"></i>顺位分布
+                        </h5>
+                        <div id="rankDistributionChart" style="width: 100%; height: 300px;"></div>
+                    </div>
+                </div>
+                
+                <!-- 选手能力雷达图 -->
+                <div class="col-lg-6 mb-4">
+                    <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 20px;">
+                        <h5 style="color: #d4af37; margin-bottom: 15px; text-align: center; font-weight: bold;">
+                            <i class="fa fa-diamond" style="margin-right: 8px;"></i>能力雷达图
+                        </h5>
+                        <div id="playerRadarChart" style="width: 100%; height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+            
             <?php endif; ?>
             <?php endif; ?>
         </div>
@@ -246,3 +274,156 @@ $this->title = $model->name;
     </div>
 
 </div>
+
+<?php
+// 准备图表数据
+$currentStat = $model->playerSeasonStats[0] ?? null;
+
+if ($currentStat) {
+    // 顺位数据
+    $rank1 = $currentStat->rank_1_count ?? 0;
+    $rank2 = $currentStat->rank_2_count ?? 0;
+    $rank3 = $currentStat->rank_3_count ?? 0;
+    $rank4 = $currentStat->rank_4_count ?? 0;
+    $totalGames = $currentStat->games_count ?? 0;
+    
+    // 计算能力值（归一化到 0-100）
+    $topRate = ($currentStat->top_rate ?? 0) * 100;
+    $lastAvoidRate = ($currentStat->last_avoid_rate ?? 0) * 100;
+    $avgRank = $currentStat->avg_rank ?? 2.5;
+    $stability = 100 - (($avgRank - 1) / 3 * 100); // 平均顺位转换为稳定性
+    $maxScore = min(100, ($currentStat->max_score ?? 0) / 1000 * 100); // 最高得分归一化
+    $gamesPlayed = min(100, $totalGames / 50 * 100); // 出场率归一化
+
+    $pieDataJson = json_encode([
+        ['value' => $rank1, 'name' => '1位'],
+        ['value' => $rank2, 'name' => '2位'],
+        ['value' => $rank3, 'name' => '3位'],
+        ['value' => $rank4, 'name' => '4位'],
+    ]);
+    
+    $radarDataJson = json_encode([
+        round($topRate, 1),
+        round($lastAvoidRate, 1), 
+        round($stability, 1),
+        round($maxScore, 1),
+        round($gamesPlayed, 1)
+    ]);
+
+    $echartsJs = <<<JS
+// 顺位分布饼图
+var pieChartDom = document.getElementById('rankDistributionChart');
+if (pieChartDom) {
+    var pieChart = echarts.init(pieChartDom, 'dark');
+    var pieOption = {
+        backgroundColor: 'transparent',
+        tooltip: {
+            trigger: 'item',
+            formatter: '{b}: {c}回 ({d}%)'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            top: 'center',
+            textStyle: { color: '#aaa' }
+        },
+        color: ['#d4af37', '#9b59b6', '#e67e22', '#e74c3c'],
+        series: [{
+            name: '顺位分布',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            center: ['60%', '50%'],
+            avoidLabelOverlap: false,
+            itemStyle: {
+                borderRadius: 8,
+                borderColor: '#1a1a1a',
+                borderWidth: 2
+            },
+            label: {
+                show: true,
+                position: 'outside',
+                color: '#fff',
+                formatter: '{b}: {c}回'
+            },
+            emphasis: {
+                label: {
+                    show: true,
+                    fontSize: 14,
+                    fontWeight: 'bold'
+                }
+            },
+            labelLine: {
+                lineStyle: { color: '#555' }
+            },
+            data: {$pieDataJson}
+        }]
+    };
+    pieChart.setOption(pieOption);
+    window.addEventListener('resize', function() { pieChart.resize(); });
+}
+
+// 能力雷达图
+var radarChartDom = document.getElementById('playerRadarChart');
+if (radarChartDom) {
+    var radarChart = echarts.init(radarChartDom, 'dark');
+    var radarOption = {
+        backgroundColor: 'transparent',
+        tooltip: {
+            trigger: 'item'
+        },
+        radar: {
+            indicator: [
+                { name: '一位率', max: 100 },
+                { name: '避四率', max: 100 },
+                { name: '稳定性', max: 100 },
+                { name: '爆发力', max: 100 },
+                { name: '出场率', max: 100 }
+            ],
+            center: ['50%', '55%'],
+            radius: '65%',
+            axisName: {
+                color: '#aaa',
+                fontSize: 11
+            },
+            splitArea: {
+                areaStyle: {
+                    color: ['rgba(212,175,55,0.05)', 'rgba(212,175,55,0.1)', 
+                            'rgba(212,175,55,0.15)', 'rgba(212,175,55,0.2)', 
+                            'rgba(212,175,55,0.25)']
+                }
+            },
+            axisLine: {
+                lineStyle: { color: '#333' }
+            },
+            splitLine: {
+                lineStyle: { color: '#333' }
+            }
+        },
+        series: [{
+            name: '选手能力',
+            type: 'radar',
+            data: [{
+                value: {$radarDataJson},
+                name: '能力值',
+                symbol: 'circle',
+                symbolSize: 6,
+                lineStyle: {
+                    color: '#d4af37',
+                    width: 2
+                },
+                areaStyle: {
+                    color: 'rgba(212, 175, 55, 0.3)'
+                },
+                itemStyle: {
+                    color: '#d4af37'
+                }
+            }]
+        }]
+    };
+    radarChart.setOption(radarOption);
+    window.addEventListener('resize', function() { radarChart.resize(); });
+}
+JS;
+    $this->registerJs($echartsJs, \yii\web\View::POS_END);
+}
+?>

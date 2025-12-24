@@ -1,6 +1,10 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use frontend\assets\EChartsAsset;
+
+// 注册 ECharts 资源
+EChartsAsset::register($this);
 
 /* @var $this yii\web\View */
 /* @var $season common\models\Season */
@@ -178,6 +182,16 @@ $avatarStyle = "width: 100px; height: 100px; border-radius: 50%; border: 3px sol
                     </tbody>
                 </table>
             </div>
+            
+            <!-- 队伍积分柱状图 -->
+            <?php if (!empty($teamRankings)): ?>
+            <div style="margin-top: 40px;">
+                <h4 style="color: #d4af37; margin-bottom: 20px; text-align: center; font-weight: bold;">
+                    <i class="fa fa-bar-chart" style="margin-right: 10px;"></i>TEAM SCORE CHART
+                </h4>
+                <div id="teamScoreChart" style="width: 100%; height: 400px; background: #1a1a1a; border: 1px solid #333; border-radius: 10px;"></div>
+            </div>
+            <?php endif; ?>
         </div>
 
         <div class="tab-pane fade" id="player" style="transition: opacity 0.3s ease-in-out;">
@@ -288,4 +302,114 @@ $js = <<<JS
     });
 JS;
 $this->registerJs($js);
+
+// 准备队伍积分图表数据
+$teamNames = [];
+$teamScores = [];
+$teamColors = [];
+if (!empty($teamRankings)) {
+    foreach ($teamRankings as $stat) {
+        $teamNames[] = $stat->team->name;
+        // 确保分数不是 null，如果是 null 则用 0
+        $score = $stat->total_score;
+        $score = ($score !== null && $score !== '') ? floatval($score) : 0;
+        $teamScores[] = $score;
+        // 正分绿色，负分红色
+        $teamColors[] = $score >= 0 ? '#00a550' : '#e74c3c';
+    }
+}
+
+// 直接输出图表数据
+$teamNamesJson = json_encode($teamNames, JSON_UNESCAPED_UNICODE);
+// 构建带颜色的数据数组
+$teamDataArray = [];
+for ($i = 0; $i < count($teamScores); $i++) {
+    $teamDataArray[] = [
+        'value' => $teamScores[$i],
+        'itemStyle' => ['color' => $teamColors[$i]]
+    ];
+}
+$teamDataJson = json_encode($teamDataArray);
+
+$echartsJs = <<<JS
+// 初始化队伍积分柱状图
+var teamChartDom = document.getElementById('teamScoreChart');
+if (teamChartDom) {
+    var teamChart = echarts.init(teamChartDom, 'dark');
+    var teamOption = {
+        backgroundColor: 'transparent',
+        title: {
+            text: 'TEAM TOTAL SCORE',
+            left: 'center',
+            top: 10,
+            textStyle: {
+                color: '#d4af37',
+                fontSize: 16,
+                fontWeight: 'bold'
+            }
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { type: 'shadow' },
+            formatter: function(params) {
+                var data = params[0];
+                var score = data.value;
+                var sign = score >= 0 ? '+' : '';
+                return data.name + '<br/>Score: <strong>' + sign + score.toFixed(1) + '</strong>';
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '15%',
+            top: '15%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            data: {$teamNamesJson},
+            axisLabel: {
+                color: '#aaa',
+                rotate: 30,
+                fontSize: 11
+            },
+            axisLine: { lineStyle: { color: '#333' } }
+        },
+        yAxis: {
+            type: 'value',
+            name: 'Score',
+            nameTextStyle: { color: '#888' },
+            axisLabel: { color: '#aaa' },
+            axisLine: { lineStyle: { color: '#333' } },
+            splitLine: { lineStyle: { color: '#222' } }
+        },
+        series: [{
+            name: 'Score',
+            type: 'bar',
+            data: {$teamDataJson},
+            barWidth: '50%',
+            itemStyle: {
+                borderRadius: [4, 4, 0, 0]
+            },
+            label: {
+                show: true,
+                position: 'top',
+                color: '#d4af37',
+                fontSize: 11,
+                formatter: function(params) {
+                    var v = params.value;
+                    return (v >= 0 ? '+' : '') + v.toFixed(1);
+                }
+            }
+        }]
+    };
+    teamChart.setOption(teamOption);
+    
+    // 响应式调整
+    window.addEventListener('resize', function() {
+        teamChart.resize();
+    });
+}
+JS;
+$this->registerJs($echartsJs, \yii\web\View::POS_END);
 ?>

@@ -222,26 +222,93 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays contact page.
+     * Displays course documents download page.
      *
      * @return mixed
      */
     public function actionContact()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
+        // 获取个人作业目录
+        $personalPath = Yii::getAlias('@frontend') . '/../data/personal';
+        $teamPath = Yii::getAlias('@frontend') . '/../data/team';
+        
+        $personalWorks = [];
+        $teamWorks = [];
+        
+        // 扫描个人作业文件夹
+        if (is_dir($personalPath)) {
+            $students = scandir($personalPath);
+            foreach ($students as $student) {
+                if ($student === '.' || $student === '..') continue;
+                $studentPath = $personalPath . '/' . $student;
+                if (is_dir($studentPath)) {
+                    $files = scandir($studentPath);
+                    $works = [];
+                    foreach ($files as $file) {
+                        if ($file === '.' || $file === '..') continue;
+                        $works[] = [
+                            'name' => $file,
+                            'path' => ['site/download', 'type' => 'personal', 'folder' => $student, 'file' => $file],
+                        ];
+                    }
+                    if (!empty($works)) {
+                        $personalWorks[] = [
+                            'student' => $student,
+                            'works' => $works,
+                        ];
+                    }
+                }
             }
-
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
         }
+        
+        // 扫描团队作业文件夹
+        if (is_dir($teamPath)) {
+            $files = scandir($teamPath);
+            foreach ($files as $file) {
+                if ($file === '.' || $file === '..') continue;
+                $teamWorks[] = [
+                    'name' => $file,
+                    'path' => ['site/download', 'type' => 'team', 'file' => $file],
+                ];
+            }
+        }
+        
+        return $this->render('contact', [
+            'personalWorks' => $personalWorks,
+            'teamWorks' => $teamWorks,
+        ]);
+    }
+    
+    /**
+     * 下载课程文档
+     * @param string $type 文件类型: team/personal
+     * @param string $file 文件名
+     * @param string|null $folder 子文件夹（个人作业用）
+     * @return mixed
+     */
+    public function actionDownload($type, $file, $folder = null)
+    {
+        $basePath = Yii::getAlias('@frontend') . '/../data';
+        
+        // 安全检查：防止目录遍历攻击
+        $file = basename($file);
+        if ($folder) {
+            $folder = basename($folder);
+        }
+        
+        if ($type === 'team') {
+            $filePath = $basePath . '/team/' . $file;
+        } elseif ($type === 'personal' && $folder) {
+            $filePath = $basePath . '/personal/' . $folder . '/' . $file;
+        } else {
+            throw new \yii\web\NotFoundHttpException('文件不存在');
+        }
+        
+        if (!file_exists($filePath) || !is_file($filePath)) {
+            throw new \yii\web\NotFoundHttpException('文件不存在');
+        }
+        
+        return Yii::$app->response->sendFile($filePath, $file);
     }
 
     /**

@@ -2,6 +2,10 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use frontend\assets\EChartsAsset;
+
+// 注册 ECharts 资源
+EChartsAsset::register($this);
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Team */
@@ -33,10 +37,20 @@ $this->title = $model->name;
                 <h1 style="color: #fff; font-size: 48px; font-weight: 900; margin-top: 0; line-height: 1;">
                     <?= Html::encode($model->name) ?>
                 </h1>
-                <p style="color: #888; font-size: 18px; margin-top: 10px;">
-                    <i class="fas fa-building"></i> 所属企业：<?= Html::encode($model->company) ?>
+                <p style="color: #888; font-size: 18px; margin-top: 10px; display: flex; align-items: center;">
+                    <i class="fas fa-building" style="margin-right: 8px;"></i> 所属企业：
+                    <?php 
+                    $company = $model->companies[0] ?? null;
+                    if ($company && $company->logo): 
+                    ?>
+                        <img src="/uploads/company/<?= Html::encode($company->logo) ?>" 
+                             alt="企业Logo" 
+                             style="height: 50px; margin-left: 10px; vertical-align: middle;">
+                    <?php else: ?>
+                        <span style="margin-left: 5px;">-</span>
+                    <?php endif; ?>
                 </p>
-                <div style="margin-top: 20px; color: #ccc; font-size: 14px; max-width: 800px;">
+                <div style="margin-top: 20px; color: #ccc; font-size: 18px; max-width: 800px; line-height: 1.8;">
                     <?= nl2br(Html::encode($model->description)) ?>
                 </div>
             </div>
@@ -240,6 +254,14 @@ $this->title = $model->name;
                             ?>
                         </span>
                     </div>
+                    
+                    <!-- 赛季得分走势折线图 -->
+                    <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #333;">
+                        <h5 style="color: #d4af37; margin-bottom: 20px; text-align: center; font-weight: bold;">
+                            <i class="fa fa-line-chart" style="margin-right: 8px;"></i>赛季得分走势
+                        </h5>
+                        <div id="teamScoreTrendChart" style="width: 100%; height: 300px;"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -259,3 +281,151 @@ $this->title = $model->name;
     </div>
 
 </div>
+
+<?php
+// 准备队伍得分走势数据
+if (isset($teamSeasonStat) && $teamSeasonStat) {
+    $hasData = false;
+    $stages = ['赛季开始']; // 始终从0开始
+    $scores = [0];
+    
+    // 常规赛得分（直接使用原始分数）
+    if ($teamSeasonStat->regular_score !== null && $teamSeasonStat->regular_score !== '') {
+        $hasData = true;
+        $stages[] = '常规赛';
+        $scores[] = floatval($teamSeasonStat->regular_score);
+    }
+    
+    // 半决赛累计得分（常规赛折半 + 半决赛）
+    if ($teamSeasonStat->semifinal_score !== null && $teamSeasonStat->semifinal_score !== '') {
+        $hasData = true;
+        $stages[] = '半决赛';
+        $regularScore = floatval($teamSeasonStat->regular_score ?: 0);
+        $semiCumulative = ($regularScore * 0.5) + floatval($teamSeasonStat->semifinal_score);
+        $scores[] = $semiCumulative;
+    }
+    
+    // 决赛累计得分（半决赛折半 + 决赛）
+    if ($teamSeasonStat->final_score !== null && $teamSeasonStat->final_score !== '') {
+        $hasData = true;
+        $stages[] = '决赛(最终)';
+        // 如果有半决赛分数，从半决赛累计分折半；否则从常规赛折半
+        $regularScore = floatval($teamSeasonStat->regular_score ?: 0);
+        $semiScore = floatval($teamSeasonStat->semifinal_score ?: 0);
+        if ($semiScore != 0) {
+            $semiCumulative = ($regularScore * 0.5) + $semiScore;
+            $finalCumulative = ($semiCumulative * 0.5) + floatval($teamSeasonStat->final_score);
+        } else {
+            $finalCumulative = ($regularScore * 0.5) + floatval($teamSeasonStat->final_score);
+        }
+        $scores[] = $finalCumulative;
+    }
+    
+    // 只有有数据时才渲染图表
+    if ($hasData) {
+        $stagesJson = json_encode($stages, JSON_UNESCAPED_UNICODE);
+        $scoresJson = json_encode($scores);
+        
+        $teamName = Html::encode($model->name);
+
+    $echartsJs = <<<JS
+// 赛季得分走势折线图
+var trendChartDom = document.getElementById('teamScoreTrendChart');
+if (trendChartDom) {
+    var trendChart = echarts.init(trendChartDom, 'dark');
+    var trendOption = {
+        backgroundColor: 'transparent',
+        tooltip: {
+            trigger: 'axis',
+            formatter: function(params) {
+                var data = params[0];
+                var score = data.value;
+                var sign = score >= 0 ? '+' : '';
+                return data.name + '<br/>{$teamName}: <strong style="color:#d4af37">' + sign + score.toFixed(1) + '</strong>';
+            }
+        },
+        grid: {
+            left: '5%',
+            right: '5%',
+            bottom: '10%',
+            top: '15%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            data: {$stagesJson},
+            axisLabel: {
+                color: '#aaa',
+                fontSize: 12
+            },
+            axisLine: { lineStyle: { color: '#333' } }
+        },
+        yAxis: {
+            type: 'value',
+            name: '累计得分',
+            nameTextStyle: { color: '#888' },
+            axisLabel: { 
+                color: '#aaa',
+                formatter: function(value) {
+                    return value >= 0 ? '+' + value : value;
+                }
+            },
+            axisLine: { lineStyle: { color: '#333' } },
+            splitLine: { lineStyle: { color: '#222' } }
+        },
+        series: [{
+            name: '累计得分',
+            type: 'line',
+            data: {$scoresJson},
+            smooth: true,
+            symbol: 'circle',
+            symbolSize: 10,
+            lineStyle: {
+                color: '#d4af37',
+                width: 3
+            },
+            itemStyle: {
+                color: '#d4af37',
+                borderColor: '#fff',
+                borderWidth: 2
+            },
+            areaStyle: {
+                color: {
+                    type: 'linear',
+                    x: 0, y: 0, x2: 0, y2: 1,
+                    colorStops: [
+                        { offset: 0, color: 'rgba(212, 175, 55, 0.5)' },
+                        { offset: 1, color: 'rgba(212, 175, 55, 0.05)' }
+                    ]
+                }
+            },
+            label: {
+                show: true,
+                position: 'top',
+                color: '#d4af37',
+                fontSize: 14,
+                fontWeight: 'bold',
+                formatter: function(params) {
+                    var v = params.value;
+                    return (v >= 0 ? '+' : '') + v.toFixed(1);
+                }
+            },
+            markLine: {
+                silent: true,
+                data: [{ yAxis: 0 }],
+                lineStyle: {
+                    color: '#666',
+                    type: 'dashed'
+                },
+                label: { show: false }
+            }
+        }]
+    };
+    trendChart.setOption(trendOption);
+    window.addEventListener('resize', function() { trendChart.resize(); });
+}
+JS;
+        $this->registerJs($echartsJs, \yii\web\View::POS_END);
+    } // end if hasData
+} // end if teamSeasonStat
+?>

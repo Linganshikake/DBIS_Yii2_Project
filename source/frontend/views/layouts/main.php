@@ -50,7 +50,7 @@ AppAsset::register($this);
             'label' => '关于',
             'items' => [
                 ['label' => 'M League是什么？', 'url' => ['/site/about']],
-                ['label' => '联系我们', 'url' => ['/site/contact']],
+                ['label' => '课程文档下载', 'url' => ['/site/contact']],
             ],
         ],
     ];

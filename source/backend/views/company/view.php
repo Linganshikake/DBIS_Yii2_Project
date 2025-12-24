@@ -29,18 +29,22 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'name',
+            [
+                'attribute' => 'team_id',
+                'label' => '关联队伍',
+                'value' => $model->team->name ?? '-',
+            ],
+            'e_mail:email',
+            'web:url',
             [
                 'attribute' => 'logo',
                 'format' => 'raw',
                 'value' => function ($model) {
                     return $model->logo 
-                        ? Html::img('@web/uploads/company/' . $model->logo, ['style' => 'max-width: 200px;'])
+                        ? Html::img('/uploads/company/' . $model->logo, ['style' => 'max-width: 200px;'])
                         : '-';
                 },
             ],
-            'description:ntext',
-            'website:url',
             [
                 'attribute' => 'display_status',
                 'value' => $model->display_status ? '显示' : '隐藏',

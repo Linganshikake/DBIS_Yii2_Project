@@ -16,6 +16,7 @@ use yii\web\UploadedFile;
  * @property int $team_id 关联队伍ID
  * @property string|null $e_mail 企业邮箱
  * @property string|null $logo Logo图片
+ * @property string|null $web 企业网站
  * @property int $display_status 展示状态
  *
  * @property Team $team
@@ -45,7 +46,8 @@ class Company extends \yii\db\ActiveRecord
             [['team_id', 'display_status'], 'integer'],
             [['e_mail'], 'string', 'max' => 100],
             [['e_mail'], 'email'],
-            [['logo'], 'string', 'max' => 255],
+            [['logo', 'web'], 'string', 'max' => 255],
+            [['web'], 'url', 'defaultScheme' => 'https'],
             ['display_status', 'default', 'value' => 1],
             [['team_id'], 'exist', 'skipOnError' => true, 'targetClass' => Team::class, 'targetAttribute' => ['team_id' => 'id']],
             [['logoFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg', 'maxSize' => 1024 * 1024 * 5],
@@ -62,6 +64,7 @@ class Company extends \yii\db\ActiveRecord
             'team_id' => '关联队伍',
             'e_mail' => '企业邮箱',
             'logo' => 'Logo图片',
+            'web' => '企业官网',
             'display_status' => '展示状态',
             'logoFile' => '上传Logo',
         ];

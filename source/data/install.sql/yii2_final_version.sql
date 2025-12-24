@@ -1,22 +1,21 @@
 /*
- Navicat Premium Dump SQL
+ Navicat Premium Data Transfer
 
- Source Server         : 000
+ Source Server         : 0
  Source Server Type    : MySQL
- Source Server Version : 100427 (10.4.27-MariaDB)
+ Source Server Version : 80019 (8.0.19)
  Source Host           : localhost:3306
- Source Schema         : yii2advanced
+ Source Schema         : yii2_final
 
  Target Server Type    : MySQL
- Target Server Version : 100427 (10.4.27-MariaDB)
+ Target Server Version : 80019 (8.0.19)
  File Encoding         : 65001
 
- Date: 23/12/2025 23:24:17
+ Date: 24/12/2025 00:02:30
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
-SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO,ALLOW_INVALID_DATES';
 
 -- ----------------------------
 -- Table structure for comment_likes
@@ -26,7 +25,7 @@ CREATE TABLE `comment_likes`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `comment_id` int NOT NULL COMMENT '评论ID',
   `user_id` int NOT NULL COMMENT '点赞用户ID',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_comment_user`(`comment_id` ASC, `user_id` ASC) USING BTREE,
   INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
@@ -50,14 +49,14 @@ CREATE TABLE `comment_replies`  (
   `comment_id` int NOT NULL,
   `user_id` int NOT NULL,
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `created_at` datetime NULL DEFAULT current_timestamp(),
+  `created_at` datetime NULL DEFAULT CURRENT_TIMESTAMP,
   `display_status` tinyint(1) NULL DEFAULT 1,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `comment_id`(`comment_id` ASC) USING BTREE,
   INDEX `user_id`(`user_id` ASC) USING BTREE,
   CONSTRAINT `comment_replies_ibfk_1` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `comment_replies_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of comment_replies
@@ -74,7 +73,7 @@ CREATE TABLE `comments`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '评论ID',
   `user_id` int NOT NULL COMMENT '用户ID',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '评论内容',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '发布时间',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发布时间',
   `like_count` int NOT NULL DEFAULT 0 COMMENT '点赞数',
   `display_status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '展示状态 1:显示 0:隐藏',
   PRIMARY KEY (`id`) USING BTREE,
@@ -144,7 +143,7 @@ DROP TABLE IF EXISTS `news`;
 CREATE TABLE `news`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '新闻ID',
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '新闻标题',
-  `publish_time` datetime NOT NULL DEFAULT current_timestamp() COMMENT '发布时间',
+  `publish_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发布时间',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '新闻正文',
   `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '新闻封面图',
   `images` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '正文图片JSON数组，如[\"img1.jpg\",\"img2.jpg\"]',
@@ -163,7 +162,7 @@ CREATE TABLE `news`  (
 -- ----------------------------
 INSERT INTO `news` VALUES (1, 'M联赛2025-26 Premium Night 2026年2月6日开办决定', '2025-11-16 10:00:00', 'M联赛组织（总部：东京都港区；代表董事：藤田进），一家普通法人团体，欣然宣布\"M联赛 2025-26 赛季高级之夜\"将于 2026 年 2 月 6 日（星期五）在 Kanadevia Hall（原东京巨蛋城大厅）举行。/n/nM联赛尊享之夜是一项特别的公众观赛活动，始于 2019-20 赛季。除了观看比赛外，活动还将包括各种其他内容，例如周边商品销售、现场礼品赠送，以及所有 40 位 M 联赛球员齐聚一堂的特别舞台表演。当日活动的具体安排将在确定后立即通过 M 联赛官方社交媒体账号公布。/n/n支持者预售票将于 2025 年 12 月 1 日星期一中午开始发售，普通门票将于 2025 年 12 月 4 日星期四中午开始发售。/n/n[img:NEWS1_1.png|座位图]/n/n■关于\"M联赛 2025-26 赛季高级之夜\"/n/n名称：M联赛 2025-26 赛季高级之夜/n/n地点：Kanadevia Hall（https://www.tokyo-dome.co.jp/tdc-hall/）/n/n开催日程：2026年2月6日（星期五）/n/n时间：15:30 开门，17:00 开始演出，19:00 开始比赛（直至第二场比赛结束）/n/n商品销售时间：/n① 预售 13:00-15:00/n② 开门后 15:30/n/n※即使没有票的人也可以在预售时段购买门票。/n/n※预售时间可能会有所变动，最新信息将发布在 M 联赛官方社交媒体账号上。/n/n■对阵双方/n/n① EX 风林火山、角川樱花骑士团、KONAMI 麻将格斗部、涩谷 ABEMAS/n/n② 地球喷气机、世嘉飒美凤凰、雷电战队、野兽 X', 'NEWS1_COVER.png', 'NEWS1_1.png', 1547, 1, 1, NULL, NULL);
 INSERT INTO `news` VALUES (2, 'M联赛2025-26赛季「复制品球衣」发售开始', '2025-11-12 14:30:00', '2025年11月12日（水）起，「M联赛2025-26赛季」（以下简称\"2025-26赛季马来西亚足球联赛\"）的球迷版球衣将于2025年11月12日（星期三）起正式发售。/n/n本赛季的球衣面向所有球迷开放购买，千万不要错过这次机会！/n此外，备受欢迎的\"印有球员姓名的球迷版球衣\"也将限时面向官方球迷开放预订。/n/n[img:cover|M联赛2025-26复刻版球衣销售开始]/n/n■关于制服销售/n/n・销售日期：2025年11月12日（星期三）中午12点/n・价格：16,500日元（含税）/n・可选尺码：S、L、2XL/n/n<队服销售页面>/n[link:https://shop.m-league.jp/product-category/mleague/|官方商城]/n/n*\"BEAST X\"球衣将于稍后发售，具体日期请关注M联赛官方社交媒体账号。/n*由于库存情况，球衣可能会暂时缺货，敬请谅解。/n*2025-2026赛季球衣面向所有人开放购买。/n如需购买往赛季球衣，您需要成为相应球队的官方球迷。请注意，部分商品可能缺货或不再补货。/n请访问以下页面查看库存情况：/n[link:https://m-league.jp/ec|库存查询页面]/n/n■印有名字的球衣销售 仅限/n官方支持者购买，我们将以定制方式销售\"印有名字的球衣\"，您可以在球衣背面印上您喜欢的名字（最多11个大写字母）。/n/n[img:NEWS2_1.png|印有名字的球衣示例]/n/n*图片为\"Sega Sammy Phoenix\"产品的图片。/n/n・销售期间：2025年11月12日（星期三）中午12点至2025年11月18日（星期二）中午12点/n・价格：18,500日元（含税）/n・可选尺码：S、L、2XL/n・预计发货日期：2026年2月下旬（发货日期可能因生产情况而提前或延迟。）/n/n<印有名字的球衣销售页面>/n[link:https://m-league.jp/ec|官方商城]/n/n<姓名打印申请表>/n[link:https://forms.gle/wTfGgiAaf5FrXnF38|申请表链接]/n[申请截止日期：2025年11月24日（星期一）23:59]/n/n*\"BEAST X\"印字球衣将于稍后发售，详情将在M联赛官方社交媒体账号上公布。/n*印字球衣仅限相应球队的官方球迷订购。如需购买多支球队的球衣，请分别加入各队的官方球迷账号。/n*只有购买了\"印字球衣\"的球迷才需要填写印字申请表。', 'NEWS2_COVER.png', '[\"NEWS2_1.png\"]', 992, 1, 1, NULL, NULL);
-INSERT INTO `news` VALUES (3, 'M联赛官方商店将在2025-26赛季伊始，于全国三地开设快闪店', '2025-10-01 09:00:00', '我们很高兴地宣布，M.LEAGUE 官方商店快闪店将在本赛季再次开业。/n/n快闪店将出售原创商品，例如服装和杂货，以及与M联赛相关的书籍。/n/n[img:cover|M.LEAGUE OFFICIAL POP UP STORE 2025年开催日程]/n/n■关于M联赛官方快闪店/n/nM.LEAGUE 官方快闪店将在全国范围内举办，今年首批三个地点已确定。/n/n快闪店将于以下日期举行：/n/n・M.LEAGUE 官方快闪店（新潟）/n/n日期：10月18日（周六）至10月31日（周五）/n地址：新潟县新潟市中央区笹口1-1，Plaka 1楼及地下1楼（新潟纯久堂书店内）/n[link:https://honto.jp/store/detail_1570038_14HB320.html|查看详情]/n/n・M.LEAGUE官方快闪店（盛冈）/n/n日期：11月8日（周六）至11月21日（周五）/n地址：岩手县盛冈市大通2-8-14 MOSS大厦3楼、4楼（盛冈纯久堂书店内）/n[link:https://honto.jp/store/detail_1570037_14HB320.html|查看详情]/n/n・M.LEAGUE官方快闪店（三宫店）/n/n日期：12月13日（周六）至12月26日（周五）/n地址：兵库县神户市中央区三宫町1-6-18（纯九堂书店三宫内）/n[link:https://honto.jp/store/detail_1570001_14HB320.html|查看详情]/n/n[img:NEWS3_1.jpg|POP UP STORE限定 周边礼品赠送活动]/n/n此外，前100名在 POP UP STORE 单笔交易购买价值 5,000 日元或以上（含税）商品的顾客将获赠一个\"M League 标志购物袋\"。/n/n请借此机会光临我们的快闪店。/n/n2026年以后也计划在各地举办，敬请期待后续消息！', 'NEWS3_COVER.jpg', '[\"NEWS3_1.jpg\"]', 753, 1, 1, NULL, NULL);
+INSERT INTO `news` VALUES (3, 'M联赛官方商店将在2025-26赛季伊始，于全国三地开设快闪店', '2025-10-01 09:00:00', '我们很高兴地宣布，M.LEAGUE 官方商店快闪店将在本赛季再次开业。/n/n快闪店将出售原创商品，例如服装和杂货，以及与M联赛相关的书籍。/n/n[img:cover|M.LEAGUE OFFICIAL POP UP STORE 2025年开催日程]/n/n■关于M联赛官方快闪店/n/nM.LEAGUE 官方快闪店将在全国范围内举办，今年首批三个地点已确定。/n/n快闪店将于以下日期举行：/n/n・M.LEAGUE 官方快闪店（新潟）/n/n日期：10月18日（周六）至10月31日（周五）/n地址：新潟县新潟市中央区笹口1-1，Plaka 1楼及地下1楼（新潟纯久堂书店内）/n[link:https://honto.jp/store/detail_1570038_14HB320.html|查看详情]/n/n・M.LEAGUE官方快闪店（盛冈）/n/n日期：11月8日（周六）至11月21日（周五）/n地址：岩手县盛冈市大通2-8-14 MOSS大厦3楼、4楼（盛冈纯久堂书店内）/n[link:https://honto.jp/store/detail_1570037_14HB320.html|查看详情]/n/n・M.LEAGUE官方快闪店（三宫店）/n/n日期：12月13日（周六）至12月26日（周五）/n地址：兵库县神户市中央区三宫町1-6-18（纯九堂书店三宫内）/n[link:https://honto.jp/store/detail_1570001_14HB320.html|查看详情]/n/n[img:NEWS3_1.jpg|POP UP STORE限定 周边礼品赠送活动]/n/n此外，前100名在 POP UP STORE 单笔交易购买价值 5,000 日元或以上（含税）商品的顾客将获赠一个\"M League 标志购物袋\"。/n/n请借此机会光临我们的快闪店。/n/n2026年以后也计划在各地举办，敬请期待后续消息！', 'NEWS3_COVER.jpg', '[\"NEWS3_1.jpg\"]', 754, 1, 1, NULL, NULL);
 INSERT INTO `news` VALUES (4, '大和证券M联赛2025-26赛季开赛啦！！', '2025-09-16 18:00:00', 'M联赛组织（总部：东京都港区；代表董事：藤田进），一家一般法人团体，于2025年9月15日星期一举行了大和证券M联赛2025-26赛季（以下简称M联赛2025-26）的开幕式。/n/n在开幕式上，参加 2025-26 赛季 M 联赛的 10 支球队和 M 联赛球员齐聚一堂，宣布了他们对新赛季的期望。/n/n[img:cover|M联赛2025-26赛季开幕式全体合影]/n/n各队的目标如下：/n/n[img:NEWS4_1.jpg|地球喷气机队（EARTH JETS）]/n/n■地球喷气机队（EARTH JETS）石井和真/n/n地球喷气机队将以新队伍的身份参赛，但我们今年的目标是赢得冠军。为了赢得冠军，我们必须顺利通过常规赛，所以我们会谨慎地打好每一局麻将，为我们的粉丝们奉献精彩的麻将比赛，争取继续赢得胜利。感谢大家的支持。/n/n[img:NEWS4_2.jpg|BEAST X]/n/n■BEAST X 东条里奥/n/n我是东条里奥，从本赛季开始我将代表BEAST X出战。在世嘉飒美凤凰战队时，我常被称作队里最小的\"三女儿\"，但在BEAST X，我被赋予了队长这一重要角色，期待在大家的支持下全力以赴。我和三位各具特色、魅力十足的队员将携手并肩，力争在麻将赛场上取得佳绩，同时也希望在其他方面为M联赛增添更多活力。请大家多多支持我们！/n/n[img:NEWS4_3.jpg|EX风林火山队]/n/n■EX风林火山队队员永井孝典/n/n将在2025-26赛季率队迎战两名新队员。本赛季的口号是夺取冠军。为了实现这个目标，我个人决心留住三位可靠的队友。我们将全心全意地为之奋斗，争取在赛季末共同捧起冠军奖杯，请大家多多支持我们。/n/n[img:NEWS4_4.jpg|角川樱花骑士队]/n/n■角川樱花骑士队 - 堀慎吾：/n/n上赛季，角川樱花骑士队在常规赛就被淘汰，大家都非常失望。我们曾经是一支强队的形象，但这种形象正在逐渐褪色。所以今年我们会全力以赴，争取胜利，让大家再次感受到\"樱花骑士队真的很强\"。我们会尽全力为大家带来一场精彩刺激的比赛，希望大家能够享受比赛。感谢大家的支持。/n/n[img:NEWS4_5.jpg|涩谷ABEMAS队]/n/n■涩谷ABEMAS队由松本义弘领衔/n/n去年获得第六名。尽管他们已经连续五年闯入决赛，但连续第二年与冠军失之交臂，令人遗憾。本赛季，全队将团结一心，全力以赴，力争在各位支持者的陪伴下再次夺冠。我们四人必将拼尽全力，为大家奉献一场精彩的比赛。希望大家本赛季能够继续给予我们热情的支持，并欢迎大家踊跃收看。/n/n[img:NEWS4_6.jpg|KONAMI麻将格斗俱乐部]/n/n■KONAMI麻将格斗俱乐部 - 泷泽和典/n/nKONAMI麻将格斗俱乐部此前一直没有导演，但从本季开始，我将担任导演一职。我期待与大家一起工作。我将竭尽全力，确保大家能够享受这部动画直到最后一集。/n/n[img:NEWS4_7.jpg|雷电战队]/n/n■雷电战队/黑泽雷电/n/n雷电战队/雷电拥有最强大的后援团，无论顺境逆境，他们都会始终陪伴在我们身边。本赛季，所有队员都将全力以赴，力求与大家分享尽可能多的快乐，希望大家能够像以往一样，继续热情地支持我们。本赛季，我们希望能够以四人团队的形式战斗到最后一刻，感谢大家的支持。/n/n[img:NEWS4_8.jpg|赤坂驱动队]/n/n■赤坂驱动队的园田健/n/n球衣饱受争议，但球衣的设计者园田健教练遗憾地表示，人们并不理解这件球衣的优点。这件球衣的设计灵感来源于克罗地亚足球运动员莫德里奇，他球风智慧、赏心悦目且充满激情。我们希望赤坂驱动队本赛季也能像莫德里奇一样出色。我们希望四位队员能够身着这件球衣，最终捧起冠军奖杯，所以恳请大家支持我们到最后一刻。谢谢！/n/n[img:NEWS4_9.jpg|U-NEXT海盗队]/n/n■U-NEXT海盗队/n/nM联赛如今已进入第八个年头，随着新队伍的加入，参赛队伍总数达到10支，共有40名选手。第一年，联赛只有7支队伍，每队3名选手，共计21名选手。如今，参赛人数翻了一番，比赛场次也大幅增加，粉丝数量更是显著增长，对此我始终心怀感激。越来越多的企业加入我们，我感受到麻将的世界正在蓬勃发展。我将继续努力，让这份热情永不熄灭。作为唯一一支两次夺得冠军的队伍，U-NEXT海盗队将全力冲击第三个冠军，希望大家能够享受比赛的每一个精彩瞬间，无论输赢。感谢大家这一年的支持！/n/n[img:NEWS4_10.jpg|世嘉飒美凤凰队]/n/n■世嘉飒美凤凰队 大吾/n/n上赛季，荣膺MVP，球队保持34场不败，最终夺得总冠军，创造了队史最佳战绩。本赛季我们将全力以赴，力争再创佳绩，希望大家能够热情支持我们。感谢大家的支持！/n/n[img:NEWS4_11.jpg|冠军奖杯交接仪式]/n/n上赛季\"M League 2024-25\"冠军Sega Sammy Phoenix的Saki Kayamori代表该队将冠军奖杯归还给了联赛主席Susumu Fujita。/n/n最后，藤田主席宣布比赛开幕，高喊\"让我们全力以赴！\"球员们齐声欢呼\"哦哦哦\"，开幕式至此结束。/n/n■第1场/n/n第1位 园田健 (Akasaka Drivens) +54.9/n第2位 铃木优 (U-NEXT Pirates) +9.8/n第3位 石井和真 (EARTH JETS) ▲15.9/n第4位 下石激气 (BEAST X) ▲48.8/n/n■第2场/n/n第1位 中林圭 (U-NEXT Pirates) +66.4/n第2位 东城里约 (BEAST X) +6.1/n第3位 铃木太郎 (Akasaka Drivens) -17.5/n第4位 三浦智博 (EARTH JETS) -55.0/n/n我们希望您能期待2025-26赛季的M联赛，并继续支持我们。', 'NEWS4_COVER.jpg', '[\"NEWS4_1.jpg\",\"NEWS4_2.jpg\",\"NEWS4_3.jpg\",\"NEWS4_4.jpg\",\"NEWS4_5.jpg\",\"NEWS4_6.jpg\",\"NEWS4_7.jpg\",\"NEWS4_8.jpg\",\"NEWS4_9.jpg\",\"NEWS4_10.jpg\",\"NEWS4_11.jpg\"]', 2158, 1, 1, NULL, NULL);
 INSERT INTO `news` VALUES (5, 'M League将与三丽鸥角色合作！', '2025-09-15 12:00:00', '[img:NEWS5_1.png|SANRIO CHARACTERS × M.LEAGUE]/n/nM.League 组织（总部：东京都港区；代表董事：藤田进），一家普通法人团体，欣然宣布将与 Sanrio Co., Ltd.（总部：东京都品川区）开发的 Sanrio Characters 进行合作。/n/n作为此次合作的一部分，我们计划销售印有包括Hello Kitty在内的热门三丽鸥角色的周边商品。此外，从9月19日起，印有三丽鸥角色的合作卡片将在\"M.LEAGUE OFFICIAL TRADING CARDS\"服务中陆续发售。/n/n[img:cover|三丽鸥角色合作卡片 9月19日12:00起顺次贩卖予定]/n/n*有关\"M.LEAGUE 官方交易卡\"三丽鸥角色合作卡的详情，请查看服务内的公告。/n/n合作商品的销售详情将在确定后立即在M联赛官方网站和官方X平台公布。敬请期待后续更新。', 'NEWS5_COVER.jpg', '[\"NEWS5_1.png\"]', 1827, 1, 1, NULL, NULL);
 INSERT INTO `news` VALUES (6, '时尚与麻将的独特联名！与\"M League\"的联名商品将于9月15日起在ZOZOTOWN独家发售！', '2025-09-11 10:00:00', '[img:cover|M.LEAGUE × ZOZOTOWN 2025.09.15 MON 12:00 START]/n/nM.League（总部：东京都港区；代表董事：藤田进），一家普通法人团体，将于9月15日（星期一，日本国庆节）起，在ZOZOTOWN独家接受与ZOZO株式会社（总部：千叶县千叶市；社长兼首席执行官：泽田幸太郎）合作商品的预订。ZOZOTOWN是时尚电商网站ZOZOTOWN的运营商。/n/n本次发售的商品包含17件役满级商品，其中包括\"早到易速T恤\"和\"中束刺绣渔夫帽\"，这些商品都融入了M联赛的标志和麻将牌图案。简约而又不失趣味的设计，轻松融入日常穿搭，穿上它们，你就能感受到\"Agari\"的魅力。/n/n此外，该系列产品的宣传图片由M联赛球员冈田沙耶香、园田健、泷泽一典和水原明菜奈担任模特，进一步提升了此次独特合作的精彩程度。/n/nZOZO公司是2025-26赛季M联赛半决赛和决赛的冠名赞助商。除了销售联名商品外，还将开展多项活动，包括在全新的未来主义电视频道ABEMA上播放广告，以及在M联赛转播期间展示ZOZOTOWN的标志。/n/n・预售期：2025年9月15日（星期一，国庆节）中午12点至2025年10月19日（星期日）晚上11:59/n*预售期结束后，该产品有可能再次发售。/n/n・专属页面网址：[link:https://zozo.jp/event/mleague/|ZOZOTOWN M.LEAGUE专属页面]/n*商品将于9月15日（周一，日本假日）中午开始发售/n/n・发货时间：2025年10月中旬至12月初/n（具体发货时间因商品而异，请查看各商品的商品页面了解详情。）/n/n■关于ZOZOTOWN独家商品（部分列表）/n/n[img:NEWS6_1.jpg|ZOZOTOWN独家商品一览]/n/n（从左上角开始）/nM.LEAGUE ZOZO 独家 LOGO T恤：3,890 日元（含税）/nEarly Reach is Yisusou T恤：3,890 日元（含税）/nKyurenpo Tou（Churenpo Tou）长袖T恤：5,100 日元（含税）/nM.LEAGUE ZOZO 独家 I-PIN 长袖T恤：5,100 日元（含税）/nM.LEAGUE ZOZO 独家 LOGO 卫衣：7,190 日元（含税）/nKyurenpo Tou（Churenpo Tou）卫衣：7,190 日元（含税）/nM.LEAGUE ZOZO 独家 I-PIN 连帽衫：8,290 日元（含税）/nEarly Reach is Yisusou 连帽衫：8,290 日元（含税）/nM.LEAGUE摄影棚教练外套：13,240日元（含税）/n役满御三家面巾：2,790日元（含税）/n中号光束刺绣渔夫帽：4,440日元（含税）/nM.LEAGUE ZOZO 独家LOGO凉鞋：4,990日元（含税）/nM.LEAGUE ZOZO 独家I-PIN钥匙扣（含贴纸）：2,240日元（含税）/n帐篷杆房卡扣（含贴纸）：2,240日元（含税）/nM.LEAGUE图案LOGO保温杯：3,140日元（含税）/n/n■商业视频/n[link:https://youtu.be/RPDKT46Ahzw|观看商业广告视频]/n*这是一个商业广告示例。/n/n■赠品活动/n活动期间，凡购买指定商品满5000日元及以上的顾客，将随机抽取32名幸运顾客，获赠由冈田沙耶香、园田健、泷泽一典、水原明菜奈签名的合作周边商品，以及签名麻将牌（白牌）。详情请见活动页面。/n活动时间：2025年9月15日（星期一，日本假日）中午12点至2025年9月28日（星期日）晚上11点59分/n/n■关于ZOZO公司/nZOZO策划并运营多种服务，包括时尚电商网站\"ZOZOTOWN\"、美妆商城\"ZOZOCOSME\"、鞋履专卖区\"ZOZOSHOES\"、二手品牌服装店\"ZOZOUSED\"、奢侈品及设计师品牌店\"ZOZOVILLA\"、时尚搭配应用\"WEAR by ZOZO\"、线上移动平台\"ZOZOMO\"以及生产支持平台\"Made by ZOZO\"。ZOZO还开发并应用\"ZOZOSUIT\"、\"ZOZOMAT\"和\"ZOZOGLASS\"等测量技术，并利用ZOZOSUIT在美国运营3D人体扫描服务\"ZOZOFIT\"。', 'NEWS6_COVER.jpg', '[\"NEWS6_1.jpg\"]', 1458, 1, 1, NULL, NULL);
@@ -460,7 +459,7 @@ CREATE TABLE `schedule_score`  (
   CONSTRAINT `fk_score_player3` FOREIGN KEY (`team3_player_id`) REFERENCES `players` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_score_player4` FOREIGN KEY (`team4_player_id`) REFERENCES `players` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_score_schedule` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `chk_score_sum` CHECK (`team1_score` + `team2_score` + `team3_score` + `team4_score` = 0)
+  CONSTRAINT `chk_score_sum` CHECK ((((`team1_score` + `team2_score`) + `team3_score`) + `team4_score`) = 0)
 ) ENGINE = InnoDB AUTO_INCREMENT = 113 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '比赛成绩表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -704,7 +703,6 @@ CREATE TABLE `user`  (
   `password_reset_token` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `status` smallint NOT NULL DEFAULT 10,
-  `is_admin` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否为管理员 0:否 1:是',
   `created_at` int NOT NULL,
   `updated_at` int NOT NULL,
   `verification_token` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
@@ -712,6 +710,7 @@ CREATE TABLE `user`  (
   `nickname` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '昵称',
   `bio` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '个人简介',
   `favorite_team_id` int NULL DEFAULT NULL COMMENT '最喜爱的队伍ID',
+  `is_admin` tinyint(1) UNSIGNED ZEROFILL NOT NULL COMMENT '管理员权限（0:用户；1：管理员）',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `username`(`username` ASC) USING BTREE,
   UNIQUE INDEX `email`(`email` ASC) USING BTREE,
@@ -722,9 +721,11 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
--- 默认管理员账号: admin / admin123
-INSERT INTO `user` VALUES (1, 'admin', 'admin-auth-key-12345678901234', '$2y$13$XHxNwaOl5WFzNSpMm7RH3.X5hyWAzTTGOEbCSF3Z70x0IXehWP2MG', NULL, 'admin@example.com', 10, 1, 1766055592, 1766055592, NULL, NULL, '管理员', '系统管理员', NULL);
--- 默认普通用户: user / user123
-INSERT INTO `user` VALUES (2, 'user', 'user-auth-key-123456789012345', '$2y$13$XHxNwaOl5WFzNSpMm7RH3.X5hyWAzTTGOEbCSF3Z70x0IXehWP2MG', NULL, 'user@example.com', 10, 0, 1766055592, 1766055592, NULL, NULL, '普通用户', '普通用户账号', NULL);
+INSERT INTO `user` VALUES (2, '111', 'URNf9WzDC8mnA6a_ADNPIwvxoMPLVl--', '$2y$13$UjvGXAPGIeAYXeEnD0V2ceV5MPgNLCT.nDjoEUr19lm6FbazAhVEi', NULL, 'linganshikake@outlook.com', 9, 1766053432, 1766053432, 'SumOXLcpw-jN_tgcE0YY43xXBQFKmgep_1766053432', NULL, NULL, NULL, NULL, 0);
+INSERT INTO `user` VALUES (3, '123', 'EpkN9znuMdAqvGv6DKJrvokLdt-0d5VM', '$2y$13$Cc9.j88aB1LSAH1em76GTuAEDuR4w8Lo.Q/qqYLid6H6Ugt7.KGie', NULL, '1572456506@qq.com', 9, 1766054855, 1766054855, 'QihsSZBtFn6YqEnFXMpeqDqp0WOA4wPD_1766054855', NULL, NULL, NULL, NULL, 0);
+INSERT INTO `user` VALUES (4, 'admin', 'k5rguj0_uwfIbIxEy7nFXC8McyleElbw', '$2y$13$XHxNwaOl5WFzNSpMm7RH3.X5hyWAzTTGOEbCSF3Z70x0IXehWP2MG', NULL, '1572456509@qq.com', 10, 1766055592, 1766055592, 'aKqnztxbgpYL0eTfz4p6in89U7m6a6zr_1766055592', NULL, NULL, NULL, NULL, 1);
+INSERT INTO `user` VALUES (5, 'MHN', 'X6NMx5wtM_JY4QNVVH3piX6xe6Zsu5Nh', '$2y$13$Ktgu4pb/coycbUsgXwCwVuyGrLoW8.bGcK1hoCwWngIBFqT4e3T4W', NULL, '1572456510@qq.com', 10, 1766055763, 1766055763, 'CV0vDleNiuAhnmfw8pPJg2T7y2GY-pvL_1766055763', NULL, NULL, NULL, NULL, 0);
+INSERT INTO `user` VALUES (6, 'admin1', 'Ew82ikqwY_UpB2elaxoOOYXbSJ-4_DxJ', '$2y$13$7vy90nRo.NZXmb3Xb3lGx.H54aWGqwyYjiTumJcLPAmb6IZpmTx3G', NULL, '1572456567@qq.com', 10, 1766056302, 1766500649, 'dHoH6HPsc0Sp55QxaCGzqx94U9g9ZIP6_1766056302', 'avatar_6_1766487211.jpg', 'MHN', 'MHN', 10, 1);
+INSERT INTO `user` VALUES (7, 'Xwy', 'chzjKDzKlWUn9n8tXK0Ifk14sK0mB0cP', '$2y$13$87/ydz1D4q1hN0XuriqHXeay04SgtrbTW6uUPa.cdwASm80kRL1gS', NULL, '1349841390@qq.com', 10, 1766056598, 1766469618, 'WqY7_TliiSTKGzliolZQc0LMklKX6S62_1766056598', 'avatar_7_1766390248.jpg', '', '', 3, 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

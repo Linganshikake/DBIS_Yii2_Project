@@ -59,17 +59,24 @@ class CommentController extends Controller
             ->with(['user', 'commentLikes']);
         
         if ($sort === 'hot') {
-            $query->orderBy(['like_count' => SORT_DESC, 'created_at' => SORT_DESC]);
+            // 热门模式：只显示点赞数最多的前3条评论
+            $query->orderBy(['like_count' => SORT_DESC, 'created_at' => SORT_DESC])
+                  ->limit(3);
+            
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'pagination' => false, // 热门模式不分页，只显示3条
+            ]);
         } else {
             $query->orderBy(['created_at' => SORT_DESC]);
+            
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'pagination' => [
+                    'pageSize' => 20,
+                ],
+            ]);
         }
-        
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 20,
-            ],
-        ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,

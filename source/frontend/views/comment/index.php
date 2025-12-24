@@ -74,6 +74,11 @@ $currentUserId = $isLoggedIn ? Yii::$app->user->id : null;
            style="color: <?= $sort === 'hot' ? '#d4af37' : '#888' ?>; text-decoration: none; font-weight: bold; padding-bottom: 15px; border-bottom: 2px solid <?= $sort === 'hot' ? '#d4af37' : 'transparent' ?>;">
             <i class="fa fa-fire"></i> 热门
         </a>
+        <?php if ($sort === 'hot'): ?>
+        <span style="color: #666; font-size: 12px; margin-left: 20px;">
+            <i class="fa fa-info-circle"></i> 仅展示点赞数最多的前3条评论
+        </span>
+        <?php endif; ?>
     </div>
 
     <!-- 评论列表 -->
@@ -202,7 +207,8 @@ $currentUserId = $isLoggedIn ? Yii::$app->user->id : null;
         <?php endif; ?>
     </div>
 
-    <!-- 分页 -->
+    <!-- 分页（热门模式不显示分页） -->
+    <?php if ($dataProvider->pagination !== false): ?>
     <div class="pagination-wrapper" style="margin-top: 30px;">
         <?= LinkPager::widget([
             'pagination' => $dataProvider->pagination,
@@ -212,6 +218,7 @@ $currentUserId = $isLoggedIn ? Yii::$app->user->id : null;
             'disabledListItemSubTagOptions' => ['class' => 'page-link', 'style' => 'background: #333; border-color: #333; color: #666;'],
         ]) ?>
     </div>
+    <?php endif; ?>
 
 </div>
 
