@@ -1,0 +1,52 @@
+/* documents.css - 抗日文献资料主题风格 */
+
+body {
+    background-color: #f9f5f0;
+    font-family: "Noto Serif SC", "宋体", serif;
+    color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "SimSun", serif;
+    color: #7b2e1c;
+}
+
+.documents-list .card {
+    border: 1px solid #d2b48c;
+    background-color: #fff8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(123, 46, 28, 0.2);
+    transition: transform 0.2s;
+}
+
+.documents-list .card:hover {
+    transform: translateY(-5px);
+}
+
+.card-title a {
+    color: #7b2e1c;
+    font-weight: bold;
+}
+
+.card-title a:hover {
+    text-decoration: underline;
+}
+
+.card-subtitle {
+    font-size: 0.9rem;
+    color: #a0522d;
+}
+
+.card-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.btn-primary {
+    background-color: #7b2e1c;
+    border-color: #7b2e1c;
+}
+
+.btn-primary:hover {
+    background-color: #a0522d;
+    border-color:
