@@ -1,7 +1,7 @@
 <?php
 /**
  * Team: DBIS_Yii2_Project
- * Coding by: 尹浩燃  2313547, 202512
+ * Coding by: 邓晓川  2313547, 202512
  * This is the ActiveRecord model for table "players" (选手模型)
  */
 namespace common\models;

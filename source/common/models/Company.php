@@ -11,7 +11,6 @@ use Yii;
 use yii\web\UploadedFile;
 
 /**
- * This is the model class for table "company".
  *
  * @property int $id 企业ID
  * @property int $team_id 关联队伍ID

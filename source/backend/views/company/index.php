@@ -1,4 +1,14 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend view for company index (后台公司管理列表视图)
+ */
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend view for company index (企业管理列表视图)
+ */
 
 use yii\helpers\Html;
 use yii\grid\GridView;

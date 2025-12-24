@@ -1,8 +1,7 @@
 <?php
 /**
-/**
  * Team: DBIS_Yii2_Project
- * Coding by: 尹浩燃  2313547, 202512
+ * Coding by: 穆浩宁  2313547, 202512
  * This is the ActiveRecord model for table "news" (新闻模型)
  */
 
@@ -13,7 +12,6 @@ use yii\behaviors\TimestampBehavior;
 use yii\web\UploadedFile;
 
 /**
- * This is the model class for table "news".
  *
  * @property int $id 新闻ID
  * @property string $title 新闻标题

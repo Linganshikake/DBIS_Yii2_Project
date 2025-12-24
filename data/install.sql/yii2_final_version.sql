@@ -11,7 +11,7 @@
  Target Server Version : 80019 (8.0.19)
  File Encoding         : 65001
 
- Date: 24/12/2025 00:02:30
+ Date: 24/12/2025 22:46:02
 */
 
 SET NAMES utf8mb4;
@@ -103,7 +103,7 @@ CREATE TABLE `company`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_team_id`(`team_id` ASC) USING BTREE,
   CONSTRAINT `fk_company_team` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '企业信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '企业信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of company
@@ -118,6 +118,7 @@ INSERT INTO `company` VALUES (7, 7, 'https://www.segasammy.co.jp/ja/faq/（最�
 INSERT INTO `company` VALUES (8, 9, ' Shibuya_Abemas@cyberagent.co.jp', 'ABEMAS.png', 1, 'https://www.cyberagent.co.jp');
 INSERT INTO `company` VALUES (9, 10, ' drivens@hakuhodody-media.co.jp', 'DRIVENS.png', 1, 'https://www.hakuhodo.co.jp');
 INSERT INTO `company` VALUES (10, 17, ' earthjets@earth.jp', 'JETS.png', 1, 'https://www.earth.jp');
+INSERT INTO `company` VALUES (11, 19, '2313547@nankai.edu.cn', 'NKU.jpeg', 1, 'https://cc.nankai.edu.cn/');
 
 -- ----------------------------
 -- Table structure for migration
@@ -282,7 +283,7 @@ CREATE TABLE `players`  (
   INDEX `idx_org_id`(`org_id` ASC) USING BTREE,
   CONSTRAINT `fk_player_org` FOREIGN KEY (`org_id`) REFERENCES `organizations` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_player_team` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 70 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '选手基础信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 74 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '选手基础信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of players
@@ -328,6 +329,10 @@ INSERT INTO `players` VALUES (65, 'HIRO柴田', '柴田', '男', '红杏', 17, 3
 INSERT INTO `players` VALUES (67, '220', '220', '男', '', 17, 1, 'A2', NULL, 0, NULL, NULL, NULL);
 INSERT INTO `players` VALUES (68, '三浦智博', '三浦', '男', '无冕之王', 17, 3, 'A2', NULL, 1, 'player_1766344506_799.jpg', 'pv_1766345226_252.mp4', 'cover_1766345226_799.jpg');
 INSERT INTO `players` VALUES (69, '逢川惠梦', '逢川', '女', '爪姐', 17, 4, '雀王', NULL, 1, 'player_1766344475_313.jpg', 'pv_1766345174_673.mp4', 'cover_1766345174_271.jpg');
+INSERT INTO `players` VALUES (70, '尹浩燃', '尹浩燃', '男', 'YHR', 19, NULL, '', '2005-04-17', 1, 'player_1766564361_695.jpg', NULL, NULL);
+INSERT INTO `players` VALUES (71, '穆浩宁', '穆浩宁', '女', 'MHN', 19, NULL, '', '2005-02-25', 1, 'player_1766564754_839.jpg', NULL, NULL);
+INSERT INTO `players` VALUES (72, '邓晓川', '邓晓川', '男', 'DXC', 19, NULL, '', '2005-02-02', 1, 'player_1766564795_696.jpg', NULL, NULL);
+INSERT INTO `players` VALUES (73, '胡凌晨', '胡凌晨', '男', 'HLC', 19, NULL, '', '2004-02-17', 1, 'player_1766564841_792.jpg', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for schedule
@@ -675,7 +680,7 @@ CREATE TABLE `teams`  (
   UNIQUE INDEX `idx_name`(`name` ASC) USING BTREE,
   INDEX `team`(`company` ASC) USING BTREE,
   CONSTRAINT `team` FOREIGN KEY (`company`) REFERENCES `company` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'M联赛参赛队伍' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'M联赛参赛队伍' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of teams
@@ -690,6 +695,7 @@ INSERT INTO `teams` VALUES (7, '世嘉飒美Phoenix', '茅森早香', 7, '这是
 INSERT INTO `teams` VALUES (9, '涉谷ABEMAS', '塚本泰隆', 8, '它以公司角色阿贝玛和涩谷命名，该角色自成立以来一直以该剧为基地。队伍标志位于涩谷，汉字“渋”以闪电和皇冠为主题。 白色方形画的麻雀桌表示公平竞赛的态度。', 1, 'team_1766071528_580.png', 'ABEMAS.mp4', 'ABEMAS.jpg', 'ZHONGBEN.jpg');
 INSERT INTO `teams` VALUES (10, '赤坂Drivens', '越山刚', 9, '比如队伍的吉祥物犀牛，这支球队既有坚固的护甲防守，也有强大的进攻火力。基于选手的技术和经验、客观数据以及与粉丝协作的体系等多项基本因素，我们将明智有力地推动麻将游戏的未来。', 1, 'team_1766071543_804.png', 'DRIVENS.mp4', 'DRIVENS.jpg', 'YUESHAN.jpg');
 INSERT INTO `teams` VALUES (17, 'Earth Jests', '川村芳範', 10, '就像变色龙一样，可以自由变色并迅速捕捉昆虫，它会自由地攻击和防御，然后迅速而锐利地击败对手。 有两种颜色的变色龙、昆虫网和代表攻防的土=土，已被象征。', 1, 'team_1766071553_110.png', 'JETS.mp4', 'JETS.jpg', 'CHUANCUN.jpg');
+INSERT INTO `teams` VALUES (19, '对对队', '尹浩燃', 11, '一支互联网数据库开发小队。致力于优质的网站与数据库开发。\r\n口号是：做什么都对！✔', 1, 'team_1766563860_294.png', NULL, NULL, 'YHR.jpg');
 
 -- ----------------------------
 -- Table structure for user

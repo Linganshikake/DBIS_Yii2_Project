@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 穆浩宁  2313547, 202512
+ * This is the frontend news detail view (前端新闻详情视图)
+ */
 
 use yii\helpers\Html;
 use yii\helpers\Url;

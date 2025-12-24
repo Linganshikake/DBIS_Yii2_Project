@@ -1,4 +1,9 @@
 ﻿<?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the frontend about view (前端关于页面视图)
+ */
 /* @var $this yii\web\View */
 
 use yii\helpers\Html;

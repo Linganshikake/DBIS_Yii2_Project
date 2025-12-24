@@ -10,7 +10,6 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "schedule".
  *
  * @property int $id 日程ID
  * @property string $match_date 比赛日期

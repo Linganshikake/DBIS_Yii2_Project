@@ -10,7 +10,6 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "organizations".
  *
  * @property int $id 团体ID
  * @property string $name 团体名称

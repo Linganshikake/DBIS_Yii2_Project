@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 胡凌晨  2313547, 202512
+ * This is the frontend team index view (前端队伍列表视图)
+ */
 
 use yii\helpers\Html;
 use yii\helpers\Url;

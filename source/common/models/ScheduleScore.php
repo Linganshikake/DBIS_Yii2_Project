@@ -10,7 +10,6 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "schedule_score".
  *
  * @property int $id 成绩ID
  * @property int $schedule_id 日程ID

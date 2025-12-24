@@ -1,5 +1,10 @@
 <?php
 /**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 穆浩宁  2313547, 202512
+ * This is the frontend news content partial (前端新闻内容片段视图)
+ */
+/**
  * 新闻正文内容渲染
  * 
  * 支持的语法：

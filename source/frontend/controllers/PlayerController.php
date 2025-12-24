@@ -2,7 +2,7 @@
 
 /**
  * Team: DBIS_Yii2_Project
- * Coding by: 尹浩燃  2313547, 202512
+ * Coding by: 邓晓川  2313547, 202512
  * This is the frontend controller for Player display (选手展示前台控制器)
  */
 namespace frontend\controllers;

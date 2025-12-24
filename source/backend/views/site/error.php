@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend error view (后台错误页面视图)
+ */
 
 /* @var $this yii\web\View */
 /* @var $name string */

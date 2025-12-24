@@ -1,4 +1,14 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend player index view (后台球员管理列表视图)
+ */
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend view for player index (选手管理列表视图)
+ */
 
 use yii\helpers\Html;
 use yii\grid\GridView;

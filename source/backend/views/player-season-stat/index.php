@@ -1,4 +1,14 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend player-season-stat index view (后台球员赛季统计列表视图)
+ */
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend view for player-season-stat index (选手赛季统计列表视图)
+ */
 
 use yii\helpers\Html;
 use yii\grid\GridView;

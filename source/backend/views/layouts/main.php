@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend main layout view (后台主布局视图)
+ */
 
 /* @var $this \yii\web\View */
 /* @var $content string */

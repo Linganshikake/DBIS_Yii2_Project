@@ -1,4 +1,14 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend schedule index view (后台赛程管理列表视图)
+ */
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend view for schedule index (赛程管理列表视图)
+ */
 
 use yii\helpers\Html;
 use yii\grid\GridView;

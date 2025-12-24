@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the frontend profile update view (前端个人资料更新视图)
+ */
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;

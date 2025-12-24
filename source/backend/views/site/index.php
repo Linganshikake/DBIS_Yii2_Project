@@ -1,4 +1,14 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend site index view (后台首页视图)
+ */
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend view for site index (后台首页视图)
+ */
 
 use yii\helpers\Html;
 use yii\helpers\Url;

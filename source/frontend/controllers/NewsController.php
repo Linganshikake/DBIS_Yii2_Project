@@ -2,7 +2,7 @@
 
 /**
  * Team: DBIS_Yii_Project
- * Coding by: 尹浩燃  2313547, 202512
+ * Coding by: 穆浩宁  2313547, 202512
  * This is the frontend controller for News display (新闻展示前台控制器)
  */
 

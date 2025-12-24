@@ -10,7 +10,6 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "seasons".
  *
  * @property int $id 赛季ID
  * @property string $name 赛季名称，如 2023-24 Season

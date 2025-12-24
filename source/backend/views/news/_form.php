@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend news form partial view (后台新闻表单片段视图)
+ */
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;

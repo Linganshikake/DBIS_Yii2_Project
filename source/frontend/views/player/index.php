@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 邓晓川  2313547, 202512
+ * This is the frontend player index view (前端球员列表视图)
+ */
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;

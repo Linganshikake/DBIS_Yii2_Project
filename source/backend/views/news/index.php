@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the backend view for news index (新闻管理列表视图)
+ */
 
 use yii\helpers\Html;
 use yii\grid\GridView;

@@ -1,4 +1,9 @@
 <?php
+/**
+ * Team: DBIS_Yii2_Project
+ * Coding by: 尹浩燃  2313547, 202512
+ * This is the frontend ranking index view (前端排行榜视图)
+ */
 use yii\helpers\Html;
 use yii\helpers\Url;
 use frontend\assets\EChartsAsset;

@@ -10,7 +10,6 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "comment_likes".
  *
  * @property int $id
  * @property int $comment_id 评论ID

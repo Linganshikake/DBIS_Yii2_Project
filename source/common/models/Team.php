@@ -1,7 +1,7 @@
 <?php
 /**
  * Team: DBIS_Yii2_Project
- * Coding by: 尹浩燃  2313547, 202512
+ * Coding by: 胡凌晨  2313547, 202512
  * This is the ActiveRecord model for table "teams" (队伍模型)
  */
 
@@ -11,7 +11,6 @@ use yii\web\UploadedFile;
 use Yii;
 
 /**
- * This is the model class for table "teams".
  *
  * @property int $id 队伍ID
  * @property string $name 队伍名称

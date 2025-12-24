@@ -10,7 +10,6 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "season_titles".
  *
  * @property int $id
  * @property int $season_id
